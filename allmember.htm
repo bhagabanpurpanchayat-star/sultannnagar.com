@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>জনপ্রতিনিধি ডিরেক্টরি | সুলতাননগর গ্রাম পঞ্চায়েত</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;500;600;700&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- DataTables CSS for sorting & searching -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+  <!-- SheetJS for Excel Export -->
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- DataTables JS -->
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', 'Noto Serif Bengali', system-ui, sans-serif;
+      background: linear-gradient(135deg, #f0f9ef 0%, #e2f0de 100%);
+      color: #1e2a1e;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Top Bar */
+    .top-bar {
+      background: #0a2f22;
+      color: #fef9e6;
+      padding: 12px 0;
+      font-size: 0.85rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .top-bar .container {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .contact-snip a {
+      color: #fef9e6;
+      text-decoration: none;
+      margin-right: 24px;
+      transition: opacity 0.2s;
+    }
+
+    .contact-snip a:hover {
+      opacity: 0.8;
+    }
+
+    .gp-lang {
+      background: #2a6b4f;
+      padding: 4px 16px;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(4px);
+      box-shadow: 0 8px 25px rgba(0, 32, 0, 0.08);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      padding: 14px 0;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo-icon {
+      background: linear-gradient(145deg, #1e6b44, #0f4a2e);
+      width: 52px;
+      height: 52px;
+      border-radius: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: #ffefc0;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    }
+
+    .logo-text h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #1e562e;
+    }
+
+    .logo-text p {
+      font-size: 0.7rem;
+      color: #5a7a52;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 600;
+      color: #2c4b2c;
+      transition: 0.2s;
+      padding: 6px 0;
+      border-bottom: 2px solid transparent;
+    }
+
+    .nav-links a:hover, .nav-links a.active {
+      border-bottom-color: #2b7a4b;
+      color: #1f5437;
+    }
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(115deg, #d9eed2, #c6e2be);
+      padding: 45px 0 55px;
+      text-align: center;
+      clip-path: polygon(0 0, 100% 0, 100% 92%, 0 100%);
+    }
+
+    .hero h2 {
+      font-size: 2.3rem;
+      color: #1a4d2a;
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 0 auto;
+      color: #2b5532;
+    }
+
+    /* Export Button - 3D Raised */
+    .export-wrapper {
+      text-align: right;
+      margin-bottom: 28px;
+      margin-top: 30px;
+    }
+
+    .btn-excel {
+      background: linear-gradient(145deg, #1f7b4d, #0f5a38);
+      border: none;
+      padding: 14px 36px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: white;
+      border-radius: 60px;
+      cursor: pointer;
+      box-shadow: 0 8px 0 #0a3922, 0 6px 18px rgba(0,0,0,0.2);
+      transition: all 0.08s linear;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-family: inherit;
+    }
+
+    .btn-excel:active {
+      transform: translateY(4px);
+      box-shadow: 0 4px 0 #0a3922;
+    }
+
+    .btn-excel i {
+      font-size: 1.2rem;
+    }
+
+    /* Table Wrapper */
+    .table-wrapper {
+      background: white;
+      border-radius: 28px;
+      padding: 8px;
+      box-shadow: 0 20px 35px -12px rgba(0, 32, 0, 0.15);
+      margin-bottom: 40px;
+      overflow-x: auto;
+    }
+
+    #membersTable {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    #membersTable th {
+      background: #1e5631;
+      color: white;
+      padding: 14px 12px;
+      font-weight: 600;
+      text-align: center;
+      border: 1px solid #367a4a;
+      white-space: nowrap;
+    }
+
+    #membersTable td {
+      border: 1px solid #d9e8d4;
+      padding: 12px 10px;
+      text-align: left;
+      vertical-align: middle;
+      background-color: #fefef9;
+    }
+
+    #membersTable tr:hover td {
+      background-color: #f0f7ea;
+    }
+
+    .email-link {
+      color: #2b7a4b;
+      text-decoration: none;
+      font-weight: 500;
+      word-break: break-all;
+    }
+
+    .email-link:hover {
+      text-decoration: underline;
+    }
+
+    .badge-designation {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 40px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+
+    .badge-prodhan { background: #d4af37; color: #2a471f; }
+    .badge-sanchalak { background: #4c9f70; color: white; }
+    .badge-upo { background: #e67e22; color: white; }
+    .badge-ps { background: #3498db; color: white; }
+    .badge-member { background: #6c8f6a; color: white; }
+
+    /* Footer */
+    .footer {
+      background: #0f2c20;
+      color: #e4f0de;
+      padding: 40px 0 20px;
+      margin-top: 20px;
+    }
+
+    .footer-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    .footer-col a {
+      color: #d8efcf;
+      text-decoration: none;
+    }
+
+    .copyright {
+      text-align: center;
+      border-top: 1px solid #2c5440;
+      padding-top: 24px;
+      font-size: 0.8rem;
+    }
+
+    /* DataTables customization */
+    .dataTables_filter input {
+      border-radius: 30px;
+      padding: 8px 16px;
+      border: 1px solid #c0dbc0;
+      margin-left: 10px;
+    }
+    .dataTables_length select {
+      border-radius: 20px;
+      padding: 5px;
+    }
+
+    @media (max-width: 760px) {
+      .container {
+        padding: 0 16px;
+      }
+      .hero h2 {
+        font-size: 1.7rem;
+      }
+      .nav-container {
+        flex-direction: column;
+        gap: 12px;
+      }
+      .export-wrapper {
+        text-align: center;
+      }
+      #membersTable th, #membersTable td {
+        font-size: 0.75rem;
+        padding: 8px 6px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="top-bar">
+  <div class="container">
+    <div class="contact-snip">
+      <a href="mailto:mgnregs.sn@gmail.com"><i class="fas fa-envelope"></i> mgnregs.sn@gmail.com</a>
+      <span><i class="fas fa-map-marker-alt"></i> সুলতাননগর, বড়দুয়ারী, হরিশ্চন্দ্রপুর, মালদা</span>
+    </div>
+    <div class="gp-lang"><i class="fas fa-users-viewfinder"></i> জনপ্রতিনিধি ডিরেক্টরি</div>
+  </div>
+</div>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="container nav-container">
+    <div class="logo-area">
+      <div class="logo-icon"><i class="fas fa-id-card"></i></div>
+      <div class="logo-text">
+        <h1>সুলতাননগর গ্রাম পঞ্চায়েত</h1>
+        <p>জনপ্রতিনিধি ও পদাধিকারীবৃন্দ</p>
+      </div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#" class="active">ডিরেক্টরি</a></li>
+      <li><a href="#">যোগাযোগ</a></li>
+      <li><a href="#">অফিস</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <h2><i class="fas fa-table-list"></i> নির্বাচিত জনপ্রতিনিধি তালিকা</h2>
+    <p>সুলতাননগর গ্রাম পঞ্চায়েতের সম্মানিত সদস্য, সঞ্চালক, প্রধান ও পঞ্চায়েত সমিতি সদস্যগণের সম্পূর্ণ তালিকা। ইমেলের মাধ্যমে সরাসরি যোগাযোগের সুবিধা।</p>
+  </div>
+</section>
+
+<div class="container">
+  <div class="export-wrapper">
+    <button class="btn-excel" id="exportExcelBtn"><i class="fas fa-file-excel"></i> এক্সপোর্ট to Excel (XLSX)</button>
+  </div>
+
+  <div class="table-wrapper">
+    <table id="membersTable" class="display" style="width:100%">
+      <thead>
+        <tr>
+          <th>ক্রমিক নং</th>
+          <th>আসন নম্বর (Seat No)</th>
+          <th>নাম (Name)</th>
+          <th>পদবী (Designation)</th>
+          <th>ইমেল ঠিকানা (Email)</th>
+        </tr>
+      </thead>
+      <tbody id="membersTableBody">
+        <!-- Data will be populated via JavaScript -->
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container footer-grid">
+    <div class="footer-col">
+      <h3>সুলতাননগর গ্রাম পঞ্চায়েত</h3>
+      <p><i class="fas fa-map-marker-alt"></i> Vill+P.O: Barduary, Harishchandrapur, Malda</p>
+      <p><i class="fas fa-envelope"></i> mgnregs.sn@gmail.com</p>
+    </div>
+    <div class="footer-col">
+      <h4>গুরুত্বপূর্ণ লিংক</h4>
+      <p><a href="#">ই-পরিষেবা পোর্টাল</a></p>
+      <p><a href="#">MGNREGA তথ্য</a></p>
+    </div>
+    <div class="footer-col">
+      <h4>অফিস যোগাযোগ</h4>
+      <p>হরিশ্চন্দ্রপুর ব্লক, মালদা</p>
+      <p>ফোন: ০৩৫১২-২৫৮১২৩</p>
+    </div>
+  </div>
+  <div class="copyright">
+    <p>&copy; ২০২৫ সুলতাননগর গ্রাম পঞ্চায়েত | সম্মানিত জনপ্রতিনিধিদের ই-কন্ট্যাক্ট ডিরেক্টরি</p>
+  </div>
+</footer>
+
+<script>
+  // Members Data (as per provided table)
+  const membersData = [
+    { sl: 1, seat: "SULTANNAGAR / I-1", name: "JOBEDA KHATUN", designation: "Member", email: "mdvadal988932@gmail.com" },
+    { sl: 2, seat: "SULTANNAGAR / II-2", name: "SAMIMA KHATUN", designation: "Member", email: "samadmalsabad@gmail.com" },
+    { sl: 3, seat: "SULTANNAGAR / III-3", name: "CHANTARA KHATUN", designation: "Member", email: "ansarulhoque94@gmail.com" },
+    { sl: 4, seat: "SULTANNAGAR / IV-4", name: "REHENA BIBI", designation: "Member", email: "abukalam01012021@gmail.com" },
+    { sl: 5, seat: "SULTANNAGAR / IX-9", name: "SHRI MAHALDAR", designation: "Member", email: "shrimahaldar1947@gmail.com" },
+    { sl: 6, seat: "SULTANNAGAR / V-5", name: "AYESA BIBI", designation: "Member", email: "abdurrahaman973312@gmail.com" },
+    { sl: 7, seat: "SULTANNAGAR / VI-6", name: "KHATIJA KHATUN", designation: "Member", email: "ajijurr396@gmail.com" },
+    { sl: 8, seat: "SULTANNAGAR / VII-7", name: "JAKARIA", designation: "Member", email: "sabiralamhcp27@gmail.com" },
+    { sl: 9, seat: "SULTANNAGAR / VIII-8", name: "GOUR MANDAL", designation: "Sanchalak", email: "gaurmandal948@gmail.com" },
+    { sl: 10, seat: "SULTANNAGAR / X-10", name: "GAYA MANDAL", designation: "Member", email: "manjuralam25081982@gmail.com" },
+    { sl: 11, seat: "SULTANNAGAR / XI-11", name: "MAMATA MAHALDAR", designation: "Member", email: "gudusdas8670083706@gmail.com" },
+    { sl: 12, seat: "SULTANNAGAR / XI-12", name: "RUBI BIBI", designation: "Member", email: "islamnazrul32566@gmail.com" },
+    { sl: 13, seat: "SULTANNAGAR / XII-13", name: "DHARMA MANDAL", designation: "Prodhan", email: "dharmamandal50@gmail.com" },
+    { sl: 14, seat: "SULTANNAGAR / XIII-14", name: "SEBA KHATUN", designation: "Sanchalak", email: "babulalam38511@gmail.com" },
+    { sl: 15, seat: "SULTANNAGAR / XIV-15", name: "JAHANGIR ALAM", designation: "Member", email: "jahangir0987458@gmail.com" },
+    { sl: 16, seat: "SULTANNAGAR / XIX-20", name: "MD NURUL", designation: "Member", email: "mdn260396@gmail.com" },
+    { sl: 17, seat: "SULTANNAGAR / XV-16", name: "AJIMA KHATUN", designation: "Member", email: "ajimak154@gmail.com" },
+    { sl: 18, seat: "SULTANNAGAR / XVI-17", name: "MAUSUMI DAS SHARMA", designation: "Member", email: "rajkumarsharmarmabv@gmail.com" },
+    { sl: 19, seat: "SULTANNAGAR / XVII-18", name: "ANJANA MAHATO", designation: "Member", email: "Ramrajeshkumar62@gmail.Com" },
+    { sl: 20, seat: "SULTANNAGAR / XVIII-19", name: "SABNAM KHATUN", designation: "Member", email: "sonuali.sa232@gmail.com" },
+    { sl: 21, seat: "SULTANNAGAR / XX-21", name: "KOHINOOR BEGAM", designation: "Sanchalak", email: "ahammadhasan36@gmail.com" },
+    { sl: 22, seat: "SULTANNAGAR / XXI-22", name: "MD MONAJIR KHAN", designation: "Member", email: "monajirkhan21626@gmail.com" },
+    { sl: 23, seat: "SULTANNAGAR / XXII-23", name: "MARJINA KHATUN BIBI", designation: "Upo-Prodhan", email: "guddukhan3054@gmail.com" },
+    { sl: 24, seat: "SULTANNAGAR / XXII-24", name: "RUBI KHATUN", designation: "Member", email: "mikkerubi08@gmail.com" },
+    { sl: 25, seat: "SULTANNAGAR /XXIII-25", name: "TARIK ANWAR", designation: "Member", email: "tarikraaz1@gmail.com" },
+    { sl: 26, seat: "SULTANNAGAR /XXIIII-26", name: "TAFIQUL ISLAM", designation: "Sanchalak", email: "tafiqulislam274@gmail.com" },
+    { sl: 27, seat: "SULTANNAGAR /XXIV-27", name: "URMILA SINGHA", designation: "Member", email: "Bsurajsingh0@gmail.com" },
+    { sl: 28, seat: "SULTANNAGAR /XXV-28", name: "ASRAFUL HOQUE", designation: "Member", email: "samimaktar02102001@gmail.com" },
+    { sl: 29, seat: "SULTANNAGAR /XXVI-29", name: "SAROJ SHARMA", designation: "Member", email: "sharmarajib357@gmail.com" },
+    { sl: 30, seat: "SULTANNAGAR / XXVII-30", name: "KHALILUR RAHAMAN", designation: "Member", email: "khalilurrahaman3952@gmail.com" },
+    { sl: 31, seat: "SULTANNAGAR/ PS-4", name: "MD GOLAM MORTUJA", designation: "P.S Member", email: "" },
+    { sl: 32, seat: "SULTANNAGAR/ PS-5", name: "WAHEDA KHATUN", designation: "P.S Member", email: "" },
+    { sl: 33, seat: "SULTANNAGAR/ PS-6", name: "SWAPAN KUMAR GHOSH", designation: "P.S Member", email: "" }
+  ];
+
+  // Helper: get badge class for designation
+  function getBadgeClass(designation) {
+    const d = designation.toLowerCase();
+    if (d.includes('prodhan')) return 'badge-prodhan';
+    if (d.includes('sanchalak')) return 'badge-sanchalak';
+    if (d.includes('upo-prodhan')) return 'badge-upo';
+    if (d.includes('ps member')) return 'badge-ps';
+    return 'badge-member';
+  }
+
+  // Populate table body
+  function populateTable() {
+    const tbody = document.getElementById('membersTableBody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    membersData.forEach(member => {
+      const row = tbody.insertRow();
+      const badgeClass = getBadgeClass(member.designation);
+      
+      // SL No
+      const cellSl = row.insertCell(0);
+      cellSl.textContent = member.sl;
+      cellSl.style.textAlign = 'center';
+      
+      // Seat No
+      const cellSeat = row.insertCell(1);
+      cellSeat.textContent = member.seat;
+      
+      // Name
+      const cellName = row.insertCell(2);
+      cellName.textContent = member.name;
+      cellName.style.fontWeight = '600';
+      
+      // Designation with badge
+      const cellDesig = row.insertCell(3);
+      cellDesig.innerHTML = `<span class="badge-designation ${badgeClass}">${member.designation}</span>`;
+      cellDesig.style.textAlign = 'center';
+      
+      // Email
+      const cellEmail = row.insertCell(4);
+      if (member.email && member.email.trim() !== '') {
+        cellEmail.innerHTML = `<a href="mailto:${member.email}" class="email-link" target="_blank"><i class="fas fa-envelope"></i> ${member.email}</a>`;
+      } else {
+        cellEmail.innerHTML = `<span style="color:#9bb894;"><i class="fas fa-envelope-open-text"></i> ইমেল নেই</span>`;
+      }
+    });
+  }
+
+  // Excel Export using SheetJS
+  function exportToExcel() {
+    const wsData = [
+      ["ক্রমিক নং", "আসন নম্বর (Seat No)", "নাম (Name)", "পদবী (Designation)", "ইমেল ঠিকানা (Email)"]
+    ];
+    membersData.forEach(m => {
+      wsData.push([m.sl, m.seat, m.name, m.designation, m.email || ""]);
+    });
+    const ws = XLSX.utils.aoa_to_sheet(wsData);
+    // Adjust column widths
+    ws['!cols'] = [{wch:8}, {wch:28}, {wch:22}, {wch:18}, {wch:32}];
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Sultannagar_Members");
+    XLSX.writeFile(wb, `Sultannagar_GP_Members_${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.xlsx`);
+  }
+
+  // Initialize DataTable after populating
+  let dataTable = null;
+  
+  $(document).ready(function() {
+    populateTable();
+    
+    // Initialize DataTable
+    dataTable = $('#membersTable').DataTable({
+      pageLength: 15,
+      lengthMenu: [[10, 15, 25, 50, -1], [10, 15, 25, 50, "সব"]],
+      language: {
+        search: "<i class='fas fa-search'></i> অনুসন্ধান:",
+        lengthMenu: "_MENU_ টি রেকর্ড দেখান",
+        info: "_START_ থেকে _END_ পর্যন্ত, মোট _TOTAL_ টি রেকর্ড",
+        infoEmpty: "কোন রেকর্ড নেই",
+        zeroRecords: "কোন তথ্য পাওয়া যায়নি",
+        emptyTable: "সারণীতে কোনো তথ্য নেই",
+        paginate: {
+          first: "প্রথম",
+          last: "শেষ",
+          next: "পরবর্তী",
+          previous: "পূর্ববর্তী"
+        }
+      },
+      order: [[0, 'asc']],
+      columnDefs: [
+        { targets: 0, orderable: true, className: 'dt-center' },
+        { targets: 3, orderable: true },
+        { targets: 4, orderable: true }
+      ]
+    });
+    
+    // Export button event
+    $('#exportExcelBtn').on('click', exportToExcel);
+  });
+</script>
+</body>
+</html>
