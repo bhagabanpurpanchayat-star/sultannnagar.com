@@ -1,760 +1,697 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Gram Panchayat - Lease Expiry Notice with Due Amount</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Sultannagar Gram Panchayat | Official Management Portal</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        body {
-            background: linear-gradient(135deg,#1a1a2e 0%,#16213e 40%,#0f3460 100%);
-            font-family:'Segoe UI','Noto Sans',system-ui,sans-serif;
-            padding:20px; min-height:100vh;
-        }
+    body {
+      font-family: 'Segoe UI', 'Roboto', system-ui, -apple-system, sans-serif;
+      background: #eef2f5;
+      overflow-x: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-        .app-wrapper {
-            max-width:1700px; margin:0 auto;
-            background:#f8f9ff; border-radius:28px;
-            box-shadow:0 30px 60px rgba(0,0,0,0.4); overflow:hidden;
-        }
+    /* ========= OFFICIAL THEME — FLUSH INTEGRATION ========= */
+    :root {
+      --primary-saffron: #e67e22;
+      --primary-green: #2c6e2f;
+      --navbar-bg: #0a2f44;
+      --sidebar-bg: #0f2c3b;
+      --sidebar-hover: #1e4a62;
+      --border-accent: #e67e22;
+      --text-white: #ffffff;
+      --text-light: #f0f3f8;
+      --shadow-sm: 0 2px 5px rgba(0,0,0,0.1);
+    }
 
-        /* HEADER */
-        .header {
-            background:linear-gradient(135deg,#1b4332 0%,#2d6a4f 50%,#40916c 100%);
-            color:white; padding:22px 30px; text-align:center;
-        }
-        .header h1 { font-size:1.8rem; margin-bottom:6px; }
-        .header p  { font-size:0.85rem; opacity:0.9; }
-        .header-badges { display:flex; gap:8px; justify-content:center; margin-top:10px; flex-wrap:wrap; }
-        .header-badge {
-            background:rgba(255,255,255,0.2); padding:3px 14px; border-radius:20px;
-            font-size:0.7rem; font-weight:600; border:1px solid rgba(255,255,255,0.3);
-        }
+    /* TOP NAVIGATION — NO GAP, FLUSH WITH SIDEBAR */
+    .top-nav {
+      background: var(--navbar-bg);
+      color: var(--text-white);
+      padding: 0 24px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 3px solid var(--primary-saffron);
+      box-shadow: var(--shadow-sm);
+      flex-shrink: 0;
+      z-index: 100;
+    }
 
-        /* STATUS BAR */
-        .status-bar {
-            background:linear-gradient(90deg,#e8f4fd,#f0f7ee);
-            padding:12px 25px; display:flex; flex-wrap:wrap;
-            align-items:center; justify-content:space-between;
-            gap:12px; border-bottom:2px solid #b7d4e8;
-        }
-        .status-chip {
-            background:linear-gradient(135deg,#fff3cd,#ffeaa7);
-            padding:6px 18px; border-radius:30px; font-size:0.78rem;
-            font-weight:700; color:#1b4332; border:1px solid #ffc107;
-        }
-        .refresh-btn {
-            background:linear-gradient(135deg,#1b4332,#40916c);
-            color:white; border:none; padding:7px 22px; border-radius:40px;
-            font-weight:700; cursor:pointer; font-size:0.78rem; transition:all 0.2s;
-        }
-        .refresh-btn:hover { transform:translateY(-2px); }
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-        /* MAIN GRID */
-        .main-grid { display:flex; flex-wrap:wrap; gap:20px; padding:20px; }
+    .logo-icon {
+      font-size: 28px;
+    }
 
-        /* LEFT PANEL */
-        .selection-panel {
-            flex:1.2; min-width:300px; background:white;
-            border-radius:22px; padding:20px;
-            box-shadow:0 6px 20px rgba(0,0,0,0.1); border:1px solid #e0e8f5;
-        }
-        .panel-title {
-            font-size:1.05rem; font-weight:800; color:#1b4332;
-            border-left:5px solid #ffc107; padding-left:12px; margin-bottom:15px;
-        }
-        .search-box {
-            width:100%; padding:9px 16px; border-radius:30px;
-            border:2px solid #c2d4e8; margin-bottom:12px;
-            font-size:0.82rem; transition:border 0.2s; background:#f8fbff;
-        }
-        .search-box:focus { outline:none; border-color:#40916c; background:white; }
+    .logo-text h1 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      line-height: 1.2;
+    }
 
-        .checkbox-scroll {
-            height:300px; overflow-y:auto;
-            border:2px solid #dae5f0; border-radius:16px;
-            padding:8px; background:#fafdff; margin-bottom:14px;
-        }
-        .checkbox-scroll::-webkit-scrollbar { width:6px; }
-        .checkbox-scroll::-webkit-scrollbar-thumb { background:#40916c; border-radius:10px; }
+    .logo-text span {
+      font-size: 0.7rem;
+      font-weight: 400;
+      opacity: 0.85;
+      display: block;
+    }
 
-        .member-item {
-            display:flex; align-items:center; gap:10px; padding:7px 8px;
-            border-radius:10px; font-size:0.8rem; cursor:pointer;
-            transition:background 0.15s; border-bottom:1px solid #eef2f8;
-        }
-        .member-item:hover { background:#e8f5e9; }
-        .member-item.selected-row { background:#d4edda; }
-        .member-item input { width:17px; height:17px; cursor:pointer; accent-color:#1b4332; }
-        .member-item label { cursor:pointer; flex:1; }
+    .clock {
+      font-size: 1.25rem;
+      font-weight: 600;
+      font-family: 'Courier New', monospace;
+      background: rgba(0,0,0,0.4);
+      padding: 6px 18px;
+      border-radius: 40px;
+      border: 1px solid rgba(230,126,34,0.5);
+      letter-spacing: 1px;
+      backdrop-filter: blur(2px);
+    }
 
-        .action-buttons { display:flex; gap:7px; flex-wrap:wrap; margin:10px 0; }
-        .small-btn {
-            background:linear-gradient(135deg,#eef2f8,#dce8f5);
-            border:1px solid #b8c8e0; padding:5px 13px; border-radius:30px;
-            font-size:0.7rem; font-weight:700; cursor:pointer; color:#1b4332; transition:all 0.2s;
-        }
-        .small-btn:hover { background:linear-gradient(135deg,#d4edda,#c3e6cb); border-color:#40916c; }
+    .signin-btn {
+      padding: 8px 26px;
+      border: none;
+      border-radius: 40px;
+      background: var(--primary-saffron);
+      color: white;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
 
-        .selected-info {
-            background:linear-gradient(135deg,#e8f5e9,#f0f9f0);
-            border-radius:16px; padding:12px; margin-top:8px;
-            border:1px solid #a8d5b5;
-        }
-        .selected-names {
-            max-height:90px; overflow-y:auto; font-size:0.72rem;
-            margin-top:8px; background:white; border-radius:12px; padding:8px;
-        }
-        .selected-names div { padding:3px 0; border-bottom:1px dashed #c8e6c9; }
+    .signin-btn:hover {
+      background: #cf5f17;
+      transform: scale(1.02);
+    }
 
-        .batch-buttons { margin-top:14px; display:flex; gap:8px; flex-wrap:wrap; }
+    /* MAIN LAYOUT — NO GAP BETWEEN TOP AND SIDEBAR */
+    .main-layout {
+      display: flex;
+      flex: 1;
+      min-height: 0;  /* critical for flex child overflow */
+      background: #eef2f5;
+    }
 
-        .btn-generate {
-            background:linear-gradient(135deg,#1b4332,#2d6a4f);
-            color:white; border:none; padding:9px 14px; border-radius:25px;
-            font-weight:700; cursor:pointer; flex:1; font-size:0.8rem;
-            box-shadow:0 4px 12px rgba(27,67,50,0.35); transition:all 0.2s;
-        }
-        .btn-generate:hover { transform:translateY(-2px); }
+    /* LEFT SIDEBAR — FLUSH WITH TOP (no margin/padding gap) */
+    .sidebar {
+      width: 280px;
+      background: linear-gradient(180deg, #0f2c3b 0%, #0a1f2a 100%);
+      color: var(--text-light);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow-y: auto;
+      box-shadow: 2px 0 12px rgba(0, 0, 0, 0.08);
+      flex-shrink: 0;
+      border-right: 1px solid rgba(230,126,34,0.2);
+    }
 
-        .btn-print {
-            background:linear-gradient(135deg,#1565c0,#1976d2);
-            color:white; border:none; padding:9px 14px; border-radius:25px;
-            cursor:pointer; flex:1; font-size:0.8rem; font-weight:700;
-            box-shadow:0 4px 12px rgba(21,101,192,0.35); transition:all 0.2s;
-        }
-        .btn-print:hover { transform:translateY(-2px); }
+    .sidebar-menu {
+      padding: 18px 12px 20px 12px;
+    }
 
-        .btn-pdf {
-            background:linear-gradient(135deg,#b71c1c,#c62828);
-            color:white; border:none; padding:9px 14px; border-radius:25px;
-            cursor:pointer; flex:1; font-size:0.8rem; font-weight:700;
-            box-shadow:0 4px 12px rgba(183,28,28,0.35); transition:all 0.2s;
-        }
-        .btn-pdf:hover { transform:translateY(-2px); }
+    /* Sharp menu items — clean typography, crisp */
+    .sidebar a, .sidebar .nav-item {
+      display: block;
+      padding: 10px 16px;
+      margin: 4px 0;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 12px;
+      color: #f2f6fc;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.18s ease;
+      border-left: 3px solid transparent;
+      letter-spacing: 0.2px;
+    }
 
-        /* RIGHT PREVIEW PANEL */
-        .preview-panel {
-            flex:2.5; min-width:520px;
-            background:linear-gradient(180deg,#eceff1,#e3e8f0);
-            border-radius:22px; overflow:hidden;
-            box-shadow:0 6px 20px rgba(0,0,0,0.1);
-            display:flex; flex-direction:column;
-        }
-        .preview-header {
-            background:linear-gradient(135deg,#1b4332,#2d6a4f);
-            padding:14px 20px; font-weight:700; color:white;
-            display:flex; align-items:center; justify-content:space-between;
-            flex-wrap:wrap; gap:10px;
-        }
-        .preview-header-title { font-size:0.88rem; }
-        .letter-count-badge {
-            background:rgba(255,255,255,0.25); padding:3px 14px;
-            border-radius:20px; font-size:0.72rem; border:1px solid rgba(255,255,255,0.4);
-        }
+    .sidebar a:hover, .sidebar .nav-item:hover {
+      background: var(--sidebar-hover);
+      border-left: 3px solid var(--primary-saffron);
+      transform: translateX(2px);
+      color: white;
+    }
 
-        /* SCROLL CONTAINER */
-        .letters-container {
-            height:72vh; overflow-y:scroll;
-            padding:20px; display:flex; flex-direction:column; gap:28px;
-            background:linear-gradient(180deg,#eceff1,#e3e8f0);
-        }
-        .letters-container::-webkit-scrollbar { width:10px; }
-        .letters-container::-webkit-scrollbar-track { background:#cfd8dc; border-radius:10px; }
-        .letters-container::-webkit-scrollbar-thumb {
-            background:linear-gradient(180deg,#40916c,#1b4332);
-            border-radius:10px; border:2px solid #cfd8dc;
-        }
+    /* submenu sharp style */
+    .submenu {
+      margin-left: 18px;
+      border-left: 2px solid #2c6e6e;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.32s ease-out, opacity 0.2s;
+      opacity: 0;
+    }
 
-        /* LETTER CARD */
-        .letter-card {
-            background:white; border-radius:10px;
-            box-shadow:0 8px 24px rgba(0,0,0,0.14);
-            overflow:hidden; flex-shrink:0;
-        }
-        .letter-card-header {
-            background:linear-gradient(135deg,#1b4332,#2d6a4f);
-            padding:11px 18px; font-weight:700; font-size:0.82rem;
-            display:flex; justify-content:space-between; align-items:center; color:white;
-        }
-        .letter-number-badge {
-            background:#ffc107; color:#1b4332;
-            width:28px; height:28px; border-radius:50%;
-            display:flex; align-items:center; justify-content:center;
-            font-size:0.75rem; font-weight:800; flex-shrink:0;
-        }
+    .submenu a {
+      font-size: 0.82rem;
+      padding: 8px 14px;
+      margin: 3px 0;
+      background: rgba(255,255,245,0.02);
+      border-radius: 10px;
+      font-weight: 450;
+    }
 
-        .dual-row { display:flex; gap:0; }
+    .submenu.open {
+      max-height: 800px;
+      opacity: 1;
+    }
 
-        .copy-col {
-            flex:1; min-width:260px;
-            padding:20px 22px;
-            font-family:'Times New Roman',Georgia,serif;
-            font-size:0.79rem; line-height:1.65; color:#000;
-            background:#ffffff;
-        }
-        .copy-col.office-copy  { border-right:3px dashed #555; }
-        .copy-col.recipient-copy { }
+    /* Right content — flush against sidebar */
+    .content-area {
+      flex: 1;
+      background: #f4f8fe;
+      overflow: hidden;
+      position: relative;
+    }
 
-        .copy-badge {
-            display:inline-block; padding:3px 14px; border-radius:4px;
-            font-size:0.62rem; font-weight:800; letter-spacing:0.5px;
-            margin-bottom:14px; border:1px solid #333;
-            background:#eee; color:#000;
-        }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #ffffff;
+      display: block;
+    }
 
-        .letter-body p { margin-bottom:9px; text-align:justify; }
-        .letter-to { margin-bottom:12px; }
+    /* Sidebar footer (dev credits) */
+    .sidebar-footer {
+      padding: 16px 12px 20px;
+      border-top: 1px solid rgba(230,126,34,0.25);
+      text-align: center;
+      font-size: 0.68rem;
+      color: #bcd0da;
+      font-weight: 400;
+    }
 
-        .subject-line {
-            background:#f0f0f0; padding:5px 10px;
-            border-left:4px solid #333; border-radius:3px;
-            margin-bottom:10px; font-weight:700; font-size:0.78rem;
-        }
-        
-        .due-amount-block {
-            background:#f9f2e0;
-            padding:8px 12px;
-            margin: 12px 0;
-            border-left: 4px solid #b8860b;
-            border-radius: 6px;
-            font-weight: 600;
-            color: #5a3e1b;
-        }
-        .due-amount-block strong {
-            font-size: 0.8rem;
-        }
+    /* ========= MODAL (Elegant Official) ========= */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(6px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
 
-        .dotted-line { border-top:2px dashed #555; margin:14px 0; }
+    .hidden {
+      display: none;
+    }
 
-        .signature-row {
-            display:flex; justify-content:space-between; align-items:flex-end;
-            margin-top:16px; font-size:0.77rem;
-        }
-        .signature-block { text-align:center; }
-        .signature-block strong {
-            display:block; border-top:1.5px solid #333;
-            padding-top:4px; margin-top:30px;
-        }
+    .modal-container {
+      width: 460px;
+      max-width: 92%;
+      background: #ffffff;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 25px 40px rgba(0, 0, 0, 0.3);
+      animation: fadeSlide 0.22s ease;
+    }
 
-        .card-footer {
-            background:linear-gradient(135deg,#f5f5f5,#eeeeee);
-            padding:10px 18px; display:flex;
-            justify-content:space-between; align-items:center;
-            border-top:2px solid #e0e0e0; flex-wrap:wrap; gap:8px;
-        }
-        .footer-info { font-size:0.68rem; color:#555; }
-        .copy-card-btn {
-            background:linear-gradient(135deg,#37474f,#546e7a);
-            border:none; color:white; padding:5px 16px; border-radius:20px;
-            font-size:0.68rem; cursor:pointer; font-weight:600; transition:all 0.2s;
-        }
-        .copy-card-btn:hover { background:linear-gradient(135deg,#263238,#37474f); }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: scale(0.97); }
+      to { opacity: 1; transform: scale(1); }
+    }
 
-        .letter-separator {
-            text-align:center; font-size:0.72rem; color:#78909c;
-            display:flex; align-items:center; gap:12px; flex-shrink:0;
-        }
-        .letter-separator::before,.letter-separator::after {
-            content:''; flex:1; height:1px;
-            background:linear-gradient(90deg,transparent,#90a4ae,transparent);
-        }
+    .modal-header {
+      background: #0f2c3b;
+      padding: 16px 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--primary-saffron);
+    }
 
-        .empty-state { text-align:center; padding:80px 30px; color:#546e7a; font-size:0.95rem; }
-        .empty-state i { font-size:3rem; color:#b0bec5; margin-bottom:16px; display:block; }
-        .loading-state { text-align:center; padding:60px; color:#1b4332; }
-        .error-state {
-            background:linear-gradient(135deg,#ffebee,#ffcdd2);
-            color:#b71c1c; padding:16px 20px; border-radius:16px;
-            text-align:center; margin:20px; border:1px solid #ef9a9a;
-        }
+    .modal-header h3 {
+      color: white;
+      font-weight: 600;
+      font-size: 1.2rem;
+    }
 
-        .toast {
-            position:fixed; bottom:28px; left:50%; transform:translateX(-50%);
-            background:linear-gradient(135deg,#1b4332,#2d6a4f);
-            color:#fffde7; padding:10px 28px; border-radius:40px;
-            font-size:0.82rem; font-weight:600; opacity:0; transition:0.25s;
-            pointer-events:none; z-index:9999;
-            box-shadow:0 6px 20px rgba(27,67,50,0.5); white-space:nowrap;
-        }
+    .close-modal {
+      font-size: 28px;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+      background: none;
+      border: none;
+      line-height: 1;
+    }
 
-        @media print {
-            body { background:white !important; padding:0 !important; margin:0 !important; }
-            .app-wrapper { box-shadow:none !important; border-radius:0 !important; background:white !important; }
-            .header,.status-bar,.selection-panel,.preview-header,
-            .card-footer,.letter-card-header,.letter-separator,
-            .action-buttons,.batch-buttons { display:none !important; }
-            .main-grid  { padding:0 !important; gap:0 !important; display:block !important; }
-            .preview-panel { background:white !important; box-shadow:none !important;
-                             border-radius:0 !important; min-width:100% !important; display:block !important; }
-            .letters-container {
-                height:auto !important; overflow:visible !important;
-                background:white !important; padding:6mm !important; gap:0 !important;
-                display:block !important;
-            }
-            .letter-card {
-                box-shadow:none !important; border:1px solid #888 !important;
-                border-radius:0 !important; margin:0 0 0 0 !important;
-                page-break-after:always !important; break-inside:avoid !important;
-                display:block !important;
-            }
-            .letter-card:last-child { page-break-after:auto !important; }
-            .dual-row { display:flex !important; }
-            .copy-col { background:white !important; color:black !important; }
-            .copy-col.office-copy { border-right:2px dashed #333 !important; }
-            .copy-badge { background:#ddd !important; color:black !important;
-                          border:1px solid #333 !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-            .subject-line { background:#eeeeee !important; border-left:4px solid #333 !important;
-                            -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-            .due-amount-block { background:#f9f2e0 !important; border-left:4px solid #333 !important;
-                                -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-            * { color:black !important; }
-        }
+    .tabs {
+      display: flex;
+      background: #f8fafd;
+      border-bottom: 1px solid #e2e8f0;
+    }
 
-        @media (max-width:860px) {
-            .dual-row { flex-direction:column; }
-            .copy-col.office-copy { border-right:none; border-bottom:3px dashed #555; }
-            .preview-panel { min-width:unset; }
-        }
-    </style>
+    .tabs button {
+      flex: 1;
+      padding: 14px 0;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      transition: 0.2s;
+      color: #2c3e50;
+    }
+
+    .tabs button.active {
+      color: var(--primary-saffron);
+      border-bottom: 3px solid var(--primary-saffron);
+      background: white;
+    }
+
+    .form-pane {
+      padding: 28px 28px 32px;
+      background: white;
+    }
+
+    .form-pane h2 {
+      text-align: center;
+      font-size: 1.55rem;
+      color: #1e4663;
+      margin-bottom: 22px;
+    }
+
+    .input-field {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .input-field input {
+      width: 100%;
+      padding: 12px 44px 12px 18px;
+      border: 1px solid #cbdde9;
+      border-radius: 32px;
+      font-size: 0.95rem;
+      background: #ffffff;
+      transition: 0.2s;
+      outline: none;
+      font-weight: 500;
+    }
+
+    .input-field input:focus {
+      border-color: var(--primary-saffron);
+      box-shadow: 0 0 0 3px rgba(230,126,34,0.2);
+    }
+
+    .toggle-pass {
+      position: absolute;
+      top: 50%;
+      right: 18px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 1.2rem;
+      color: #5f7f9e;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 12px;
+      background: var(--primary-saffron);
+      border: none;
+      border-radius: 40px;
+      color: white;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-top: 8px;
+    }
+
+    .btn-primary:hover {
+      background: #c75e12;
+    }
+
+    .link-text {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.85rem;
+      color: #3a6b8f;
+    }
+
+    .link-text a {
+      color: var(--primary-saffron);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .hidden-pane {
+      display: none;
+    }
+
+    /* no gaps, sharp responsive */
+    @media (max-width: 750px) {
+      .sidebar {
+        width: 260px;
+      }
+      .top-nav {
+        padding: 0 16px;
+        height: 64px;
+      }
+      .logo-text h1 {
+        font-size: 1.1rem;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .sidebar {
+        position: absolute;
+        transform: translateX(-100%);
+        transition: 0.2s;
+        z-index: 900;
+        height: calc(100% - 64px);
+        top: 64px;
+      }
+      .main-layout {
+        position: relative;
+      }
+      .content-area {
+        margin-left: 0;
+      }
+    }
+  </style>
 </head>
 <body>
-<div class="app-wrapper">
 
-    <div class="header">
-        <h1><i class="fas fa-landmark"></i> Sultannagar Gram Panchayat</h1>
-        <p>Lease Expiry Notice with Outstanding Dues — Office Copy + Recipient Copy</p>
-        <div class="header-badges">
-            <span class="header-badge">💰 Due Amount + Words</span>
-            <span class="header-badge">📋 Multi-Select</span>
-            <span class="header-badge">📜 Dual Copy</span>
-            <span class="header-badge">🖨️ B&W Print</span>
-            <span class="header-badge">📄 PDF All</span>
+  <!-- TOP NAVBAR — FLUSH, NO GAP -->
+  <div class="top-nav">
+    <div class="logo-area">
+      <div class="logo-icon">🏛️</div>
+      <div class="logo-text">
+        <h1>Sultannagar Gram Panchayat</h1>
+        <span>सुल्ताननगर ग्राम पंचायत | e-Governance</span>
+      </div>
+    </div>
+    <div class="clock" id="liveClock">--:--:--</div>
+    <button class="signin-btn" onclick="openAuthModal()">🔐 Sign In</button>
+  </div>
+
+  <!-- MAIN LAYOUT: SIDEBAR + CONTENT (no gap) -->
+  <div class="main-layout">
+    <!-- LEFT SIDEBAR — FLUSH with top-nav (no visual gap) -->
+    <div class="sidebar">
+      <div class="sidebar-menu">
+        <a onclick="loadPage('home')">🏠 Dashboard / Home</a>
+        
+        <!-- Basic Profile dropdown (sharp) -->
+        <div class="nav-item" onclick="toggleSubmenu('profileSub')">👥 Basic Profile ▾</div>
+        <div class="submenu" id="profileSub">
+          <a onclick="loadPage('allmember')">📋 Member Details</a>
+          <a onclick="loadPage('uposamity')">🤝 Upo-Samity Details</a>
         </div>
+        
+        <a onclick="loadPage('plan')">🗂️ Action Plan Entry</a>
+        
+        <!-- Letter Management (expanded certificates) -->
+        <div class="nav-item" onclick="toggleSubmenu('letterSub')">📑 Letter Management ▾</div>
+        <div class="submenu" id="letterSub">
+          <a onclick="loadPage('landlease')">📄 Leased Notice</a>
+          <a onclick="loadPage('residential')">🏠 Residential Letter</a>
+          <a onclick="loadPage('income')">💵 Income Certificate</a>
+          <a onclick="loadPage('sameperson')">👤 Same Person Certificate</a>
+          <a onclick="loadPage('tradenoc')">🏪 Trade NOC Certificate</a>
+          <a onclick="loadPage('electioncertificate')">🗳️ Election Certificate</a>
+          <a onclick="loadPage('deathcetrtificate')">⚰️ Death Certificate</a>
+          <a onclick="loadPage('charactercetrtificate')">⭐ Character Certificate</a>
+          <a onclick="loadPage('distancecertificate')">📏 Distance Certificate</a>
+          <a onclick="loadPage('heircertificate')">👨‍👩‍👧 Legal Heir Certificate</a>
+        </div>
+        
+        <!-- Additional official links -->
+        <a onclick="loadPage('rti')">📄 RTI / Public Grievance</a>
+        <a onclick="loadPage('finance')">💰 Finance & Budget</a>
+      </div>
+      <div class="sidebar-footer">
+        <span>🇮🇳 Sultannagar GP | e-Governance Suite</span><br>
+        <span style="font-size: 0.65rem;">Developed By Dipankar Pramanik | 📞 9064285025</span>
+      </div>
     </div>
 
-    <div class="status-bar">
-        <div id="statusBadge" class="status-chip"><i class="fas fa-spinner fa-pulse"></i> Loading data...</div>
-        <button id="refreshBtn" class="refresh-btn"><i class="fas fa-sync-alt"></i> Refresh Data</button>
+    <!-- RIGHT CONTENT (no margin, flush with sidebar) -->
+    <div class="content-area">
+      <iframe id="mainFrame" src="home.htm" title="GP Management Portal"></iframe>
     </div>
+  </div>
 
-    <div class="main-grid">
-        <div class="selection-panel">
-            <div class="panel-title"><i class="fas fa-users"></i> Select Lessees</div>
-            <input type="text" id="searchInput" class="search-box" placeholder="🔍 Search by name or village..." disabled>
-            <div id="memberList" class="checkbox-scroll">
-                <div class="loading-state"><i class="fas fa-spinner fa-pulse"></i> Loading lessees...</div>
-            </div>
-            <div class="action-buttons">
-                <button id="selectAllBtn" class="small-btn">✅ Select All</button>
-                <button id="clearAllBtn"  class="small-btn">❌ Clear All</button>
-                <button id="copyNamesBtn" class="small-btn">📋 Copy Names</button>
-            </div>
-            <div class="selected-info">
-                <strong style="color:#1b4332;font-size:0.82rem;">
-                    <i class="fas fa-check-circle" style="color:#40916c;"></i>
-                    Selected: <span id="selectedCount" style="color:#b71c1c;font-size:1rem;">0</span>
-                </strong>
-                <div id="selectedList" class="selected-names">— None —</div>
-            </div>
-            <div class="batch-buttons">
-                <button id="generateBtn" class="btn-generate"><i class="fas fa-eye"></i> Generate</button>
-                <button id="printBtn"    class="btn-print"   ><i class="fas fa-print"></i> Print</button>
-                <button id="batchPdfBtn" class="btn-pdf"     ><i class="fas fa-file-pdf"></i> PDF All</button>
-            </div>
+  <!-- LOGIN / SIGNUP MODAL -->
+  <div id="authModal" class="modal hidden">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>Sultannagar GP · Secure Access</h3>
+        <button class="close-modal" onclick="closeAuthModal()">&times;</button>
+      </div>
+      <div class="tabs">
+        <button id="modalLoginTab" class="active">Login</button>
+        <button id="modalSignupTab">Sign Up</button>
+      </div>
+      
+      <!-- Login Form -->
+      <div id="loginPane" class="form-pane">
+        <h2>Welcome Back</h2>
+        <div class="input-field">
+          <input type="text" id="loginUser" placeholder="Email / Mobile Number" autocomplete="username">
         </div>
-
-        <div class="preview-panel">
-            <div class="preview-header">
-                <span class="preview-header-title">
-                    <i class="fas fa-columns"></i> OFFICE COPY (left) | RECIPIENT COPY (right)
-                </span>
-                <span class="letter-count-badge" id="letterCountBadge">0 letters</span>
-            </div>
-            <div id="lettersContainer" class="letters-container">
-                <div class="empty-state">
-                    <i class="fas fa-file-alt"></i>
-                    Select lessees and click <strong>Generate</strong>
-                </div>
-            </div>
+        <div class="input-field">
+          <input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password">
+          <span class="toggle-pass" onclick="toggleFieldPassword('loginPassword', this)">👁️</span>
         </div>
+        <button class="btn-primary" id="doLoginBtn">Login to Portal</button>
+        <div class="link-text">
+          <a href="#" id="forgotLink">Forgot Password?</a> &nbsp;|&nbsp;
+          <a href="#" id="switchToSignup">Create Account</a>
+        </div>
+      </div>
+      
+      <!-- Signup Form -->
+      <div id="signupPane" class="form-pane hidden-pane">
+        <h2>Citizen Registration</h2>
+        <div class="input-field">
+          <input type="text" id="signupFullname" placeholder="Full Name (as per records)">
+        </div>
+        <div class="input-field">
+          <input type="text" id="signupEmailMobile" placeholder="Email or Mobile Number">
+        </div>
+        <div class="input-field">
+          <input type="password" id="signupPassword" placeholder="Create Password">
+          <span class="toggle-pass" onclick="toggleFieldPassword('signupPassword', this)">👁️</span>
+        </div>
+        <div class="input-field">
+          <input type="password" id="signupConfirmPass" placeholder="Confirm Password">
+          <span class="toggle-pass" onclick="toggleFieldPassword('signupConfirmPass', this)">👁️</span>
+        </div>
+        <button class="btn-primary" id="doSignupBtn">Register Account</button>
+        <div class="link-text">
+          Already have an account? <a href="#" id="switchToLogin">Sign In</a>
+        </div>
+      </div>
+      
+      <!-- Forgot Password -->
+      <div id="forgotPane" class="form-pane hidden-pane">
+        <h2>Reset Credentials</h2>
+        <div class="input-field">
+          <input type="text" id="resetIdentity" placeholder="Registered Email / Mobile">
+        </div>
+        <button class="btn-primary" id="resetRequestBtn">Send Recovery Link</button>
+        <div class="link-text">
+          <a href="#" id="backToLoginLink">← Back to Login</a>
+        </div>
+      </div>
     </div>
-</div>
-<div id="toastMsg" class="toast">✅ Done</div>
+  </div>
 
-<script>
-    /* =========================================================
-       CONFIG
-    ========================================================= */
-    const scriptURL = "https://script.google.com/macros/s/AKfycbzP_AduIjFx9JNsDBdxbSpGz2LVHYGgI3km8p0s1BpKhyKDEEN9kT9vsFD-Kw4u9Iys/exec";
-
-    let allLessees      = [];
-    let selectedLessees = [];
-    let filteredLessees = [];
-    let isLoading       = false;
-
-    const statusBadge       = document.getElementById('statusBadge');
-    const refreshBtn        = document.getElementById('refreshBtn');
-    const memberListDiv     = document.getElementById('memberList');
-    const searchInput       = document.getElementById('searchInput');
-    const selectAllBtn      = document.getElementById('selectAllBtn');
-    const clearAllBtn       = document.getElementById('clearAllBtn');
-    const copyNamesBtn      = document.getElementById('copyNamesBtn');
-    const selectedCountSpan = document.getElementById('selectedCount');
-    const selectedListDiv   = document.getElementById('selectedList');
-    const generateBtn       = document.getElementById('generateBtn');
-    const printBtn          = document.getElementById('printBtn');
-    const batchPdfBtn       = document.getElementById('batchPdfBtn');
-    const lettersContainer  = document.getElementById('lettersContainer');
-    const letterCountBadge  = document.getElementById('letterCountBadge');
-
-    function setControlsEnabled(e) {
-        [searchInput,selectAllBtn,clearAllBtn,copyNamesBtn,generateBtn,batchPdfBtn,printBtn]
-            .forEach(el => el.disabled = !e);
+  <script>
+    // ---------- PAGE LOADER (sharp navigation) ----------
+    function loadPage(pageName) {
+      const frame = document.getElementById("mainFrame");
+      if (frame) {
+        // handle potential 404 gracefully
+        frame.onerror = () => {
+          frame.srcdoc = `<html style="background:#f5f9ff; font-family:'Segoe UI',sans-serif; display:flex; align-items:center; justify-content:center;"><div style="text-align:center; padding:32px;"><h3 style="color:#1e4663;">📄 ${pageName.toUpperCase()} Module</h3><p style="color:#2c5a7a;">Official content will be published soon by Sultannagar GP.</p><hr style="width:80px;"><small>e-Governance Portal</small></div></html>`;
+        };
+        frame.src = pageName + ".htm";
+      }
     }
 
-    function showToast(msg, dur=2500) {
-        const t = document.getElementById('toastMsg');
-        t.textContent = msg; t.style.opacity='1';
-        setTimeout(()=>t.style.opacity='0', dur);
+    // Toggle submenu (clean)
+    function toggleSubmenu(subId) {
+      const el = document.getElementById(subId);
+      if (el) el.classList.toggle("open");
     }
 
-    function esc(s) {
-        if (!s) return '';
-        return s.replace(/[&<>]/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
+    // Real-time clock
+    function updateOfficialClock() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const s = String(now.getSeconds()).padStart(2, '0');
+      const clockElem = document.getElementById("liveClock");
+      if (clockElem) clockElem.innerText = `${h}:${m}:${s}`;
+    }
+    setInterval(updateOfficialClock, 1000);
+    updateOfficialClock();
+
+    // ---------- MODAL LOGIC ----------
+    const authModal = document.getElementById("authModal");
+    const loginPane = document.getElementById("loginPane");
+    const signupPane = document.getElementById("signupPane");
+    const forgotPane = document.getElementById("forgotPane");
+    const loginTabBtn = document.getElementById("modalLoginTab");
+    const signupTabBtn = document.getElementById("modalSignupTab");
+
+    function openAuthModal() {
+      authModal.classList.remove("hidden");
+      showPane('login');
+      loginTabBtn.classList.add("active");
+      signupTabBtn.classList.remove("active");
+    }
+    function closeAuthModal() {
+      authModal.classList.add("hidden");
+      document.getElementById("loginUser").value = "";
+      document.getElementById("loginPassword").value = "";
+      if(document.getElementById("signupFullname")) document.getElementById("signupFullname").value = "";
+      if(document.getElementById("signupEmailMobile")) document.getElementById("signupEmailMobile").value = "";
+      document.getElementById("signupPassword").value = "";
+      document.getElementById("signupConfirmPass").value = "";
+      const resetId = document.getElementById("resetIdentity");
+      if(resetId) resetId.value = "";
     }
 
-    function getTodaysDate() {
-        const d=new Date();
-        return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
+    function showPane(paneName) {
+      loginPane.classList.add("hidden-pane");
+      signupPane.classList.add("hidden-pane");
+      forgotPane.classList.add("hidden-pane");
+      if (paneName === 'login') loginPane.classList.remove("hidden-pane");
+      else if (paneName === 'signup') signupPane.classList.remove("hidden-pane");
+      else if (paneName === 'forgot') forgotPane.classList.remove("hidden-pane");
     }
 
-    // Convert number to Indian Rupees words (simple but professional)
-    function numberToWordsIndian(amount) {
-        if (amount === undefined || amount === null || isNaN(amount) || amount === 0) return "Zero Rupees Only";
-        const num = parseFloat(amount);
-        const rupees = Math.floor(num);
-        const paise = Math.round((num - rupees) * 100);
-        
-        const ones = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
-        const tens = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
-        
-        function convertLessThanThousand(n) {
-            if (n === 0) return "";
-            if (n < 20) return ones[n] + " ";
-            if (n < 100) return tens[Math.floor(n/10)] + " " + (n%10 !== 0 ? ones[n%10] : "") + " ";
-            return ones[Math.floor(n/100)] + " Hundred " + (n%100 !== 0 ? convertLessThanThousand(n%100) : "");
+    loginTabBtn.onclick = () => {
+      loginTabBtn.classList.add("active");
+      signupTabBtn.classList.remove("active");
+      showPane('login');
+    };
+    signupTabBtn.onclick = () => {
+      signupTabBtn.classList.add("active");
+      loginTabBtn.classList.remove("active");
+      showPane('signup');
+    };
+    
+    const switchToSignup = document.getElementById("switchToSignup");
+    const switchToLogin = document.getElementById("switchToLogin");
+    const forgotLink = document.getElementById("forgotLink");
+    const backToLoginLink = document.getElementById("backToLoginLink");
+    if(switchToSignup) switchToSignup.onclick = (e) => { e.preventDefault(); signupTabBtn.click(); };
+    if(switchToLogin) switchToLogin.onclick = (e) => { e.preventDefault(); loginTabBtn.click(); };
+    if(forgotLink) forgotLink.onclick = (e) => { e.preventDefault(); showPane('forgot'); loginTabBtn.classList.remove("active"); signupTabBtn.classList.remove("active"); };
+    if(backToLoginLink) backToLoginLink.onclick = (e) => { e.preventDefault(); loginTabBtn.click(); };
+    
+    const resetRequestBtn = document.getElementById("resetRequestBtn");
+    if(resetRequestBtn) {
+      resetRequestBtn.onclick = () => {
+        const identity = document.getElementById("resetIdentity")?.value.trim();
+        if(!identity) alert("Please enter registered email or mobile.");
+        else alert(`🔐 Recovery link sent to ${identity} (demo). Please check inbox.`);
+      };
+    }
+    
+    // Login simulation (official)
+    const doLogin = document.getElementById("doLoginBtn");
+    if(doLogin) {
+      doLogin.onclick = () => {
+        const user = document.getElementById("loginUser").value.trim();
+        const pwd = document.getElementById("loginPassword").value;
+        if(user === "" || pwd === "") {
+          alert("Please enter credentials (demo: any non-empty)");
+          return;
         }
-        
-        function convertToWords(n) {
-            if (n === 0) return "";
-            let crore = Math.floor(n / 10000000);
-            let lakh = Math.floor((n % 10000000) / 100000);
-            let thousand = Math.floor((n % 100000) / 1000);
-            let remainder = n % 1000;
-            let result = "";
-            if (crore > 0) result += convertLessThanThousand(crore) + "Crore ";
-            if (lakh > 0) result += convertLessThanThousand(lakh) + "Lakh ";
-            if (thousand > 0) result += convertLessThanThousand(thousand) + "Thousand ";
-            if (remainder > 0) result += convertLessThanThousand(remainder);
-            return result.trim();
-        }
-        
-        let words = convertToWords(rupees);
-        if (rupees > 0) words += " Rupees";
-        if (paise > 0) {
-            words += " and " + convertLessThanThousand(paise).trim() + " Paise";
-        }
-        return (words + " Only").replace(/\s+/g, ' ').trim();
+        alert(`✅ Welcome to Sultannagar Gram Panchayat Portal!\nSigned in as: ${user}`);
+        closeAuthModal();
+        const signBtn = document.querySelector(".signin-btn");
+        if(signBtn) signBtn.innerText = "👤 Logged In";
+      };
     }
-
-    function getDueAmount(record) {
-        let raw = record.DUE_AMOUNT || record.DueAmount || record.DUE || record.Amount || "0";
-        if (typeof raw === 'string') raw = raw.replace(/[^0-9.-]/g, '');
-        let amount = parseFloat(raw);
-        if (isNaN(amount)) amount = 0;
-        return amount;
+    
+    const doSignup = document.getElementById("doSignupBtn");
+    if(doSignup) {
+      doSignup.onclick = () => {
+        const fullname = document.getElementById("signupFullname")?.value.trim();
+        const contact = document.getElementById("signupEmailMobile")?.value.trim();
+        const pass = document.getElementById("signupPassword").value;
+        const confirm = document.getElementById("signupConfirmPass").value;
+        if(!fullname || !contact) { alert("Full name and email/mobile required."); return; }
+        if(pass !== confirm) { alert("Passwords do not match."); return; }
+        if(pass.length < 4) { alert("Password must be at least 4 characters."); return; }
+        alert(`🎉 Registration successful! Welcome ${fullname}. You can now login.`);
+        loginTabBtn.click();
+        document.getElementById("loginUser").value = contact;
+        document.getElementById("loginPassword").value = "";
+      };
     }
-
-    function buildLetterBody(record, idx) {
-        const name     = record.NAME     || record.Name     || '[Name]';
-        const father   = record['C/O']   || record.C_O      || record.Father   || '[Father]';
-        const village  = record.Village  || record.VILLAGE  || '[Village]';
-        const mouja    = record.MOUJA    || record.Mouja    || 'Monoharpur';
-        const dag      = record.PLOT     || record.Dag      || record.DAG      || '';
-        const area     = record.AREA     || record.Area     || '16';
-        const po       = record.PO       || 'Sultannagar';
-        const ps       = record.PS       || 'Harishchandrapur';
-        const district = record.District || 'Malda';
-        const pin      = record.Pin      || '732140';
-        const jl       = record.JL       || '';
-        const today    = getTodaysDate();
-        const sl       = record.SL       || (idx+1);
-        const dueAmountNum = getDueAmount(record);
-        const dueAmountWords = numberToWordsIndian(dueAmountNum);
-        const dueFormatted = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 2 }).format(dueAmountNum);
-        
-        function oneCopy(isOffice) {
-            const label = isOffice ? '■ OFFICE COPY — Panchayat Record' : '■ RECIPIENT COPY — To Be Issued';
-            const dueBlock = (dueAmountNum > 0) ? `
-                <div class="due-amount-block">
-                    <strong><i class="fas fa-rupee-sign"></i> Outstanding Lease Dues:</strong> ${dueFormatted}<br>
-                    <strong>(In Words):</strong> ${dueAmountWords}
-                </div>
-            ` : (dueAmountNum === 0 ? `
-                <div class="due-amount-block" style="background:#e8f0fe;">
-                    <strong><i class="fas fa-check-circle"></i> No Dues Pending:</strong> Nil Amount.
-                </div>
-            ` : ``);
-            
-            return `
-            <div class="copy-col ${isOffice ? 'office-copy' : 'recipient-copy'}">
-                <div class="copy-badge">${label}</div>
-                <div class="letter-body">
-                    <div class="letter-to">
-                        <strong>To,</strong><br>
-                        ${esc(name)}<br>
-                        S/o – ${esc(father)}<br>
-                        Vill – ${esc(village)}<br>
-                        P.O – ${esc(po)}, P.S – ${esc(ps)}<br>
-                        Dist – ${esc(district)}, Pin – ${esc(pin)}
-                    </div>
-                    <div class="subject-line">
-                        <strong>Sub:</strong> Expiry of Lease of Gram Panchayat Land & Clearance of Outstanding Dues
-                    </div>
-                    <p>This is to inform you that the Gram Panchayat land situated at
-                    <strong>Mouja – ${esc(mouja)}</strong>, J.L. No. – <strong>${esc(jl)}</strong>,
-                    Dag No. – <strong>${esc(dag)}</strong>, measuring approximately
-                    <strong>${esc(area)} decimals</strong>, which was leased to you for
-                    cultivation purpose, has already <strong>expired</strong>.</p>
-                    ${dueBlock}
-                    <p>You are hereby <u>strictly directed</u> to stop all agricultural activities
-                    on the said land with <strong>immediate effect</strong>. The land will be
-                    measured and processed for fresh lease as per Government rules. Any pending lease dues
-                    as mentioned above must be cleared at the earliest.</p>
-                    <p>For further clarification, you are instructed to visit the Gram Panchayat
-                    Office during office hours within <strong>7 (seven) days</strong> from receipt
-                    of this notice.</p>
-                    <p><strong>Failing which, necessary action will be taken as per law including recovery proceedings.</strong></p>
-                    <div class="dotted-line"></div>
-                    <div class="signature-row">
-                        <span><strong>Date:</strong> ${today}</span>
-                        <div class="signature-block">
-                            <strong>Prodhan<br>Sultannagar Gram Panchayat</strong>
-                        </div>
-                    </div>
-                </div>
-            </div>`;
-        }
-
-        return `
-        <div class="letter-card" id="lcard-${idx}">
-            <div class="letter-card-header">
-                <div style="display:flex;align-items:center;gap:10px;">
-                    <div class="letter-number-badge">${idx+1}</div>
-                    <span><i class="fas fa-user"></i> ${esc(name)}${record.Village?' — '+esc(record.Village):''}</span>
-                </div>
-                <span style="font-size:0.72rem;opacity:0.85;">
-                    SL#${sl} &nbsp;|&nbsp; Dag: ${esc(dag)} &nbsp;|&nbsp; ${esc(area)} dec &nbsp;|&nbsp; Due: ${dueFormatted}
-                </span>
-            </div>
-            <div class="dual-row">
-                ${oneCopy(true)}
-                ${oneCopy(false)}
-            </div>
-            <div class="card-footer">
-                <span class="footer-info">
-                    <i class="fas fa-calendar-alt"></i> ${today}
-                    &nbsp;|&nbsp;
-                    <i class="fas fa-map-marker-alt"></i> ${esc(mouja)}
-                    &nbsp;|&nbsp; <i class="fas fa-rupee-sign"></i> Due: ${dueFormatted}
-                </span>
-                <button class="copy-card-btn" data-idx="${idx}">📋 Copy Text</button>
-            </div>
-        </div>`;
-    }
-
-    function renderMemberList() {
-        const term = searchInput.value.toLowerCase();
-        filteredLessees = allLessees.filter(m =>
-            (m.NAME    && m.NAME.toLowerCase().includes(term)) ||
-            (m.Village && m.Village.toLowerCase().includes(term))
-        );
-        if (!filteredLessees.length) {
-            memberListDiv.innerHTML = '<div style="padding:20px;text-align:center;color:#7a8a9f;">No lessees found</div>';
-            return;
-        }
-        memberListDiv.innerHTML = filteredLessees.map(lessee => {
-            const gi   = allLessees.indexOf(lessee);
-            const isSel = selectedLessees.includes(lessee);
-            const dueAmt = getDueAmount(lessee);
-            const dueText = dueAmt > 0 ? `💰 ₹${dueAmt.toFixed(2)}` : '';
-            const label = `${lessee.NAME||'Unnamed'}${lessee.Village?' ('+lessee.Village+')':''} ${dueText}`;
-            return `
-            <div class="member-item ${isSel?'selected-row':''}">
-                <input type="checkbox" class="member-checkbox" data-idx="${gi}" ${isSel?'checked':''}>
-                <label>${esc(label)}</label>
-            </div>`;
-        }).join('');
-        document.querySelectorAll('.member-checkbox').forEach(chk => {
-            chk.addEventListener('change', () => {
-                const lessee = allLessees[+chk.dataset.idx];
-                if (chk.checked) {
-                    if (!selectedLessees.includes(lessee)) selectedLessees.push(lessee);
-                } else {
-                    selectedLessees = selectedLessees.filter(s=>s!==lessee);
-                }
-                chk.closest('.member-item').classList.toggle('selected-row', chk.checked);
-                updateSelectedUI();
-            });
-        });
-        updateSelectedUI();
-    }
-
-    function updateSelectedUI() {
-        selectedCountSpan.textContent = selectedLessees.length;
-        selectedListDiv.innerHTML = selectedLessees.length === 0
-            ? '— None —'
-            : selectedLessees.map((l,i) => {
-                const due = getDueAmount(l);
-                return `<div>${i+1}. ${esc(l.NAME||'Unknown')}${l.Village?' ('+esc(l.Village)+')':''} ${due>0?` (Due: ₹${due.toFixed(2)})`:''}</div>`;
-              }).join('');
-        document.querySelectorAll('.member-checkbox').forEach(chk => {
-            const lessee = allLessees[+chk.dataset.idx];
-            if (lessee) chk.checked = selectedLessees.includes(lessee);
-        });
-    }
-
-    function selectAllFiltered() { filteredLessees.forEach(l => { if (!selectedLessees.includes(l)) selectedLessees.push(l); }); renderMemberList(); }
-    function clearAll() { selectedLessees=[]; renderMemberList(); }
-    function copyNames() {
-        if (!selectedLessees.length) { showToast('No lessees selected',1500); return; }
-        navigator.clipboard.writeText(selectedLessees.map(l=>l.NAME).join(', '));
-        showToast('✅ Names copied!',1500);
-    }
-
-    function generatePreview() {
-        if (!selectedLessees.length) {
-            lettersContainer.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-circle" style="color:#ef9a9a;"></i>No lessee selected.</div>`;
-            showToast('⚠️ Select at least one lessee',2000);
-            return;
-        }
-        let html = '';
-        selectedLessees.forEach((lessee, idx) => {
-            if (idx > 0) html += `<div class="letter-separator">— Letter ${idx} ↑ &nbsp; Letter ${idx+1} ↓ —</div>`;
-            html += buildLetterBody(lessee, idx);
-        });
-        lettersContainer.innerHTML = html;
-        letterCountBadge.textContent = `${selectedLessees.length} letter${selectedLessees.length>1?'s':''}`;
-        lettersContainer.scrollTop = 0;
-        document.querySelectorAll('.copy-card-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const card = document.getElementById(`lcard-${btn.dataset.idx}`);
-                if (card) {
-                    const cl = card.cloneNode(true);
-                    cl.querySelector('.card-footer')?.remove();
-                    navigator.clipboard.writeText(cl.innerText);
-                    showToast('📋 Copied!',1500);
-                }
-            });
-        });
-        showToast(`✅ Generated ${selectedLessees.length} letter(s) with due details`,2000);
-    }
-
-    function printLetters() {
-        if (!selectedLessees.length) { showToast('⚠️ Generate letters first',2000); return; }
-        if (!lettersContainer.querySelector('.letter-card')) generatePreview();
-        setTimeout(() => window.print(), 350);
-    }
-
-    async function batchDownloadPDFs() {
-        if (!selectedLessees.length) { showToast('No lessees selected',2000); return; }
-        showToast(`⏳ Building PDF for ${selectedLessees.length} letter(s)...`, 4000);
-        batchPdfBtn.disabled = true;
-        try {
-            const wrapper = document.createElement('div');
-            wrapper.style.cssText = 'background:white; font-family: "Times New Roman", Georgia, serif;';
-            selectedLessees.forEach((lessee, idx) => {
-                const pageDiv = document.createElement('div');
-                pageDiv.style.cssText = 'page-break-after:always; break-after:page; padding:10mm 8mm; background:white; box-sizing:border-box; width:100%;';
-                const dueAmountNum = getDueAmount(lessee);
-                const dueFormatted = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 2 }).format(dueAmountNum);
-                const dueWords = numberToWordsIndian(dueAmountNum);
-                const dueBlockPDF = (dueAmountNum > 0) ? `<div style="background:#f9f2e0; padding:8px 12px; margin:12px 0; border-left:4px solid #b8860b; font-weight:600;">💰 Outstanding Dues: ${dueFormatted}<br>📝 In Words: ${dueWords}</div>` : (dueAmountNum===0 ? `<div style="background:#e8f0fe; padding:8px 12px; margin:12px 0; border-left:4px solid #2c6e2c;">✅ No Dues Pending</div>` : ``);
-                pageDiv.innerHTML = `
-                    <div style="background:#222;color:white;padding:8px 14px;font-size:11px;font-weight:bold;margin-bottom:0;">Sultannagar Gram Panchayat — Lease Expiry Notice with Dues &nbsp;|&nbsp; SL#${lessee.SL||idx+1}</div>
-                    <div style="display:flex;border:1.5px solid #333;">
-                        ${(function(){ 
-                            function col(isOffice){
-                                const lbl = isOffice ? '■ OFFICE COPY' : '■ RECIPIENT COPY';
-                                return `<div style="flex:1;padding:14px 18px;font-size:11.5px;line-height:1.65;${isOffice?'border-right:2px dashed #444;':''}">
-                                    <div style="display:inline-block;background:#ddd;padding:2px 12px;border:1px solid #333;margin-bottom:12px;">${lbl}</div>
-                                    <div><p><strong>To,</strong><br>${esc(lessee.NAME)}<br>S/o ${esc(lessee['C/O']||lessee.Father)}<br>Vill ${esc(lessee.Village)}<br>PO Sultannagar, PS Harishchandrapur<br>Dist Malda</p>
-                                    <div style="background:#eee;padding:5px;border-left:4px solid #333;">Sub: Expiry of Lease & Outstanding Dues</div>
-                                    <p>Lease of Mouja ${esc(lessee.MOUJA||'Monoharpur')}, Dag ${esc(lessee.PLOT||'')}, ${esc(lessee.AREA||'')} decimals expired.</p>
-                                    ${dueBlockPDF}
-                                    <p>You are directed to stop cultivation and clear dues within 7 days.</p>
-                                    <div style="border-top:2px dashed #555;margin:12px 0;"></div>
-                                    <div style="display:flex;justify-content:space-between;"><span>Date: ${getTodaysDate()}</span><div style="text-align:center;"><div style="border-top:1.5px solid #333;padding-top:3px;"><strong>Prodhan</strong></div></div></div>
-                                </div></div>`;
-                            }
-                            return col(true)+col(false);
-                        })()}
-                    </div>
-                    <div style="text-align:center;font-size:9px;color:#444;border-top:1px solid #bbb;padding-top:4px;margin-top:4px;">Generated on ${getTodaysDate()} — Sultannagar Gram Panchayat</div>
-                `;
-                wrapper.appendChild(pageDiv);
-            });
-            if (wrapper.lastElementChild) wrapper.lastElementChild.style.pageBreakAfter = 'auto';
-            const filename = `LeaseNotices_Dues_${getTodaysDate().replace(/\//g,'-')}.pdf`;
-            const opt = { margin: [0,0,0,0], filename: filename, image: { type:'jpeg', quality:1.0 }, html2canvas:{ scale:2, letterRendering:true }, jsPDF:{ unit:'mm', format:'a4', orientation:'landscape' }, pagebreak:{ mode:['css','legacy'] } };
-            await html2pdf().set(opt).from(wrapper).save();
-            showToast(`✅ PDF with dues saved (${selectedLessees.length} letters)`, 3500);
-        } catch(err) { showToast('❌ PDF error: '+err.message, 4000); } finally { batchPdfBtn.disabled = false; }
-    }
-
-    async function fetchDataFromWebApp() {
-        if (isLoading) return;
-        isLoading = true;
-        setControlsEnabled(false);
-        statusBadge.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Fetching...';
-        memberListDiv.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-pulse"></i> Loading...</div>';
-        try {
-            const res = await fetch(scriptURL+'?_cb='+Date.now(), { method:'GET', headers:{ 'Accept':'application/json' } });
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            const result = await res.json();
-            if (!result.success) throw new Error(result.error||'Unknown error');
-            const records = result.data || [];
-            if (!records.length) throw new Error('No data found');
-            allLessees = records.filter(r=>r.NAME && r.NAME.trim()!=='');
-            if (!allLessees.length) throw new Error('No valid NAME field');
-            selectedLessees=[];
-            statusBadge.innerHTML=`<i class="fas fa-check-circle"></i> ${allLessees.length} lessees (with dues)`;
-            statusBadge.style.background='#c8e6c9';
-            renderMemberList();
-            lettersContainer.innerHTML=`<div class="empty-state"><i class="fas fa-mouse-pointer"></i><br>✅ ${allLessees.length} lessees loaded<br>Due amounts are auto-detected from sheet.<br>Select and generate.</div>`;
-            letterCountBadge.textContent='0 letters';
-            showToast(`✅ ${allLessees.length} lessees loaded, due amount ready`,2200);
-            setControlsEnabled(true);
-        } catch(err) {
-            statusBadge.innerHTML='❌ Failed'; statusBadge.style.background='#ffcdd2';
-            memberListDiv.innerHTML=`<div class="error-state"><strong>${err.message}</strong><br><small>Check Web App URL or sheet columns (DUE_AMOUNT).</small></div>`;
-            showToast('❌ '+err.message,4000);
-        } finally { isLoading=false; }
-    }
-
-    refreshBtn.addEventListener('click', fetchDataFromWebApp);
-    selectAllBtn.addEventListener('click', selectAllFiltered);
-    clearAllBtn.addEventListener('click', clearAll);
-    copyNamesBtn.addEventListener('click', copyNames);
-    generateBtn.addEventListener('click', generatePreview);
-    printBtn.addEventListener('click', printLetters);
-    batchPdfBtn.addEventListener('click', batchDownloadPDFs);
-    searchInput.addEventListener('input', renderMemberList);
-    fetchDataFromWebApp();
-</script>
+    
+    window.toggleFieldPassword = function(inputId, iconSpan) {
+      const inputField = document.getElementById(inputId);
+      if(!inputField) return;
+      if(inputField.type === "password") {
+        inputField.type = "text";
+        iconSpan.innerText = "🙈";
+      } else {
+        inputField.type = "password";
+        iconSpan.innerText = "👁️";
+      }
+    };
+    
+    authModal.addEventListener('click', (e) => {
+      if(e.target === authModal) closeAuthModal();
+    });
+    
+    // make sure no gap, sharp text menus - already applied
+    // fallback for home iframe placeholder
+    window.addEventListener('load', () => {
+      const frame = document.getElementById("mainFrame");
+      if(frame && frame.src.includes("home.htm")) {
+        // if home.htm not present, error handling already set in loadPage, but we predefine:
+        frame.onerror = () => {
+          frame.srcdoc = `<html style="background:#f8fafc; font-family:sans-serif; display:flex; align-items:center; justify-content:center;"><div style="text-align:center;"><h2 style="color:#1e4663;">🏛️ Sultannagar Gram Panchayat</h2><p>Welcome to the official e-governance portal.</p><p style="font-size:14px;">Please select a module from the sidebar.</p><hr><small>Digital India Initiative</small></div></html>`;
+        };
+      }
+    });
+    
+    // Override loadPage to maintain error resilience but keep original signature
+    window.loadPage = function(page) {
+      const frame = document.getElementById("mainFrame");
+      if(frame) {
+        frame.onerror = () => {
+          frame.srcdoc = `<html style="background:#f5f9ff; font-family:'Segoe UI'; display:flex; align-items:center; justify-content:center;"><div style="text-align:center; padding:24px;"><h3 style="color:#1e4663;">📄 ${page.toUpperCase()} Section</h3><p>Content will be updated shortly by GP authorities.</p><span style="font-size:12px;">Sultannagar Panchayat Office</span></div></html>`;
+        };
+        frame.src = page + ".htm";
+      }
+    };
+    console.log("Sultannagar GP — flush layout, sharp menus, no gaps, official theme.");
+  </script>
 </body>
 </html>
