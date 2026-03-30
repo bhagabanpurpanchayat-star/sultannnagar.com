@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>সুলতাননগর গ্রাম পঞ্চায়েত - জনগণনা তথ্য ২০১১ | Census Data</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;500;600;700&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- DataTables CSS for enhanced sorting & searching -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', 'Noto Serif Bengali', system-ui, sans-serif;
+      background: #f4f9f4;
+      color: #1e2a1e;
+      line-height: 1.5;
+    }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    /* Header & Nav */
+    .top-bar {
+      background: #0f3b2c;
+      color: #fef9e6;
+      padding: 10px 0;
+      font-size: 0.85rem;
+    }
+    .top-bar .container {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .contact-snip a {
+      color: #fef9e6;
+      text-decoration: none;
+      margin-right: 20px;
+    }
+    .gp-lang {
+      background: #2a5f4b;
+      padding: 4px 12px;
+      border-radius: 40px;
+      font-size: 0.8rem;
+    }
+    .navbar {
+      background: white;
+      box-shadow: 0 8px 20px rgba(0, 32, 0, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      padding: 12px 0;
+    }
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo-icon {
+      background: #1b5e3f;
+      width: 48px;
+      height: 48px;
+      border-radius: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: #ffefc0;
+    }
+    .logo-text h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #1e4620;
+    }
+    .logo-text p {
+      font-size: 0.7rem;
+      color: #4a6741;
+    }
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 600;
+      color: #2c4b2c;
+      transition: 0.2s;
+      padding: 6px 0;
+      border-bottom: 2px solid transparent;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      border-bottom-color: #2b7a4b;
+      color: #1f5437;
+    }
+    /* Hero Census Section */
+    .census-hero {
+      background: linear-gradient(105deg, #e2f0e0 0%, #cbe5cd 100%);
+      padding: 40px 0;
+      border-bottom: 1px solid #bdd8b5;
+    }
+    .census-hero h2 {
+      font-size: 2rem;
+      color: #1a4d2a;
+      margin-bottom: 12px;
+    }
+    .census-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      margin-top: 24px;
+      justify-content: space-between;
+    }
+    .stat-card {
+      background: white;
+      border-radius: 28px;
+      padding: 20px 24px;
+      flex: 1;
+      min-width: 160px;
+      text-align: center;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+      border-left: 5px solid #2c7840;
+    }
+    .stat-card h3 {
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: #1f5437;
+    }
+    /* Table Section */
+    .census-table-section {
+      padding: 50px 0;
+      background: #ffffff;
+    }
+    .section-title {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1e562e;
+      margin-bottom: 16px;
+    }
+    .title-underline {
+      width: 80px;
+      height: 4px;
+      background: #4caf7f;
+      margin: 8px auto 40px auto;
+      border-radius: 4px;
+    }
+    .table-wrapper {
+      overflow-x: auto;
+      border-radius: 24px;
+      background: white;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      padding: 4px 0;
+    }
+    #censusTable {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      font-family: 'Inter', 'Noto Serif Bengali', monospace;
+    }
+    #censusTable th {
+      background: #1e5631;
+      color: white;
+      padding: 14px 6px;
+      font-weight: 600;
+      text-align: center;
+      border: 1px solid #367a4a;
+      white-space: nowrap;
+    }
+    #censusTable td {
+      border: 1px solid #d0e2cc;
+      padding: 10px 6px;
+      text-align: center;
+      background-color: #fefef9;
+    }
+    #censusTable tr:hover td {
+      background-color: #f0f7eb;
+    }
+    .footer {
+      background: #102b1f;
+      color: #e4f0de;
+      padding: 40px 0 20px;
+      margin-top: 40px;
+    }
+    .footer-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+    .footer-col a {
+      color: #d8efcf;
+      text-decoration: none;
+    }
+    .copyright {
+      text-align: center;
+      border-top: 1px solid #2c5440;
+      padding-top: 24px;
+      font-size: 0.8rem;
+    }
+    @media (max-width: 850px) {
+      .nav-container {
+        flex-direction: column;
+        gap: 15px;
+      }
+      .nav-links {
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .stat-card h3 {
+        font-size: 1.4rem;
+      }
+      #censusTable th, #censusTable td {
+        font-size: 0.7rem;
+        padding: 6px 4px;
+      }
+    }
+    .dataTables_filter input {
+      border-radius: 30px;
+      padding: 6px 12px;
+      border: 1px solid #c0dbc0;
+      margin-left: 8px;
+    }
+    .dataTables_length select {
+      border-radius: 20px;
+      padding: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="top-bar">
+  <div class="container">
+    <div class="contact-snip">
+      <a href="mailto:mgnregs.sn@gmail.com"><i class="fas fa-envelope"></i> mgnregs.sn@gmail.com</a>
+      <span><i class="fas fa-map-marker-alt"></i> সুলতাননগর, বড়দুয়ারী, হরিশ্চন্দ্রপুর, মালদা</span>
+    </div>
+    <div class="gp-lang"><i class="fas fa-language"></i> বাংলা | জনগণনা ২০১১</div>
+  </div>
+</div>
+
+<!-- Navigation -->
+<nav class="navbar">
+  <div class="container nav-container">
+    <div class="logo-area">
+      <div class="logo-icon"><i class="fas fa-chart-bar"></i></div>
+      <div class="logo-text">
+        <h1>সুলতাননগর গ্রাম পঞ্চায়েত</h1>
+        <p>জনগণনা তথ্য ভাণ্ডার · ২০১১</p>
+      </div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#" class="active">জনগণনা ২০১১</a></li>
+      <li><a href="#">মৌজাভিত্তিক তথ্য</a></li>
+      <li><a href="#">গ্রাম পরিসংখ্যান</a></li>
+      <li><a href="#">যোগাযোগ</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Census Hero with key stats -->
+<section class="census-hero">
+  <div class="container">
+    <h2><i class="fas fa-database"></i> জনগণনা ২০১১ — সুলতাননগর গ্রাম পঞ্চায়েত</h2>
+    <p style="font-size: 1.1rem;">মৌজা ভিত্তিক পরিবার, জনসংখ্যা, তফসিলি জাতি (SC), তফসিলি উপজাতি (ST) ও সাক্ষরতার বিস্তারিত তথ্য। মোট ১৬টি মৌজার সম্পূর্ণ পরিসংখ্যান নীচের সারণীতে উপস্থাপন করা হয়েছে।</p>
+    
+    <div class="census-summary">
+      <div class="stat-card"><i class="fas fa-house-user"></i><h3>৭,৯১৩</h3><p>মোট পরিবার</p></div>
+      <div class="stat-card"><i class="fas fa-users"></i><h3>৩৯,৫৯৯</h3><p>মোট জনসংখ্যা</p></div>
+      <div class="stat-card"><i class="fas fa-male"></i><h3>২০,৫৬৪</h3><p>পুরুষ</p></div>
+      <div class="stat-card"><i class="fas fa-female"></i><h3>১৯,০৩৫</h3><p>মহিলা</p></div>
+      <div class="stat-card"><i class="fas fa-chalkboard-user"></i><h3>১৪,৩২২</h3><p>সাক্ষর (মোট)</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Census Data Table Section -->
+<section class="census-table-section">
+  <div class="container">
+    <h2 class="section-title">মৌজাভিত্তিক জনগণনা তথ্য (Census 2011)</h2>
+    <div class="title-underline"></div>
+    <p style="text-align: center; margin-bottom: 30px; background: #eef3ea; display: inline-block; width: auto; margin-left: auto; margin-right: auto; padding: 8px 24px; border-radius: 60px;">
+      <i class="fas fa-table-list"></i> মোট ১৬টি মৌজা · সম্পূর্ণ বিবরণী | সারণীটি অনুসন্ধানযোগ্য ও বাছাইযোগ্য
+    </p>
+    <div class="table-wrapper">
+      <table id="censusTable" class="display" style="width:100%">
+        <thead>
+          <tr>
+            <th>ক্রমিক নং</th>
+            <th>মৌজার নাম</th>
+            <th>পরিবার</th>
+            <th colspan="3">মোট জনসংখ্যা</th>
+            <th colspan="3">সাধারণ (General)</th>
+            <th colspan="3">তফসিলি জাতি (SC)</th>
+            <th colspan="3">তফসিলি উপজাতি (ST)</th>
+            <th colspan="3">সাক্ষরতা (Literacy)</th>
+          </tr>
+          <tr>
+            <th>#</th><th>Mouja</th><th>Family</th>
+            <th>মোট</th><th>পুরুষ</th><th>মহিলা</th>
+            <th>মোট</th><th>পুরুষ</th><th>মহিলা</th>
+            <th>মোট</th><th>পুরুষ</th><th>মহিলা</th>
+            <th>মোট</th><th>পুরুষ</th><th>মহিলা</th>
+            <th>মোট</th><th>পুরুষ</th><th>মহিলা</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Census data as provided - 16 moujas exactly -->
+          <tr><td>1</td><td>Jay Rampur</td><td>272</td><td>1387</td><td>717</td><td>670</td><td>291</td><td>149</td><td>142</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>541</td><td>329</td><td>212</td></tr>
+          <tr><td>2</td><td>Chhatrak</td><td>330</td><td>1495</td><td>773</td><td>722</td><td>226</td><td>115</td><td>111</td><td>453</td><td>240</td><td>213</td><td>1</td><td>0</td><td>1</td><td>529</td><td>290</td><td>239</td></tr>
+          <tr><td>3</td><td>Hulaspur</td><td>244</td><td>1138</td><td>592</td><td>546</td><td>193</td><td>92</td><td>101</td><td>29</td><td>16</td><td>13</td><td>0</td><td>0</td><td>0</td><td>174</td><td>87</td><td>87</td></tr>
+          <tr><td>4</td><td>Manoharpur</td><td>869</td><td>4174</td><td>2144</td><td>2030</td><td>689</td><td>345</td><td>344</td><td>645</td><td>332</td><td>313</td><td>16</td><td>8</td><td>8</td><td>1714</td><td>969</td><td>745</td></tr>
+          <tr><td>5</td><td>Bildaha</td><td>130</td><td>663</td><td>354</td><td>309</td><td>81</td><td>43</td><td>38</td><td>332</td><td>177</td><td>155</td><td>0</td><td>0</td><td>0</td><td>167</td><td>105</td><td>62</td></tr>
+          <tr><td>6</td><td>Sharanpur</td><td>483</td><td>2027</td><td>1053</td><td>974</td><td>400</td><td>210</td><td>190</td><td>627</td><td>323</td><td>304</td><td>0</td><td>0</td><td>0</td><td>655</td><td>370</td><td>285</td></tr>
+          <tr><td>7</td><td>Sayra</td><td>459</td><td>2044</td><td>1065</td><td>979</td><td>322</td><td>151</td><td>171</td><td>578</td><td>310</td><td>268</td><td>23</td><td>16</td><td>7</td><td>659</td><td>428</td><td>231</td></tr>
+          <tr><td>8</td><td>Kushol</td><td>204</td><td>963</td><td>512</td><td>451</td><td>152</td><td>77</td><td>75</td><td>264</td><td>140</td><td>124</td><td>0</td><td>0</td><td>0</td><td>341</td><td>206</td><td>135</td></tr>
+          <tr><td>9</td><td>Chaksatan</td><td>319</td><td>1754</td><td>913</td><td>841</td><td>291</td><td>134</td><td>157</td><td>1296</td><td>677</td><td>619</td><td>0</td><td>0</td><td>0</td><td>640</td><td>428</td><td>212</td></tr>
+          <tr><td>10</td><td>Dahara</td><td>364</td><td>1733</td><td>930</td><td>803</td><td>332</td><td>181</td><td>151</td><td>479</td><td>265</td><td>214</td><td>0</td><td>0</td><td>0</td><td>533</td><td>308</td><td>225</td></tr>
+          <tr><td>11</td><td>Sultan Nagar</td><td>898</td><td>4606</td><td>2443</td><td>2163</td><td>887</td><td>472</td><td>415</td><td>20</td><td>10</td><td>10</td><td>0</td><td>0</td><td>0</td><td>1935</td><td>1217</td><td>718</td></tr>
+          <tr><td>12</td><td>Darol</td><td>83</td><td>435</td><td>245</td><td>190</td><td>91</td><td>49</td><td>42</td><td>102</td><td>56</td><td>46</td><td>0</td><td>0</td><td>0</td><td>155</td><td>112</td><td>43</td></tr>
+          <tr><td>13</td><td>Dakshin Mukundapur</td><td>235</td><td>1220</td><td>619</td><td>601</td><td>185</td><td>95</td><td>90</td><td>462</td><td>224</td><td>238</td><td>26</td><td>17</td><td>9</td><td>514</td><td>306</td><td>208</td></tr>
+          <tr><td>14</td><td>Khanta</td><td>1007</td><td>5360</td><td>2724</td><td>2636</td><td>1010</td><td>496</td><td>514</td><td>837</td><td>416</td><td>421</td><td>54</td><td>27</td><td>27</td><td>2121</td><td>1150</td><td>971</td></tr>
+          <tr><td>15</td><td>Sahapur</td><td>283</td><td>1498</td><td>775</td><td>723</td><td>280</td><td>127</td><td>153</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>507</td><td>291</td><td>216</td></tr>
+          <tr><td>16</td><td>Datian</td><td>1733</td><td>9102</td><td>4705</td><td>4397</td><td>1833</td><td>955</td><td>878</td><td>396</td><td>208</td><td>188</td><td>279</td><td>148</td><td>131</td><td>3137</td><td>1605</td><td>1532</td></tr>
+        </tbody>
+        <tfoot>
+          <tr style="background: #e2f0de; font-weight: 700;">
+            <td colspan="2"><strong>মোট (Total)</strong></td>
+            <td><strong>7913</strong></td>
+            <td><strong>39599</strong></td>
+            <td><strong>20564</strong></td>
+            <td><strong>19035</strong></td>
+            <td><strong>7263</strong></td>
+            <td><strong>3691</strong></td>
+            <td><strong>3572</strong></td>
+            <td><strong>6520</strong></td>
+            <td><strong>3394</strong></td>
+            <td><strong>3126</strong></td>
+            <td><strong>399</strong></td>
+            <td><strong>216</strong></td>
+            <td><strong>183</strong></td>
+            <td><strong>14322</strong></td>
+            <td><strong>8201</strong></td>
+            <td><strong>6121</strong></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <p style="margin-top: 30px; font-size: 0.85rem; background: #f4f8f0; padding: 12px; border-radius: 28px; text-align: center;">
+      <i class="fas fa-chart-simple"></i> তথ্যসূত্র: জনগণনা ২০১১, ভারত সরকার | সুলতাননগর গ্রাম পঞ্চায়েত, হরিশ্চন্দ্রপুর ব্লক, মালদা। মোট জনসংখ্যা ৩৯,৫৯৯ জন; যার মধ্যে তফসিলি জাতি (SC) জনসংখ্যা ৬,৫২০ এবং তফসিলি উপজাতি (ST) ৩৯৯ জন। মোট সাক্ষর ১৪,৩২২ জন।
+    </p>
+  </div>
+</section>
+
+<!-- Additional Census Insights -->
+<section style="background: #fafaf2; padding: 40px 0;">
+  <div class="container">
+    <div style="display: flex; flex-wrap: wrap; gap: 30px; justify-content: center;">
+      <div style="flex:1; min-width: 200px; background: white; border-radius: 28px; padding: 20px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
+        <i class="fas fa-people-arrows" style="font-size: 2.2rem; color: #2b7a4b;"></i>
+        <h3 style="margin: 12px 0;">লিঙ্গ অনুপাত</h3>
+        <p style="font-size: 1.6rem; font-weight: bold;">৯২৬</p>
+        <p>(প্রতি ১০০০ পুরুষে মহিলা)</p>
+      </div>
+      <div style="flex:1; min-width: 200px; background: white; border-radius: 28px; padding: 20px; text-align: center;">
+        <i class="fas fa-school" style="font-size: 2.2rem; color: #2b7a4b;"></i>
+        <h3 style="margin: 12px 0;">সাক্ষরতার হার</h3>
+        <p style="font-size: 1.6rem; font-weight: bold;">৪১.০৪%</p>
+        <p>(মোট জনসংখ্যার ভিত্তিতে)</p>
+      </div>
+      <div style="flex:1; min-width: 200px; background: white; border-radius: 28px; padding: 20px; text-align: center;">
+        <i class="fas fa-chart-pie" style="font-size: 2.2rem; color: #2b7a4b;"></i>
+        <h3 style="margin: 12px 0;">SC/ST অনুপাত</h3>
+        <p style="font-weight: bold;">SC: ১৬.৪৬% | ST: ১.০১%</p>
+        <p>মোট জনসংখ্যার শতাংশ</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container footer-grid">
+    <div class="footer-col">
+      <h3>সুলতাননগর গ্রাম পঞ্চায়েত</h3>
+      <p><i class="fas fa-map-marker-alt"></i> Vill+P.O: Barduary, Harishchandrapur, Malda</p>
+      <p><i class="fas fa-envelope"></i> mgnregs.sn@gmail.com</p>
+      <p><i class="fas fa-phone"></i> ০৩৫১২-২৫৮১২৩</p>
+    </div>
+    <div class="footer-col">
+      <h4>গুরুত্বপূর্ণ লিংক</h4>
+      <p><a href="#">জনগণনা পোর্টাল (Census India)</a></p>
+      <p><a href="#">পশ্চিমবঙ্গ সরকার</a></p>
+      <p><a href="#">মালদা জেলা পরিসংখ্যান</a></p>
+    </div>
+    <div class="footer-col">
+      <h4>অফিসের ঠিকানা</h4>
+      <p>সুলতাননগর গ্রাম পঞ্চায়েত কার্যালয়,<br> বড়দুয়ারী মোড়, হরিশ্চন্দ্রপুর,<br> মালদা - ৭৩২১২৬</p>
+    </div>
+  </div>
+  <div class="copyright">
+    <p>&copy; ২০২৫ সুলতাননগর গ্রাম পঞ্চায়েত | জনগণনা তথ্য ২০১১ (ভারতীয় আদমশুমারি) | ওয়েব পোর্টাল - বাংলায় ই-পঞ্চায়েত উদ্যোগ</p>
+  </div>
+</footer>
+
+<!-- jQuery & DataTables JS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('#censusTable').DataTable({
+      pageLength: 20,
+      lengthMenu: [[10, 20, 30, -1], [10, 20, 30, "সব"]],
+      language: {
+        search: "অনুসন্ধান:",
+        lengthMenu: "_MENU_ টি রেকর্ড দেখান",
+        info: "_START_ থেকে _END_ পর্যন্ত, মোট _TOTAL_ টি রেকর্ড",
+        paginate: {
+          first: "প্রথম",
+          last: "শেষ",
+          next: "পরবর্তী",
+          previous: "পূর্ববর্তী"
+        },
+        zeroRecords: "কোন তথ্য পাওয়া যায়নি",
+        emptyTable: "সারণীতে কোনো তথ্য নেই"
+      },
+      order: [[0, 'asc']],
+      columnDefs: [
+        { targets: 0, visible: true },
+        { targets: 2, type: 'num' }
+      ]
+    });
+  });
+</script>
+</body>
+</html>
