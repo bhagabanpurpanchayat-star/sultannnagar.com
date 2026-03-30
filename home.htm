@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>সুলতাননগর গ্রাম পঞ্চায়েত | জনপ্রতিনিধি তথ্য - মালদা</title>
+  <!-- Google Fonts: Noto Serif Bengali + Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;500;600;700&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', 'Noto Serif Bengali', system-ui, sans-serif;
+      background: #f4f9f4;
+      color: #1e2a1e;
+      line-height: 1.5;
+      scroll-behavior: smooth;
+    }
+
+    h1, h2, h3, .bengali-text, nav a, .hero-text, .footer, .contact-info, .card p, .card h3, .section-title, .address-block, .member-table th, .member-table td {
+      font-family: 'Noto Serif Bengali', 'Inter', serif;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Top Bar */
+    .top-bar {
+      background: #0f3b2c;
+      color: #fef9e6;
+      padding: 10px 0;
+      font-size: 0.85rem;
+    }
+
+    .top-bar .container {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .contact-snip a {
+      color: #fef9e6;
+      text-decoration: none;
+      margin-right: 20px;
+      font-size: 0.85rem;
+    }
+
+    .contact-snip a:hover {
+      color: #ffdd99;
+    }
+
+    .gp-lang {
+      background: #2a5f4b;
+      padding: 4px 12px;
+      border-radius: 40px;
+      font-size: 0.8rem;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: white;
+      box-shadow: 0 8px 20px rgba(0, 32, 0, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      padding: 12px 0;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      background: #1b5e3f;
+      width: 48px;
+      height: 48px;
+      border-radius: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: #ffefc0;
+    }
+
+    .logo-text h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #1e4620;
+    }
+
+    .logo-text p {
+      font-size: 0.7rem;
+      color: #4a6741;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 600;
+      color: #2c4b2c;
+      transition: 0.2s;
+      padding: 6px 0;
+      border-bottom: 2px solid transparent;
+    }
+
+    .nav-links a:hover, .nav-links a.active {
+      border-bottom-color: #2b7a4b;
+      color: #1f5437;
+    }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(105deg, #eef6e8 0%, #d9e8d4 100%);
+      padding: 50px 0 60px;
+      border-bottom: 1px solid #cde0cd;
+    }
+
+    .hero-grid {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 40px;
+      justify-content: space-between;
+    }
+
+    .hero-content {
+      flex: 1.2;
+    }
+
+    .hero-badge {
+      background: #2d6a4f;
+      color: white;
+      display: inline-block;
+      padding: 5px 16px;
+      border-radius: 40px;
+      font-size: 0.75rem;
+      margin-bottom: 20px;
+    }
+
+    .hero-content h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #1a3b2e;
+      margin-bottom: 20px;
+    }
+
+    .address-hero {
+      background: rgba(255,255,235,0.8);
+      padding: 18px 20px;
+      border-radius: 28px;
+      border-left: 5px solid #388e3c;
+    }
+
+    .hero-image {
+      flex: 0.8;
+      text-align: center;
+    }
+
+    .hero-image img {
+      max-width: 100%;
+      border-radius: 32px;
+      box-shadow: 0 20px 30px -10px rgba(0,0,0,0.1);
+    }
+
+    /* Sections */
+    .section {
+      padding: 60px 0;
+    }
+
+    .section-alt {
+      background: #ffffff;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1e562e;
+      margin-bottom: 16px;
+    }
+
+    .title-underline {
+      width: 80px;
+      height: 4px;
+      background: #4caf7f;
+      margin: 8px auto 40px auto;
+      border-radius: 4px;
+    }
+
+    /* Cards Grid */
+    .cards-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+      justify-content: center;
+    }
+
+    .card {
+      background: #fefef7;
+      border-radius: 28px;
+      padding: 30px 24px;
+      text-align: center;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.05);
+      transition: 0.25s;
+      flex: 1 1 260px;
+      border: 1px solid #e2f0e0;
+    }
+
+    .card i {
+      font-size: 2.8rem;
+      color: #2c7840;
+      margin-bottom: 18px;
+    }
+
+    .card h3 {
+      font-size: 1.45rem;
+      margin-bottom: 12px;
+      color: #1f4d2e;
+    }
+
+    /* MEMBER TABLE SECTION (New) */
+    .members-section {
+      background: #fefef5;
+      overflow-x: auto;
+    }
+
+    .member-table-wrapper {
+      overflow-x: auto;
+      border-radius: 24px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+      background: white;
+    }
+
+    .member-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      min-width: 1000px;
+    }
+
+    .member-table th {
+      background: #1e5631;
+      color: white;
+      padding: 14px 8px;
+      font-weight: 600;
+      text-align: center;
+      border: 1px solid #367a4a;
+    }
+
+    .member-table td {
+      border: 1px solid #dde8dc;
+      padding: 12px 8px;
+      text-align: center;
+      vertical-align: middle;
+      background-color: #fffdf9;
+    }
+
+    .member-table tr:hover td {
+      background-color: #f2fae9;
+    }
+
+    .sansad-badge {
+      font-weight: 700;
+      color: #1e5631;
+    }
+
+    .party-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 30px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+
+    .party-AITC { background: #1f7b4d20; color: #1f5e3a; border-left: 3px solid #1f7b4d; }
+    .party-CPI { background: #c72a2a20; color: #a12222; border-left: 3px solid #c72a2a; }
+    .party-INC { background: #2c6e9e20; color: #1c5983; border-left: 3px solid #2c6e9e; }
+    .party-IND { background: #9b6b4320; color: #7b4e2c; border-left: 3px solid #9b6b43; }
+
+    /* Contact + map */
+    .contact-panchayat {
+      background: #eef3ea;
+    }
+
+    .info-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: space-between;
+    }
+
+    .contact-details {
+      flex: 1;
+      background: white;
+      border-radius: 32px;
+      padding: 32px;
+    }
+
+    .info-line {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .info-line i {
+      width: 32px;
+      font-size: 1.5rem;
+      color: #2b7d4e;
+    }
+
+    .map-placeholder {
+      flex: 1;
+      background: #d9e3d4;
+      border-radius: 32px;
+      min-height: 280px;
+      background-image: url('https://placehold.co/600x400/e2f0de/2d5a2d?text=🗺️+সুলতাননগর+পঞ্চায়েত+মানচিত্র');
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+
+    .map-note {
+      background: rgba(30, 40, 20, 0.75);
+      color: white;
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      padding: 8px 18px;
+      border-radius: 40px;
+      font-size: 0.75rem;
+    }
+
+    /* Notice */
+    .notice-board {
+      max-width: 880px;
+      margin: 0 auto;
+      background: #fffdf7;
+      border-radius: 28px;
+      padding: 28px;
+      border: 1px solid #ece4cf;
+    }
+
+    .notice-item {
+      padding: 14px 0;
+      border-bottom: 1px dashed #e2dccd;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .notice-date {
+      background: #f0ebdb;
+      padding: 2px 12px;
+      border-radius: 60px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+
+    /* Footer */
+    .footer {
+      background: #102b1f;
+      color: #e4f0de;
+      padding: 40px 0 20px;
+    }
+
+    .footer-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    .footer-col a {
+      color: #d8efcf;
+      text-decoration: none;
+    }
+
+    .copyright {
+      text-align: center;
+      border-top: 1px solid #2c5440;
+      padding-top: 24px;
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 850px) {
+      .hero-content h2 { font-size: 1.9rem; }
+      .section-title { font-size: 1.7rem; }
+      .nav-container { flex-direction: column; gap: 15px; }
+      .nav-links { justify-content: center; flex-wrap: wrap; }
+      .member-table th, .member-table td { font-size: 0.75rem; padding: 8px 4px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="top-bar">
+  <div class="container">
+    <div class="contact-snip">
+      <a href="mailto:mgnregs.sn@gmail.com"><i class="fas fa-envelope"></i> mgnregs.sn@gmail.com</a>
+      <span><i class="fas fa-map-marker-alt"></i> সুলতাননগর, বড়দুয়ারী, হরিশ্চন্দ্রপুর, মালদা</span>
+    </div>
+    <div class="gp-lang"><i class="fas fa-language"></i> বাংলা | সুলতাননগর পঞ্চায়েত</div>
+  </div>
+</div>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="container nav-container">
+    <div class="logo-area">
+      <div class="logo-icon"><i class="fas fa-tree"></i></div>
+      <div class="logo-text">
+        <h1>সুলতাননগর গ্রাম পঞ্চায়েত</h1>
+        <p>সেবা · সংকল্প · সমৃদ্ধি</p>
+      </div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#" class="active">মুখ্যপাতা</a></li>
+      <li><a href="#members">জনপ্রতিনিধি</a></li>
+      <li><a href="#">পরিষেবা</a></li>
+      <li><a href="#">যোগাযোগ</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="container hero-grid">
+    <div class="hero-content">
+      <div class="hero-badge"><i class="fas fa-hand-peace"></i> জনতার পঞ্চায়েত, জনতার জন্য</div>
+      <h2>স্বাগতম <br> সুলতাননগর গ্রাম পঞ্চায়েতে</h2>
+      <div class="address-hero">
+        <i class="fas fa-location-dot" style="margin-right: 12px; color:#2b7a4b;"></i> 
+        <strong>পঞ্চায়েত কার্যালয় :</strong> সুলতাননগর, গ্রাম+পোঃ- বড়দুয়ারী, হরিশ্চন্দ্রপুর, মালদা - ৭৩২১২৬<br>
+        <i class="fas fa-envelope"></i> ই-মেইল: mgnregs.sn@gmail.com &nbsp;|&nbsp;
+        <i class="fas fa-phone-alt"></i> যোগাযোগ: ০৩৫১২-২৫৮xxx
+      </div>
+    </div>
+    <div class="hero-image">
+      <img src="https://placehold.co/500x380/e8f0e2/2c6e3f?text=সুলতাননগর+পঞ্চায়েত+ভবন" alt="Sultannagar Panchayat" style="width:100%; max-width:400px; border-radius: 28px;">
+    </div>
+  </div>
+</header>
+
+<!-- Service Cards -->
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">আমাদের পরিষেবা</h2>
+    <div class="title-underline"></div>
+    <div class="cards-grid">
+      <div class="card"><i class="fas fa-file-signature"></i><h3>শংসাপত্র ও নথি</h3><p>জাতীয়তা, বাসস্থান, ওয়ারিশ সনদ, আয়-প্রমাণ পত্র</p></div>
+      <div class="card"><i class="fas fa-hand-holding-heart"></i><h3>মহিলা ও শিশু কল্যাণ</h3><p>মাতৃ ও শিশু স্বাস্থ্য, ICDS, স্বনির্ভর গোষ্ঠী</p></div>
+      <div class="card"><i class="fas fa-tractor"></i><h3>কৃষি ও মৎস্য</h3><p>কৃষি ভর্তুকি, মৎস্যজীবী সহায়তা, বীজ বিতরণ</p></div>
+      <div class="card"><i class="fas fa-water"></i><h3>পানীয় জল ও স্যানিটেশন</h3><p>নলকূপ, শৌচালয় নির্মাণ, মিশন নর্মদা</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- =========== MEMBERS INFORMATION TABLE (Full data provided) =========== -->
+<section id="members" class="members-section section">
+  <div class="container">
+    <h2 class="section-title">গ্রাম পঞ্চায়েত সদস্যগণ (জনপ্রতিনিধি)</h2>
+    <div class="title-underline"></div>
+    <p style="text-align: center; margin-bottom: 28px; background: #eef2e6; display: inline-block; width: auto; margin-left: auto; margin-right: auto; padding: 6px 20px; border-radius: 60px;">মোট ২৭টি সানসদ (ওয়ার্ড) - নির্বাচিত প্রতিনিধিগণ</p>
+    <div class="member-table-wrapper">
+      <table class="member-table">
+        <thead>
+            <tr>
+              <th>ক্রমিক নং</th><th>সানসদ নং (ওয়ার্ড)</th><th>আসনের নাম</th><th>সদস্যের নাম</th><th>পিতার/স্বামীর নাম</th><th>লিঙ্গ</th><th>সংরক্ষণ</th><th>দল</th><th>যোগাযোগ নং</th>
+            </tr>
+        </thead>
+        <tbody>
+          <!-- Data as per given table (27 rows, some with combined seats) -->
+          <tr><td>1</td><td>SULTANNAGAR / I</td><td>MALSABAD/I-1</td><td>JOBEDA KHATUN</td><td>MD BADAL</td><td>Female</td><td>OBC</td><td><span class="party-badge party-AITC">AITC</span></td><td>8918765915</td></tr>
+          <tr><td>2</td><td>SULTANNAGAR / II</td><td>MALSABAD/II-2</td><td>SAMIMA KHATUN</td><td>ABDUS SAMAD</td><td>Female</td><td>General</td><td><span class="party-badge party-AITC">AITC</span></td><td>8101995522</td></tr>
+          <tr><td>3</td><td>SULTANNAGAR / III</td><td>DATION/III-3</td><td>CHANTARA KHATUN</td><td>ANJARUL HOQUE</td><td>Female</td><td>OBC</td><td><span class="party-badge party-CPI">CPI(M)</span></td><td>8372072283</td></tr>
+          <tr><td>4</td><td>SULTANNAGAR / IV</td><td>JOGILAL/IV-4</td><td>REHENA BIBI</td><td>ABU KALAM</td><td>Female</td><td>General</td><td><span class="party-badge party-CPI">CPI(M)</span></td><td>7319392041</td></tr>
+          <tr><td>5</td><td>SULTANNAGAR / V</td><td>NANARAHI/V-5</td><td>AYESA BIBI</td><td>RAHAMAN</td><td>Female</td><td>OBC</td><td><span class="party-badge party-INC">INC</span></td><td>9733129320</td></tr>
+          <tr><td>6</td><td>SULTANNAGAR / VI</td><td>NANARAHI/VI-6</td><td>KHATIJA KHATUN</td><td>AJIJUR RAHAMAN</td><td>Female</td><td>General</td><td><span class="party-badge party-IND">IND</span></td><td>8617099665</td></tr>
+          <tr><td>7</td><td>SULTANNAGAR / VII</td><td>RADHIKAPUR /VII-7</td><td>JAKARIA</td><td>ARSAD ALI</td><td>Male</td><td>General</td><td><span class="party-badge party-INC">INC</span></td><td>9564725229</td></tr>
+          <tr><td>8</td><td>SULTANNAGAR / VIII</td><td>DAHARA/VIII-8</td><td>GOUR MANDAL</td><td>KHETRANATH MANDAL</td><td>Male</td><td>SC</td><td><span class="party-badge party-AITC">AITC</span></td><td>9734130627</td></tr>
+          <tr><td>9</td><td>SULTANNAGAR / IX</td><td>CHAKSATAN/IX-9</td><td>SHRI MAHALDAR</td><td>KABUL MAHALDAR</td><td>Female</td><td>SC</td><td><span class="party-badge party-AITC">AITC</span></td><td>7586079188</td></tr>
+          <tr><td>10</td><td>SULTANNAGAR / X</td><td>CHAKSATAN/X-10</td><td>GAYA MANDAL</td><td>DHARMU MANDAL</td><td>Male</td><td>SC</td><td><span class="party-badge party-AITC">AITC</span></td><td>8084836684</td></tr>
+          <tr><td>11</td><td>SULTANNAGAR / XI</td><td>BILDAHA/XI-11 & PIRGUNJ/XI-12</td><td>1. MAMATA MAHALDAR<br>2. RUBI BIBI</td><td>GUDUS DAS / SK NAJRUL ISLAM</td><td>Female/Female</td><td>General/OBC</td><td><span class="party-badge party-AITC">AITC</span> / <span class="party-badge party-AITC">AITC</span></td><td>8670083706 / 8370926342</td></tr>
+          <tr><td>12</td><td>SULTANNAGAR / XII</td><td>SARANPUR/XII-13</td><td>DHARMA MANDAL</td><td>AJIT MANDAL</td><td>Male</td><td>SC</td><td><span class="party-badge party-AITC">AITC</span></td><td>9734993770</td></tr>
+          <tr><td>13</td><td>SULTANNAGAR / XIII</td><td>JOYRAMPUR/XIII-14</td><td>SEBA KHATUN</td><td>SEKH SAHANAWAJ ALAM</td><td>Female</td><td>OBC</td><td><span class="party-badge party-AITC">AITC</span></td><td>9064383664</td></tr>
+          <tr><td>14</td><td>SULTANNAGAR / XIV</td><td>BAIJANTHPUR/XIV-15</td><td>JAHANGIR ALAM</td><td>MUSTAKIN</td><td>Male</td><td>General</td><td><span class="party-badge party-INC">INC</span></td><td>7797905972</td></tr>
+          <tr><td>15</td><td>SULTANNAGAR / XV</td><td>BAIJANTHPUR/XV-16</td><td>AJIMA KHATUN</td><td>ALEMUL HOQUE</td><td>Female</td><td>General</td><td><span class="party-badge party-AITC">AITC</span></td><td>7031108112</td></tr>
+          <tr><td>16</td><td>SULTANNAGAR / XVI</td><td>CHHATRAK/XVI-17</td><td>MAUSUMI DAS SHARMA</td><td>SANTU SHARMA</td><td>Female</td><td>SC</td><td><span class="party-badge party-CPI">CPI(M)</span></td><td>8145545426</td></tr>
+          <tr><td>17</td><td>SULTANNAGAR / XVII</td><td>MONOHARPUR/XVII-18</td><td>ANJANA MAHATO</td><td>RAJESH KUMAR RAM</td><td>Female</td><td>General</td><td><span class="party-badge party-AITC">AITC</span></td><td>9547595891</td></tr>
+          <tr><td>18</td><td>SULTANNAGAR / XVIII</td><td>DAROL/XVIII-19</td><td>SABNAM KHATUN</td><td>ANSARUL HOQUE</td><td>Female</td><td>General</td><td><span class="party-badge party-CPI">CPI(M)</span></td><td>9733489240</td></tr>
+          <tr><td>19</td><td>SULTANNAGAR / XIX</td><td>SAIRA/XIX-20</td><td>MD NURUL</td><td>GOLAM RASHUL</td><td>Male</td><td>General</td><td><span class="party-badge party-CPI">CPI(M)</span></td><td>7029011865</td></tr>
+          <tr><td>20</td><td>SULTANNAGAR / XX</td><td>SAIRA/XX-21</td><td>KOHINOOR BEGAM</td><td>AHAMMAD HASSAN</td><td>Female</td><td>OBC</td><td><span class="party-badge party-AITC">AITC</span></td><td>7407134986</td></tr>
+          <tr><td>21</td><td>SULTANNAGAR / XXI</td><td>SULTANNAGAR/XXI-22</td><td>MD MONAJIR KHAN</td><td>MD MOHSIN KHAN</td><td>Male</td><td>OBC</td><td><span class="party-badge party-AITC">AITC</span></td><td>8637062149</td></tr>
+          <tr><td>22</td><td>SULTANNAGAR / XXII</td><td>SULTANNAGAR/XXII-23 & XXII-24</td><td>1.MARJINA KHATUN BIBI<br>2.RUBI KHATUN</td><td>OWIDUR RAHAMAN / MD MOHIRUDDIN</td><td>Female/Female</td><td>OBC/General</td><td><span class="party-badge party-AITC">AITC</span>/<span class="party-badge party-AITC">AITC</span></td><td>9733458128 / 9733477302</td></tr>
+          <tr><td>23</td><td>SULTANNAGAR /XXIII</td><td>MISHRAPARA/XXIII-25 & XXIII-26</td><td>1.TARIK ANWAR<br>2.TAFIQUL ISLAM</td><td>MD MUSLEUDDIN / ABDUL SATTAR</td><td>Male/Male</td><td>General/OBC</td><td><span class="party-badge party-AITC">AITC</span>/<span class="party-badge party-AITC">AITC</span></td><td>9635458713 / 7478811097</td></tr>
+          <tr><td>24</td><td>SULTANNAGAR /XXIV</td><td>DAKSHIN MUKUNDAPUR/XXIV-27</td><td>URMILA SINGHA</td><td>KAILASH SINGHA</td><td>Female</td><td>General</td><td><span class="party-badge party-AITC">AITC</span></td><td>9091884003</td></tr>
+          <tr><td>25</td><td>SULTANNAGAR /XXV</td><td>SAHAPUR/XXV-28</td><td>ASRAFUL HOQUE</td><td>ISAHAK</td><td>Male</td><td>General</td><td><span class="party-badge party-INC">INC</span></td><td>8348832212</td></tr>
+          <tr><td>26</td><td>SULTANNAGAR /XXVI</td><td>BARDUARY/XXVI-29</td><td>SAROJ SHARMA</td><td>SHREE KRISHNA SHARMA</td><td>Female</td><td>General</td><td><span class="party-badge party-AITC">AITC</span></td><td>7407807906</td></tr>
+          <tr><td>27</td><td>SULTANNAGAR /XXVII</td><td>KHANTA/XXVII-30</td><td>KHALILUR RAHAMAN</td><td>NURUL HOQUE</td><td>Male</td><td>OBC</td><td><span class="party-badge party-CPI">CPI(M)</span></td><td>7029183952</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="text-align: center; margin-top: 24px; font-size: 0.85rem; background: #eaf5e4; padding: 8px; border-radius: 60px;"><i class="fas fa-users"></i> জনপ্রতিনিধিদের সাথে যোগাযোগের জন্য পঞ্চায়েত অফিসে ফোন করুন অথবা সরাসরি মোবাইল নম্বরে যোগাযোগ করতে পারেন।</p>
+  </div>
+</section>
+
+<!-- MGNREGA + Dev Section -->
+<section class="section section-alt">
+  <div class="container">
+    <h2 class="section-title">মহাত্মা গান্ধী NREGA প্রকল্প</h2>
+    <div class="title-underline"></div>
+    <div class="cards-grid">
+      <div class="card"><i class="fas fa-users"></i><h3>১০০ দিনের কাজের নিশ্চয়তা</h3><p>প্রতি অর্থবর্ষে গ্রামীণ পরিবারকে ১০০ দিনের মজুরি কর্মসংস্থান।</p><p><strong>mgnregs.sn@gmail.com</strong></p></div>
+      <div class="card"><i class="fas fa-chart-line"></i><h3>অবকাঠামো নির্মাণ</h3><p>পুকুর খনন, রাস্তা মেরামত, মাটির বাঁধ, গ্রামীণ সম্পদ সৃষ্টি।</p></div>
+      <div class="card"><i class="fas fa-check-circle"></i><h3>স্বচ্ছতা ও মনিটরিং</h3><p>জিও-ট্যাগিং, সামাজিক অডিট, প্রকল্পের স্বচ্ছ বাস্তবায়ন।</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact + Map -->
+<section class="contact-panchayat section">
+  <div class="container">
+    <div class="info-wrapper">
+      <div class="contact-details">
+        <h3><i class="fas fa-address-card"></i> পঞ্চায়েত অফিসের তথ্য</h3>
+        <div class="info-line"><i class="fas fa-map-pin"></i> <span><strong>ঠিকানা:</strong> সুলতাননগর গ্রাম পঞ্চায়েত, ভিলেজ + পোঃ বড়দুয়ারী, হরিশ্চন্দ্রপুর ব্লক, মালদা - ৭৩২১২৬</span></div>
+        <div class="info-line"><i class="fas fa-envelope"></i> <span><strong>ই-মেইল অফিস:</strong> <a href="mailto:mgnregs.sn@gmail.com" style="color:#2c7840;">mgnregs.sn@gmail.com</a> (MGNREGS সহ)</span></div>
+        <div class="info-line"><i class="fas fa-phone"></i> <span><strong>টেলিফোন:</strong> ০৩৫১২-২৫৮১২৩ (প্রধান)</span></div>
+        <div class="info-line"><i class="fas fa-clock"></i> <span><strong>অফিস সময়:</strong> সোম-শুক্র: সকাল ১০:৩০ - বিকাল ৫:৩০</span></div>
+      </div>
+      <div class="map-placeholder"><div class="map-note"><i class="fas fa-map-marked-alt"></i> সুলতাননগর পঞ্চায়েত কার্যালয়, বড়দুয়ারী</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Notice Board -->
+<section class="highlights section">
+  <div class="container">
+    <div class="notice-board">
+      <h3 style="font-size: 1.6rem;"><i class="fas fa-bullhorn" style="color:#cb7b3c;"></i> গুরুত্বপূর্ণ বিজ্ঞপ্তি</h3>
+      <div class="notice-list">
+        <div class="notice-item"><span class="notice-date">১৫ এপ্রিল, ২০২৫</span><span>MGNREGA-র অধীনে ২০২৫-২৬ অর্থবর্ষের কাজের আবেদন শুরু। পঞ্চায়েত অফিসে যোগাযোগ করুন।</span></div>
+        <div class="notice-item"><span class="notice-date">০২ এপ্রিল, ২০২৫</span><span>আয়ুষ্মান ভারত কার্ড ও স্বাস্থ্য শিবির: ২০ এপ্রিল, সুলতাননগর স্বাস্থ্য কেন্দ্রে।</span></div>
+        <div class="notice-item"><span class="notice-date">২৮ মার্চ, ২০২৫</span><span>গ্রাম সভার নোটিশ: ১০ এপ্রিল বিকাল ৩টায়, পঞ্চায়েত ভবনে।</span></div>
+      </div>
+      <p style="margin-top: 24px; background:#eef3e8; padding: 12px; border-radius: 28px;"><i class="fas fa-hand-point-right"></i> যেকোনো অভিযোগ বা তথ্যের জন্য ই-মেইল করুন <strong>mgnregs.sn@gmail.com</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container footer-grid">
+    <div class="footer-col"><h3>সুলতাননগর গ্রাম পঞ্চায়েত</h3><p><i class="fas fa-map-marker-alt"></i> Vill+P.O: Barduary, Harishchandrapur, Malda</p><p><i class="fas fa-envelope"></i> mgnregs.sn@gmail.com</p></div>
+    <div class="footer-col"><h4>গুরুত্বপূর্ণ লিংক</h4><p><a href="#">জনপরিষেবা পোর্টাল</a></p><p><a href="#">MGNREGA ASSET</a></p></div>
+    <div class="footer-col"><h4>অফিস ঠিকানা</h4><p>বড়দুয়ারী মোড়, হরিশ্চন্দ্রপুর, মালদা - ৭৩২১২৬</p></div>
+  </div>
+  <div class="copyright"><p>&copy; ২০২৫ সুলতাননগর গ্রাম পঞ্চায়েত | বাংলায় ই-পঞ্চায়েত উদ্যোগ</p></div>
+</footer>
+
+<script>
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', function(e) {
+      if(this.getAttribute('href') === '#') e.preventDefault();
+      document.querySelectorAll('.nav-links a').forEach(l => l.classList.remove('active'));
+      this.classList.add('active');
+      if(this.innerText.includes('জনপ্রতিনিধि')) {
+        document.getElementById('members').scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+</body>
+</html>
