@@ -3,6 +3,661 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>AgriCarbon Registry | Excel-Style Data Grid</title>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #F4F8EF;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      padding: 24px 28px;
+      min-height: 100vh;
+    }
+
+    .dashboard-container {
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    /* header official */
+    .official-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+      padding: 16px 24px;
+      background: #FFFFFF;
+      border-radius: 20px;
+      border: 1px solid #DDE8D0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    .logo-area h1 {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: #1F4F2B;
+    }
+    .logo-area h1 i { color: #4C9A2A; margin-right: 8px; }
+    .logo-area p { color: #5C6E4A; font-size: 0.7rem; margin-top: 4px; }
+    .badge-carbon {
+      background: #EFF7E6;
+      padding: 8px 22px;
+      border-radius: 40px;
+      font-weight: 600;
+      color: #2A6E3A;
+      font-size: 0.8rem;
+    }
+
+    /* KPI row */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 18px;
+      margin-bottom: 30px;
+    }
+    .kpi-card {
+      background: #FFFFFF;
+      border-radius: 24px;
+      padding: 16px 20px;
+      border: 1px solid #E2ECD8;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+    .kpi-title { font-size: 0.7rem; text-transform: uppercase; color: #6C8660; font-weight: 700; }
+    .kpi-value { font-size: 1.9rem; font-weight: 800; color: #1D3923; margin: 6px 0 2px; }
+    .kpi-sub { font-size: 0.7rem; color: #7F9070; }
+
+    /* insight panel (chart + mouja summary) */
+    .insight-panel {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+    .chart-card {
+      flex: 2;
+      background: #FFFFFF;
+      border-radius: 24px;
+      padding: 18px;
+      border: 1px solid #E2ECD8;
+    }
+    .mouja-card {
+      flex: 1.2;
+      background: #FFFFFF;
+      border-radius: 24px;
+      padding: 18px;
+      border: 1px solid #E2ECD8;
+    }
+    .section-header {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #3C6E3A;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-left: 3px solid #7CB342;
+      padding-left: 12px;
+    }
+    .mouja-scroll {
+      max-height: 220px;
+      overflow-y: auto;
+    }
+    .mouja-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #ECF3E5;
+      font-size: 0.8rem;
+    }
+    .mouja-name { font-weight: 600; color: #2B5E2F; }
+    .mouja-due { color: #C76E1C; font-weight: 700; }
+
+    /* action bar - search + add */
+    .action-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      background: #FFFFFF;
+      padding: 6px 20px 6px 24px;
+      border-radius: 60px;
+      border: 1px solid #D8E5CE;
+    }
+    .search-group {
+      flex: 3;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .search-group i { color: #6B8C42; }
+    .search-group input {
+      background: transparent;
+      border: none;
+      padding: 12px 6px;
+      color: #1E2F1A;
+      font-size: 0.85rem;
+      width: 100%;
+      outline: none;
+    }
+    .btn-official {
+      background: #2C6E2F;
+      border: none;
+      border-radius: 40px;
+      padding: 8px 26px;
+      font-weight: 600;
+      color: white;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+    .btn-official:active { transform: scale(0.97); }
+
+    /* EXCEL-STYLE TABLE (rows, no cards) */
+    .table-wrapper {
+      background: #FFFFFF;
+      border-radius: 24px;
+      border: 1px solid #E2ECD8;
+      overflow-x: auto;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.75rem;
+      min-width: 1100px;
+    }
+    .data-table th {
+      background: #F9FCF5;
+      color: #2A5C2E;
+      font-weight: 700;
+      padding: 14px 12px;
+      border-bottom: 2px solid #D4E2C8;
+      text-align: left;
+      font-size: 0.7rem;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.1s;
+    }
+    .data-table th:hover {
+      background: #EEF5E6;
+    }
+    .data-table th i {
+      margin-left: 6px;
+      font-size: 0.65rem;
+      color: #7C9C68;
+    }
+    .data-table td {
+      padding: 12px 12px;
+      border-bottom: 1px solid #EDF3E6;
+      color: #2A3E24;
+      font-weight: 500;
+      vertical-align: middle;
+    }
+    .data-table tr:hover {
+      background: #FCFEF7;
+    }
+    .action-cell {
+      white-space: nowrap;
+    }
+    .edit-row-btn {
+      background: #EFF7E8;
+      border: 1px solid #C2D9B0;
+      border-radius: 30px;
+      padding: 5px 14px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: #2A6230;
+      cursor: pointer;
+      transition: 0.1s;
+    }
+    .edit-row-btn:hover {
+      background: #E2F0D8;
+    }
+    .empty-table-msg {
+      text-align: center;
+      padding: 50px;
+      color: #8A9C7A;
+      font-style: italic;
+    }
+    /* form panel */
+    .form-panel-official {
+      background: #FFFFFF;
+      border-radius: 28px;
+      padding: 24px;
+      border: 1px solid #DDE8D0;
+      margin-top: 20px;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px,1fr));
+      gap: 18px;
+      margin: 20px 0;
+    }
+    .input-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .input-field label { font-size: 0.7rem; font-weight: 700; color: #557A44; }
+    .input-field input {
+      background: #FEFEF9;
+      border: 1px solid #D4E2C8;
+      border-radius: 24px;
+      padding: 10px 14px;
+      font-size: 0.8rem;
+    }
+    .input-field input:focus { border-color: #7CB342; outline: none; }
+    @media (max-width: 700px) {
+      body { padding: 16px; }
+      .kpi-value { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="dashboard-container">
+  <div class="official-header">
+    <div class="logo-area">
+      <h1><i class="fas fa-table-list"></i> AgriCarbon · Registry Ledger</h1>
+      <p>Excel‑style data grid | Carbon credits per farmer</p>
+    </div>
+    <div class="badge-carbon"><i class="fas fa-cloud-sun"></i> Verified Carbon Units</div>
+  </div>
+
+  <!-- KPI row -->
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="kpi-title"><i class="fas fa-users"></i> TOTAL FARMERS</div><div class="kpi-value" id="totalFarmersKpi">0</div><div class="kpi-sub">carbon enrolled</div></div>
+    <div class="kpi-card"><div class="kpi-title"><i class="fas fa-coins"></i> TOTAL CREDITS (₹)</div><div class="kpi-value" id="totalDueKpi">₹0</div><div class="kpi-sub">accrued value</div></div>
+    <div class="kpi-card"><div class="kpi-title"><i class="fas fa-chart-line"></i> AVG CREDIT</div><div class="kpi-value" id="avgDueKpi">₹0</div><div class="kpi-sub">per farmer</div></div>
+    <div class="kpi-card"><div class="kpi-title"><i class="fas fa-map-marked-alt"></i> CARBON ZONES</div><div class="kpi-value" id="moujaCountKpi">0</div><div class="kpi-sub">unique mouja</div></div>
+  </div>
+
+  <!-- Chart + Mouja summary panel -->
+  <div class="insight-panel">
+    <div class="chart-card">
+      <div class="section-header"><i class="fas fa-chart-simple"></i> CARBON CREDITS BY MOUJA ZONE</div>
+      <canvas id="fullMoujaChart" width="400" height="200" style="max-height: 200px; width:100%"></canvas>
+    </div>
+    <div class="mouja-card">
+      <div class="section-header"><i class="fas fa-list-check"></i> CREDIT SUMMARY · MOUJA</div>
+      <div id="moujaListContainer" class="mouja-scroll">Loading data...</div>
+    </div>
+  </div>
+
+  <!-- search + add action -->
+  <div class="action-bar">
+    <div class="search-group">
+      <i class="fas fa-search"></i>
+      <input type="text" id="realtimeSearch" placeholder="Instant search (any column) · name, village, mouja, plot, carbon ID..." autocomplete="off">
+    </div>
+    <button class="btn-official" id="openFormBtn"><i class="fas fa-plus-circle"></i> Add New Farmer</button>
+  </div>
+
+  <!-- EXCEL STYLE TABLE (rows, no cards) -->
+  <div class="table-wrapper">
+    <table class="data-table" id="dataTable">
+      <thead>
+        <tr>
+          <th data-col="0">SL <i class="fas fa-sort"></i></th>
+          <th data-col="1">Farmer Name <i class="fas fa-sort"></i></th>
+          <th data-col="2">C/O <i class="fas fa-sort"></i></th>
+          <th data-col="3">Village <i class="fas fa-sort"></i></th>
+          <th data-col="4">Mouja (Zone) <i class="fas fa-sort"></i></th>
+          <th data-col="5">Plot <i class="fas fa-sort"></i></th>
+          <th data-col="6">Area <i class="fas fa-sort"></i></th>
+          <th data-col="7">Carbon Credits (₹) <i class="fas fa-sort"></i></th>
+          <th data-col="8">Verified Upto <i class="fas fa-sort"></i></th>
+          <th data-col="9">Farmer Type <i class="fas fa-sort"></i></th>
+          <th data-col="10">R-Page <i class="fas fa-sort"></i></th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <tr><td colspan="12" class="empty-table-msg">Loading carbon registry data...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- hidden form panel for add/edit -->
+  <div id="formSection" style="display:none; margin-top: 28px;">
+    <div class="form-panel-official">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="color:#2F6B2F;"><i class="fas fa-file-signature"></i> Carbon Asset Registration</h3>
+        <button id="closeFormBtn" style="background:#EFF2E9; border:none; border-radius:40px; padding:6px 20px; font-weight:600;">✖ Close</button>
+      </div>
+      <input type="hidden" id="rowIndex">
+      <div class="form-grid">
+        <div class="input-field"><label>SL (Auto)</label><input id="sl" readonly></div>
+        <div class="input-field"><label>Full Name *</label><input id="name" placeholder="Farmer name"></div>
+        <div class="input-field"><label>C/O</label><input id="co" placeholder="Father/Husband"></div>
+        <div class="input-field"><label>Village</label><input id="village" placeholder="Village"></div>
+        <div class="input-field"><label>Mouja (Carbon Zone)</label><input id="mouja" placeholder="Mouja name"></div>
+        <div class="input-field"><label>Plot</label><input id="plot" placeholder="Plot no"></div>
+        <div class="input-field"><label>Area (Acres/Ha)</label><input id="area" placeholder="Area"></div>
+        <div class="input-field"><label>Carbon Credits (₹)</label><input id="due" placeholder="Credit value"></div>
+        <div class="input-field"><label>Verification Period</label><input id="paid" placeholder="Year/Month"></div>
+        <div class="input-field"><label>Farmer Category</label><input id="type" placeholder="Marginal/Small"></div>
+        <div class="input-field"><label>R.Page No</label><input id="page" placeholder="Page"></div>
+      </div>
+      <div style="display:flex; gap:14px;">
+        <button id="saveBtn" class="btn-official">💾 Register Asset</button>
+        <button id="updateBtn" class="btn-official" style="display:none; background:#3F6B37;">🔄 Update Record</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Same backend endpoint, logic identical but UI is table rows (Excel-like)
+  const WEB_URL = "https://script.google.com/macros/s/AKfycbyLeDl5fLfR-EuH59NJuyGjO44ETHI9zq2I5TkqzsI91pyNjZZuz_yAzOpZ6vgtal4e/exec";
+  let tableData = [];       // original data from sheets
+  let filteredData = [];    // after search
+  let moujaChartGlobal = null;
+  let currentSort = { column: null, direction: 'asc' };
+
+  // DOM elements
+  const realtimeSearch = document.getElementById("realtimeSearch");
+  const openFormBtn = document.getElementById("openFormBtn");
+  const closeFormBtn = document.getElementById("closeFormBtn");
+  const formSection = document.getElementById("formSection");
+  const saveBtn = document.getElementById("saveBtn");
+  const updateBtn = document.getElementById("updateBtn");
+  const rowIndexInput = document.getElementById("rowIndex");
+  const slInput = document.getElementById("sl");
+  const nameInput = document.getElementById("name");
+  const coInput = document.getElementById("co");
+  const villageInput = document.getElementById("village");
+  const moujaInput = document.getElementById("mouja");
+  const plotInput = document.getElementById("plot");
+  const areaInput = document.getElementById("area");
+  const dueInput = document.getElementById("due");
+  const paidInput = document.getElementById("paid");
+  const typeInput = document.getElementById("type");
+  const pageInput = document.getElementById("page");
+  const tableBody = document.getElementById("tableBody");
+  const listSectionDummy = document.getElementById("dataTable"); // reference for showing/hiding
+
+  function escapeHtml(str) { if(!str && str!==0) return '—'; return String(str).replace(/[&<>]/g, (m) => m==='&'?'&amp;': m==='<'?'&lt;':'&gt;'); }
+  function formatDueNum(val) { let n = parseFloat(val); return !isNaN(n) ? `₹ ${n.toLocaleString()}` : escapeHtml(val); }
+
+  // update KPI + mouja summary + bar chart (all data)
+  function updateInsights(dataArray) {
+    const source = dataArray || tableData;
+    let totalFarmers = source.length;
+    let totalCredits = 0;
+    const moujaMap = new Map();
+    source.forEach(row => {
+      let creditVal = parseFloat(row[7]);
+      if(isNaN(creditVal)) creditVal = 0;
+      totalCredits += creditVal;
+      let moujaName = (row[4] && row[4].trim() !== "") ? row[4].trim() : "Unzoned";
+      moujaMap.set(moujaName, (moujaMap.get(moujaName) || 0) + creditVal);
+    });
+    let avgCredit = totalFarmers ? (totalCredits / totalFarmers) : 0;
+    document.getElementById("totalFarmersKpi").innerText = totalFarmers;
+    document.getElementById("totalDueKpi").innerHTML = `₹ ${totalCredits.toLocaleString()}`;
+    document.getElementById("avgDueKpi").innerHTML = `₹ ${avgCredit.toFixed(0)}`;
+    document.getElementById("moujaCountKpi").innerText = moujaMap.size;
+
+    // mouja summary list
+    let sortedMouja = Array.from(moujaMap.entries()).sort((a,b)=>b[1]-a[1]);
+    let moujaHtml = '';
+    sortedMouja.forEach(([mouja, amt]) => {
+      moujaHtml += `<div class="mouja-row"><span class="mouja-name"><i class="fas fa-globe-asia"></i> ${escapeHtml(mouja)}</span><span class="mouja-due">₹ ${amt.toLocaleString()}</span></div>`;
+    });
+    if(sortedMouja.length === 0) moujaHtml = '<div style="color:#8A9C7A;">No carbon zones defined</div>';
+    document.getElementById("moujaListContainer").innerHTML = moujaHtml;
+
+    // bar chart
+    const allLabels = sortedMouja.map(m => m[0].length > 14 ? m[0].substring(0,12)+'..' : m[0]);
+    const allValues = sortedMouja.map(m => m[1]);
+    const ctx = document.getElementById('fullMoujaChart').getContext('2d');
+    if(moujaChartGlobal) moujaChartGlobal.destroy();
+    moujaChartGlobal = new Chart(ctx, {
+      type: 'bar',
+      data: { labels: allLabels, datasets: [{ label: 'Carbon Credits (₹)', data: allValues, backgroundColor: '#6A994E', borderRadius: 6 }] },
+      options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { labels: { font:{size:10}, color:'#416B34' } }, tooltip: { callbacks: { label: (ctx) => `₹ ${ctx.raw.toLocaleString()}` } } }, scales: { y: { ticks: { color:'#5E6E52' }, grid: { color:'#E2E9D9' } }, x: { ticks: { rotation: 25, font:{size:9} } } } }
+    });
+  }
+
+  // sorting logic
+  function sortData(columnIndex) {
+    if (currentSort.column === columnIndex) {
+      currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+    } else {
+      currentSort.column = columnIndex;
+      currentSort.direction = 'asc';
+    }
+    const sorted = [...filteredData];
+    sorted.sort((a, b) => {
+      let valA = a[columnIndex] !== undefined ? a[columnIndex] : '';
+      let valB = b[columnIndex] !== undefined ? b[columnIndex] : '';
+      // numeric for column 7 (credits) and sl numeric
+      if (columnIndex === 0 || columnIndex === 7) {
+        let numA = parseFloat(valA);
+        let numB = parseFloat(valB);
+        if (isNaN(numA)) numA = 0;
+        if (isNaN(numB)) numB = 0;
+        return currentSort.direction === 'asc' ? numA - numB : numB - numA;
+      }
+      valA = String(valA).toLowerCase();
+      valB = String(valB).toLowerCase();
+      if (valA < valB) return currentSort.direction === 'asc' ? -1 : 1;
+      if (valA > valB) return currentSort.direction === 'asc' ? 1 : -1;
+      return 0;
+    });
+    filteredData = sorted;
+    renderTableRows();
+    updateSortIcons();
+  }
+
+  function updateSortIcons() {
+    const headers = document.querySelectorAll('.data-table th');
+    headers.forEach((th, idx) => {
+      const icon = th.querySelector('i');
+      if (icon) {
+        if (currentSort.column === idx) {
+          icon.className = currentSort.direction === 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down';
+        } else {
+          icon.className = 'fas fa-sort';
+        }
+      }
+    });
+  }
+
+  // render table rows (excel style)
+  function renderTableRows() {
+    if (!tableBody) return;
+    const data = filteredData.length ? filteredData : [];
+    if (data.length === 0) {
+      tableBody.innerHTML = `<tr><td colspan="12" class="empty-table-msg"><i class="fas fa-filter"></i> No matching records. Add a new farmer or adjust search.</td></tr>`;
+      return;
+    }
+    let html = '';
+    data.forEach((row, idx) => {
+      const globalIndex = tableData.findIndex(orig => orig === row);
+      const sl = escapeHtml(row[0] || '');
+      const name = escapeHtml(row[1] || '');
+      const co = escapeHtml(row[2] || '');
+      const village = escapeHtml(row[3] || '');
+      const mouja = escapeHtml(row[4] || '');
+      const plot = escapeHtml(row[5] || '');
+      const area = escapeHtml(row[6] || '');
+      const dueRaw = row[7] || '0';
+      const dueDisplay = formatDueNum(dueRaw);
+      const paid = escapeHtml(row[8] || '');
+      const ftype = escapeHtml(row[9] || '');
+      const pageNo = escapeHtml(row[10] || '');
+      html += `<tr>
+        <td>${sl}</td>
+        <td><strong>${name}</strong></td>
+        <td>${co}</td>
+        <td>${village}</td>
+        <td>${mouja}</td>
+        <td>${plot}</td>
+        <td>${area}</td>
+        <td style="color:#C76E1C; font-weight:700;">${dueDisplay}</td>
+        <td>${paid}</td>
+        <td>${ftype}</td>
+        <td>${pageNo}</td>
+        <td class="action-cell"><button class="edit-row-btn" data-edit-idx="${globalIndex}"><i class="fas fa-pen"></i> Edit</button></td>
+      </tr>`;
+    });
+    tableBody.innerHTML = html;
+    attachTableEditEvents();
+  }
+
+  function attachTableEditEvents() {
+    document.querySelectorAll('.edit-row-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const idx = btn.getAttribute('data-edit-idx');
+        if (idx !== null) editRowByIndex(parseInt(idx));
+      });
+    });
+  }
+
+  // real-time search & rerender table
+  function realtimeSearchAndRender() {
+    const term = realtimeSearch.value.trim().toLowerCase();
+    if (term === "") {
+      filteredData = [...tableData];
+    } else {
+      filteredData = tableData.filter(row => row.some(cell => cell !== undefined && cell !== null && String(cell).toLowerCase().includes(term)));
+    }
+    // reset sort when searching fresh? maintain sort column if needed, but we just apply default view
+    if (currentSort.column !== null) {
+      // re-apply sorting on filtered data
+      const col = currentSort.column;
+      const dir = currentSort.direction;
+      filteredData.sort((a, b) => {
+        let valA = a[col] !== undefined ? a[col] : '';
+        let valB = b[col] !== undefined ? b[col] : '';
+        if (col === 0 || col === 7) {
+          let numA = parseFloat(valA), numB = parseFloat(valB);
+          if (isNaN(numA)) numA = 0;
+          if (isNaN(numB)) numB = 0;
+          return dir === 'asc' ? numA - numB : numB - numA;
+        }
+        valA = String(valA).toLowerCase();
+        valB = String(valB).toLowerCase();
+        if (valA < valB) return dir === 'asc' ? -1 : 1;
+        if (valA > valB) return dir === 'asc' ? 1 : -1;
+        return 0;
+      });
+    }
+    renderTableRows();
+    updateInsights(tableData); // KPI/chart based on full data
+    updateSortIcons();
+  }
+
+  // edit logic
+  function editRowByIndex(index) {
+    const row = tableData[index];
+    if (!row) return;
+    // hide table view, show form
+    document.querySelector('.table-wrapper').style.display = 'none';
+    formSection.style.display = 'block';
+    saveBtn.style.display = 'none';
+    updateBtn.style.display = 'inline-flex';
+    rowIndexInput.value = index;
+    slInput.value = row[0] || "";
+    nameInput.value = row[1] || "";
+    coInput.value = row[2] || "";
+    villageInput.value = row[3] || "";
+    moujaInput.value = row[4] || "";
+    plotInput.value = row[5] || "";
+    areaInput.value = row[6] || "";
+    dueInput.value = row[7] || "";
+    paidInput.value = row[8] || "";
+    typeInput.value = row[9] || "";
+    pageInput.value = row[10] || "";
+  }
+
+  function getFormData() { return [slInput.value, nameInput.value, coInput.value, villageInput.value, moujaInput.value, plotInput.value, areaInput.value, dueInput.value, paidInput.value, typeInput.value, pageInput.value]; }
+
+  async function addData() {
+    const newData = getFormData();
+    if (!newData[1]?.trim()) { alert("Farmer name required"); return; }
+    await fetch(WEB_URL, { method: "POST", body: JSON.stringify({ action: "add", data: newData }) });
+    await loadData();
+    closeForm();
+  }
+  async function updateData() {
+    const rowIdx = rowIndexInput.value;
+    if (rowIdx === "") return alert("No row selected");
+    const updData = getFormData();
+    if (!updData[1]?.trim()) { alert("Name required"); return; }
+    await fetch(WEB_URL, { method: "POST", body: JSON.stringify({ action: "update", row: parseInt(rowIdx), data: updData }) });
+    await loadData();
+    closeForm();
+  }
+
+  function showForm() {
+    document.querySelector('.table-wrapper').style.display = 'none';
+    formSection.style.display = 'block';
+    saveBtn.style.display = 'inline-flex';
+    updateBtn.style.display = 'none';
+    rowIndexInput.value = "";
+    slInput.value = tableData.length + 1;
+    nameInput.value = ""; coInput.value = ""; villageInput.value = ""; moujaInput.value = ""; plotInput.value = ""; areaInput.value = ""; dueInput.value = ""; paidInput.value = ""; typeInput.value = ""; pageInput.value = "";
+  }
+  function closeForm() {
+    formSection.style.display = 'none';
+    document.querySelector('.table-wrapper').style.display = 'block';
+  }
+
+  async function loadData() {
+    try {
+      const res = await fetch(WEB_URL);
+      const data = await res.json();
+      tableData = Array.isArray(data) ? data : [];
+      filteredData = [...tableData];
+      // reset sort
+      currentSort = { column: null, direction: 'asc' };
+      renderTableRows();
+      updateInsights(tableData);
+      realtimeSearch.value = "";
+      updateSortIcons();
+    } catch (err) {
+      tableBody.innerHTML = `<tr><td colspan="12" class="empty-table-msg">⚠️ Network / CORS error. Check endpoint.</td></tr>`;
+    }
+  }
+
+  // attach sort listeners
+  function bindSortEvents() {
+    const headers = document.querySelectorAll('.data-table th');
+    headers.forEach((th, idx) => {
+      if (idx < 11) { // exclude action column
+        th.addEventListener('click', () => sortData(idx));
+      }
+    });
+  }
+
+  realtimeSearch.addEventListener("input", realtimeSearchAndRender);
+  openFormBtn.onclick = showForm;
+  closeFormBtn.onclick = closeForm;
+  saveBtn.onclick = addData;
+  updateBtn.onclick = updateData;
+  loadData().then(() => {
+    bindSortEvents();
+  });
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title>Kisan Mitra | Neon Executive Dashboard</title>
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
