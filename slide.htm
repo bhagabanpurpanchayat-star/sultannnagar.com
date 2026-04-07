@@ -1,67 +1,724 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Cinematic Slideshow | Timeless Visual Journey</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none;
+    }
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Drive Slideshow</title>
+    body {
+      background: #0a0a0a;
+      overflow: hidden;
+      font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+      height: 100vh;
+      width: 100vw;
+      position: relative;
+    }
 
-<style>
+    /* MAIN CINEMATIC CONTAINER */
+    .cinema-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      overflow: hidden;
+    }
 
-body{
-margin:0;
-background:black;
-overflow:hidden;
-font-family:Arial;
-}
+    /* SLIDE WRAPPER - FOR SMOOTH ZOOM & FADE EFFECTS */
+    .slide-frame {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      will-change: opacity;
+      z-index: 1;
+    }
 
-#slide{
-width:100%;
-height:100vh;
-object-fit:contain;
-}
+    .slide-frame.active {
+      opacity: 1;
+      z-index: 10;
+    }
 
-</style>
+    /* IMAGE STYLING WITH KEN BURNS ZOOM (CINEMATIC) */
+    .cinematic-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.05);
+      transition: transform 6s ease-out;
+      will-change: transform;
+      filter: brightness(0.98) contrast(1.02);
+    }
 
+    .slide-frame.active .cinematic-img {
+      transform: scale(1.18);
+    }
+
+    /* ELEGANT VIGNETTE + GRADIENT OVERLAY FOR CINEMATIC MOOD */
+    .vignette-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, transparent 40%, rgba(0,0,0,0.55) 90%);
+      pointer-events: none;
+      z-index: 20;
+      mix-blend-mode: multiply;
+    }
+
+    /* ADDITIONAL SOFT GRADIENT FROM BOTTOM */
+    .gradient-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 35%;
+      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+      pointer-events: none;
+      z-index: 20;
+    }
+
+    /* CINEMATIC ASPECT RATIO BARS (LETTERBOXING) */
+    .letterbox-top, .letterbox-bottom {
+      position: absolute;
+      left: 0;
+      right: 0;
+      background: rgba(0,0,0,0.82);
+      z-index: 25;
+      pointer-events: none;
+    }
+    .letterbox-top {
+      top: 0;
+      height: 6%;
+    }
+    .letterbox-bottom {
+      bottom: 0;
+      height: 6%;
+    }
+
+    /* ELEGANT CAPTION */
+    .cinema-caption {
+      position: absolute;
+      bottom: 7%;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: clamp(0.9rem, 4vw, 1.4rem);
+      font-weight: 400;
+      letter-spacing: 3px;
+      color: rgba(255, 245, 235, 0.92);
+      font-family: 'Segoe UI', 'Roboto', system-ui;
+      text-transform: uppercase;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+      z-index: 30;
+      backdrop-filter: blur(3px);
+      background: rgba(0,0,0,0.3);
+      display: inline-block;
+      width: auto;
+      margin: 0 auto;
+      padding: 8px 22px;
+      border-radius: 40px;
+      letter-spacing: 2px;
+      font-weight: 300;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    /* FILM COUNTER */
+    .film-counter {
+      position: absolute;
+      top: 4%;
+      right: 3%;
+      z-index: 30;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(8px);
+      padding: 6px 16px;
+      border-radius: 60px;
+      font-family: monospace;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      color: #eaeaea;
+      font-weight: 500;
+      border: 0.5px solid rgba(255,255,200,0.3);
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    /* ========== CINEMATIC INTRO OVERLAY ========== */
+    .cinematic-intro {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 200;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000000;
+      transition: opacity 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+      opacity: 1;
+    }
+    
+    .intro-content {
+      text-align: center;
+      animation: introPulse 1.8s ease-out infinite alternate;
+    }
+    
+    .intro-logo {
+      font-size: clamp(2rem, 8vw, 4.5rem);
+      font-weight: 300;
+      letter-spacing: 12px;
+      color: #f5f0e8;
+      text-transform: uppercase;
+      font-family: 'Segoe UI', 'Roboto', system-ui;
+      text-shadow: 0 0 20px rgba(255,220,150,0.4);
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #fff8f0 0%, #e0d6c6 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: none;
+    }
+    
+    .intro-sub {
+      font-size: clamp(0.7rem, 3vw, 1rem);
+      letter-spacing: 6px;
+      color: #c9bcac;
+      font-weight: 300;
+      text-transform: uppercase;
+      margin-top: 8px;
+      opacity: 0.8;
+    }
+    
+    .intro-cinema-strip {
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #d4af7a, #f5e6d3, #d4af7a, transparent);
+      margin: 24px auto 0;
+      border-radius: 4px;
+      animation: stripGlow 1.2s ease-in-out infinite;
+    }
+    
+    @keyframes introPulse {
+      0% {
+        opacity: 0.7;
+        transform: scale(0.98);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1.02);
+      }
+    }
+    
+    @keyframes stripGlow {
+      0% { opacity: 0.4; width: 40px; }
+      100% { opacity: 1; width: 80px; }
+    }
+    
+    /* subtle film grain overlay during intro (optional) */
+    .film-grain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 199;
+      background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJmIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjUiIG51bU9jdGF2ZXM9IjMiLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjZikiIG9wYWNpdHk9IjAuMDMiLz48L3N2Zz4=');
+      background-repeat: repeat;
+      opacity: 0.4;
+      transition: opacity 0.8s ease;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .letterbox-top, .letterbox-bottom {
+        height: 3%;
+      }
+      .cinema-caption {
+        bottom: 5%;
+        font-size: 0.7rem;
+        padding: 4px 16px;
+        letter-spacing: 1.5px;
+      }
+      .film-counter {
+        top: 3%;
+        right: 4%;
+        font-size: 0.7rem;
+        padding: 4px 12px;
+      }
+      .intro-logo {
+        letter-spacing: 6px;
+      }
+      .intro-sub {
+        letter-spacing: 3px;
+      }
+    }
+    
+    /* hidden utility */
+    .loading-message {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #ccc;
+      font-size: 1rem;
+      background: rgba(0,0,0,0.6);
+      padding: 12px 24px;
+      border-radius: 40px;
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      font-weight: 300;
+      letter-spacing: 1px;
+      white-space: nowrap;
+      border: 1px solid rgba(255,215,150,0.3);
+      pointer-events: none;
+    }
+  </style>
 </head>
-
 <body>
 
-<img id="slide">
+<div class="cinema-container">
+  <!-- dual frames for crossfade -->
+  <div class="slide-frame" id="frameA">
+    <img class="cinematic-img" id="imgA" alt="cinematic slide">
+  </div>
+  <div class="slide-frame" id="frameB">
+    <img class="cinematic-img" id="imgB" alt="cinematic slide">
+  </div>
+  
+  <!-- artistic overlays -->
+  <div class="vignette-overlay"></div>
+  <div class="gradient-bar"></div>
+  <div class="letterbox-top"></div>
+  <div class="letterbox-bottom"></div>
+  
+  <!-- cinematic caption & counter -->
+  <div class="cinema-caption" id="slideCaption">MOMENTS IN TIME</div>
+  <div class="film-counter" id="frameCounter">— / —</div>
+</div>
+
+<!-- CINEMATIC INTRO OVERLAY (instantly visible on page load) -->
+<div id="cinematicIntro" class="cinematic-intro">
+  <div class="film-grain"></div>
+  <div class="intro-content">
+    <div class="intro-logo">C I N E M A</div>
+    <div class="intro-sub">visual journey</div>
+    <div class="intro-cinema-strip"></div>
+  </div>
+</div>
 
 <script>
-
-const api="https://script.google.com/macros/s/AKfycbytQEfVIq5d0KnzZv3AtszjN8XCY_pcdZ3j5O7SBYzHk39N9HpWql7OdbdN4jsF-qRJbw/exec";
-
-let images=[];
-let index=0;
-
-fetch(api)
-.then(res=>res.json())
-.then(data=>{
-
-images=data;
-
-showSlide();
-
-setInterval(showSlide,3000);
-
-});
-
-function showSlide(){
-
-if(images.length==0) return;
-
-document.getElementById("slide").src=images[index];
-
-index++;
-
-if(index>=images.length){
-index=0;
-}
-
-}
-
+  // ------------------------------
+  // CINEMATIC SLIDESHOW - DRIVE API
+  // with Ken Burns zoom, smooth crossfade & instant intro that fades when first image loads
+  // ------------------------------
+  const API_URL = "https://script.google.com/macros/s/AKfycbytQEfVIq5d0KnzZv3AtszjN8XCY_pcdZ3j5O7SBYzHk39N9HpWql7OdbdN4jsF-qRJbw/exec";
+  
+  let imageUrls = [];
+  let currentIdx = 0;
+  let totalImages = 0;
+  let intervalId = null;
+  let firstImageLoaded = false;      // flag to track if first real image has been displayed
+  let introOverlay = null;
+  let grainOverlay = null;
+  
+  // DOM elements
+  const frameA = document.getElementById('frameA');
+  const frameB = document.getElementById('frameB');
+  const imgA = document.getElementById('imgA');
+  const imgB = document.getElementById('imgB');
+  const captionEl = document.getElementById('slideCaption');
+  const counterEl = document.getElementById('frameCounter');
+  
+  // Active frame management
+  let activeFrame = 'A';
+  let isTransitioning = false;
+  let slideInterval = 4800;   // 4.8 seconds between transitions
+  
+  let nextImagePreload = new Image();
+  
+  // Helper: update counter & caption
+  function updateMetaDisplay(index, total) {
+    if (total > 0) {
+      const currentNumber = (index % total) + 1;
+      counterEl.textContent = `${String(currentNumber).padStart(2, '0')}  /  ${String(total).padStart(2, '0')}`;
+      captionEl.textContent = `✦  ${currentNumber} · CINEMATIC MOMENT  ✦`;
+    } else {
+      counterEl.textContent = `—  /  —`;
+      captionEl.textContent = `✦  NO REELS  ✦`;
+    }
+  }
+  
+  // Preload next image
+  function preloadNextImage(index) {
+    if (!imageUrls.length) return;
+    const nextIdx = (index + 1) % imageUrls.length;
+    const nextUrl = imageUrls[nextIdx];
+    if (nextUrl) {
+      nextImagePreload.src = nextUrl;
+    }
+  }
+  
+  // Hide cinematic intro with elegant fade (once first image is ready)
+  function dismissIntro() {
+    if (!introOverlay) return;
+    // fade out the intro overlay and remove it after transition
+    introOverlay.style.opacity = '0';
+    // also fade out film grain if needed
+    const grain = document.querySelector('.film-grain');
+    if (grain) grain.style.opacity = '0';
+    setTimeout(() => {
+      if (introOverlay && introOverlay.parentNode) {
+        introOverlay.parentNode.removeChild(introOverlay);
+      }
+    }, 1300); // match transition duration
+  }
+  
+  // Core crossfade function
+  function transitionToImage(newImageUrl, newIndex, isFirstLoad = false) {
+    if (isTransitioning && !isFirstLoad) return;
+    if (!isFirstLoad) isTransitioning = true;
+    
+    const incomingFrame = (activeFrame === 'A') ? frameB : frameA;
+    const incomingImg = (activeFrame === 'A') ? imgB : imgA;
+    const outgoingFrame = (activeFrame === 'A') ? frameA : frameB;
+    
+    incomingImg.src = newImageUrl;
+    
+    const onLoadHandler = () => {
+      incomingImg.removeEventListener('load', onLoadHandler);
+      
+      // Apply transition: show incoming frame
+      incomingFrame.classList.add('active');
+      outgoingFrame.classList.remove('active');
+      
+      activeFrame = (activeFrame === 'A') ? 'B' : 'A';
+      
+      updateMetaDisplay(newIndex, totalImages);
+      preloadNextImage(newIndex);
+      
+      // If this is the very first image ever loaded, fade out intro overlay now
+      if (!firstImageLoaded) {
+        firstImageLoaded = true;
+        dismissIntro();
+      }
+      
+      if (!isFirstLoad) {
+        setTimeout(() => {
+          isTransitioning = false;
+        }, 100);
+      } else {
+        isTransitioning = false;
+      }
+    };
+    
+    if (incomingImg.complete && incomingImg.naturalWidth !== 0) {
+      onLoadHandler();
+    } else {
+      incomingImg.addEventListener('load', onLoadHandler);
+      incomingImg.addEventListener('error', () => {
+        console.warn("image load error");
+        incomingFrame.classList.add('active');
+        outgoingFrame.classList.remove('active');
+        activeFrame = (activeFrame === 'A') ? 'B' : 'A';
+        updateMetaDisplay(newIndex, totalImages);
+        preloadNextImage(newIndex);
+        if (!firstImageLoaded) {
+          firstImageLoaded = true;
+          dismissIntro();
+        }
+        setTimeout(() => { isTransitioning = false; }, 100);
+      });
+    }
+  }
+  
+  // Next slide in slideshow
+  function nextSlide() {
+    if (!imageUrls.length) return;
+    const nextIdx = (currentIdx + 1) % imageUrls.length;
+    const nextUrl = imageUrls[nextIdx];
+    if (!nextUrl) return;
+    transitionToImage(nextUrl, nextIdx, false);
+    currentIdx = nextIdx;
+  }
+  
+  // Initialize slideshow after images are fetched
+  function initSlideshow(imagesArray) {
+    if (!imagesArray || imagesArray.length === 0) {
+      captionEl.textContent = `✦  NO IMAGES FOUND  ✦`;
+      counterEl.textContent = `00 / 00`;
+      // Even if no images, after short delay dismiss intro to not block UI
+      setTimeout(() => {
+        if (!firstImageLoaded) {
+          firstImageLoaded = true;
+          dismissIntro();
+        }
+      }, 1800);
+      const loadingDiv = document.createElement('div');
+      loadingDiv.className = 'loading-message';
+      loadingDiv.innerText = '📷  No cinematic reels available  📷';
+      document.querySelector('.cinema-container').appendChild(loadingDiv);
+      setTimeout(() => { loadingDiv.style.opacity = '0'; setTimeout(() => loadingDiv.remove(), 2000); }, 3000);
+      return;
+    }
+    
+    imageUrls = imagesArray.filter(url => url && typeof url === 'string' && url.trim().length > 0);
+    totalImages = imageUrls.length;
+    
+    if (totalImages === 0) {
+      captionEl.textContent = `✦  NO VALID IMAGES  ✦`;
+      setTimeout(() => {
+        if (!firstImageLoaded) {
+          firstImageLoaded = true;
+          dismissIntro();
+        }
+      }, 1000);
+      return;
+    }
+    
+    currentIdx = 0;
+    activeFrame = 'A';
+    isTransitioning = false;
+    
+    const firstUrl = imageUrls[0];
+    // Set first image into frame A and preload second in frame B
+    imgA.src = firstUrl;
+    if (imageUrls[1]) {
+      imgB.src = imageUrls[1];
+    } else {
+      imgB.src = firstUrl;
+    }
+    
+    // Ensure frameA active, frameB inactive
+    frameA.classList.add('active');
+    frameB.classList.remove('active');
+    
+    // Preload next images
+    preloadNextImage(0);
+    if (imageUrls[2]) {
+      const preExtra = new Image();
+      preExtra.src = imageUrls[2];
+    }
+    
+    updateMetaDisplay(0, totalImages);
+    
+    // Critical: Wait for first image to actually load before dismissing intro
+    // We attach a load event to imgA to guarantee that the first image is visually ready
+    const firstImageElement = imgA;
+    const handleFirstLoad = () => {
+      if (!firstImageLoaded) {
+        firstImageLoaded = true;
+        dismissIntro();
+      }
+      firstImageElement.removeEventListener('load', handleFirstLoad);
+    };
+    if (firstImageElement.complete && firstImageElement.naturalWidth !== 0) {
+      handleFirstLoad();
+    } else {
+      firstImageElement.addEventListener('load', handleFirstLoad);
+      firstImageElement.addEventListener('error', () => {
+        if (!firstImageLoaded) {
+          firstImageLoaded = true;
+          dismissIntro();
+        }
+      });
+    }
+    
+    // Start slideshow interval
+    if (intervalId) clearInterval(intervalId);
+    intervalId = setInterval(() => {
+      nextSlide();
+    }, slideInterval);
+  }
+  
+  // Fetch images from Google Apps Script
+  function fetchImages() {
+    // Show subtle loading text only if intro takes longer (optional)
+    const loader = document.createElement('div');
+    loader.className = 'loading-message';
+    loader.innerText = '🎬  LOADING CINEMATIC REELS  🎬';
+    loader.style.zIndex = '210';
+    loader.style.opacity = '0';
+    document.body.appendChild(loader);
+    setTimeout(() => { if(loader) loader.style.opacity = '0.9'; }, 100);
+    
+    fetch(API_URL)
+      .then(response => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json();
+      })
+      .then(data => {
+        if (loader && loader.parentNode) loader.remove();
+        
+        let imageArray = [];
+        if (Array.isArray(data)) {
+          imageArray = data;
+        } else if (data && typeof data === 'object') {
+          if (Array.isArray(data.images)) imageArray = data.images;
+          else if (Array.isArray(data.data)) imageArray = data.data;
+          else if (Array.isArray(data.urls)) imageArray = data.urls;
+          else {
+            const possible = Object.values(data).find(val => Array.isArray(val));
+            if (possible) imageArray = possible;
+          }
+        }
+        
+        const validUrls = imageArray.filter(item => {
+          return item && typeof item === 'string' && (item.startsWith('http://') || item.startsWith('https://') || item.includes('drive.google.com') || item.includes('googleusercontent.com'));
+        });
+        
+        if (validUrls.length === 0 && imageArray.length > 0) {
+          initSlideshow(imageArray.filter(v => v && typeof v === 'string'));
+        } else {
+          initSlideshow(validUrls);
+        }
+      })
+      .catch(error => {
+        console.error("Fetch error:", error);
+        if (loader && loader.parentNode) loader.remove();
+        const errMsg = document.createElement('div');
+        errMsg.className = 'loading-message';
+        errMsg.innerText = '⚠️  UNABLE TO LOAD IMAGES  ⚠️\nCHECK CONNECTION';
+        document.querySelector('.cinema-container').appendChild(errMsg);
+        setTimeout(() => {
+          if(errMsg.parentNode) errMsg.style.opacity = '0';
+          setTimeout(() => errMsg.remove(), 1500);
+        }, 4000);
+        captionEl.textContent = `✦  CONNECTION ERROR  ✦`;
+        counterEl.textContent = `?? / ??`;
+        // Still dismiss intro after a delay so user isn't stuck
+        setTimeout(() => {
+          if (!firstImageLoaded) {
+            firstImageLoaded = true;
+            dismissIntro();
+          }
+        }, 2000);
+      });
+  }
+  
+  // Capture intro overlay element
+  introOverlay = document.getElementById('cinematicIntro');
+  // Add a small fallback: if after 4 seconds no image loaded, dismiss intro anyway (avoid eternal black screen)
+  const fallbackTimer = setTimeout(() => {
+    if (!firstImageLoaded && introOverlay && introOverlay.parentNode) {
+      firstImageLoaded = true;
+      dismissIntro();
+    }
+  }, 5000);
+  
+  // Cleanup fallback if everything loads correctly (not necessary but safety)
+  window.addEventListener('load', () => {
+    // minor: if everything loaded before but firstImageLoaded flag might be set already
+    setTimeout(() => {
+      if (!firstImageLoaded && introOverlay && introOverlay.parentNode) {
+        firstImageLoaded = true;
+        dismissIntro();
+      }
+    }, 4800);
+  });
+  
+  // Start fetching
+  fetchImages();
+  
+  // Manual controls: click or keyboard for next slide
+  const container = document.querySelector('.cinema-container');
+  container.addEventListener('click', (e) => {
+    if (imageUrls.length > 0 && !isTransitioning) {
+      nextSlide();
+      if (intervalId) {
+        clearInterval(intervalId);
+        intervalId = setInterval(() => { nextSlide(); }, slideInterval);
+      }
+      captionEl.style.transform = 'scale(1.02)';
+      setTimeout(() => { captionEl.style.transform = ''; }, 150);
+    }
+  });
+  
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+      e.preventDefault();
+      if (imageUrls.length > 0 && !isTransitioning) {
+        nextSlide();
+        if (intervalId) {
+          clearInterval(intervalId);
+          intervalId = setInterval(() => { nextSlide(); }, slideInterval);
+        }
+      }
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      if (imageUrls.length > 0 && !isTransitioning) {
+        let prevIdx = (currentIdx - 1 + imageUrls.length) % imageUrls.length;
+        const prevUrl = imageUrls[prevIdx];
+        if (prevUrl) {
+          function doPrevTransition() {
+            const incomingFrame = (activeFrame === 'A') ? frameB : frameA;
+            const incomingImg = (activeFrame === 'A') ? imgB : imgA;
+            const outgoingFrame = (activeFrame === 'A') ? frameA : frameB;
+            incomingImg.src = prevUrl;
+            const onPrevLoad = () => {
+              incomingImg.removeEventListener('load', onPrevLoad);
+              incomingFrame.classList.add('active');
+              outgoingFrame.classList.remove('active');
+              activeFrame = (activeFrame === 'A') ? 'B' : 'A';
+              currentIdx = prevIdx;
+              updateMetaDisplay(currentIdx, totalImages);
+              preloadNextImage(currentIdx);
+              isTransitioning = false;
+            };
+            if (incomingImg.complete && incomingImg.naturalWidth !== 0) onPrevLoad();
+            else incomingImg.addEventListener('load', onPrevLoad);
+          }
+          if(!isTransitioning){
+            isTransitioning = true;
+            doPrevTransition();
+            if (intervalId) {
+              clearInterval(intervalId);
+              intervalId = setInterval(() => { nextSlide(); }, slideInterval);
+            }
+            setTimeout(() => { if(isTransitioning) isTransitioning = false; }, 200);
+          }
+        }
+      }
+    }
+  });
+  
+  // Preload extra images for performance
+  function deepPreload(urls) {
+    if (!urls || !urls.length) return;
+    for (let i = 0; i < Math.min(5, urls.length); i++) {
+      const pre = new Image();
+      if (urls[i]) pre.src = urls[i];
+    }
+  }
+  
+  // Override to add extra preload after init
+  const originalInit = initSlideshow;
+  window.initSlideshow = function(arr) {
+    originalInit(arr);
+    if (arr && arr.length) deepPreload(arr);
+  };
+  
+  // ensure final cleanup if any edge case
+  window.addEventListener('pageshow', () => {
+    if (introOverlay && introOverlay.parentNode && !firstImageLoaded) {
+      setTimeout(() => {
+        if (!firstImageLoaded) dismissIntro();
+      }, 2000);
+    }
+  });
 </script>
-
 </body>
 </html>
