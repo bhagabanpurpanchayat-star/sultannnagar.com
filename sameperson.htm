@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Gram Panchayat - Residency Certificate | Sultannagar</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Noto+Serif:opsz,wght@6..36,400;6..36,500;6..36,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -151,133 +151,174 @@
             font-size: 0.65rem;
         }
         
-        /* CERTIFICATE STYLES - A4 Portrait */
+        /* CERTIFICATE STYLES - Professional Layout with Book Antiqua */
         .certificate-panel { margin-top: 1.5rem; }
         .certificate-wrapper {
             background: white;
             border-radius: 20px;
             box-shadow: 0 12px 32px rgba(0,0,0,0.25);
             width: 100%;
-            max-width: 800px;
+            max-width: 850px;
             margin: 0 auto;
         }
         .certificate {
             background: #ffffff;
-            color: #000000;
-            font-family: 'Times New Roman', 'Georgia', serif;
-            padding: 1rem 1.2rem;
+            color: #1a1a1a;
+            font-family: 'Book Antiqua', 'Georgia', 'Times New Roman', serif;
+            padding: 1.5rem 2rem;
         }
         
         /* Official Certificate Header */
         .cert-header {
             text-align: center;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
         }
         .cert-header .office-title {
-            font-size: 0.7rem;
-            letter-spacing: 1px;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
             font-weight: 600;
+            color: #2c4724;
         }
         .cert-header .panchayat-name {
-            font-size: 1.4rem;
-            font-weight: bold;
+            font-size: 1.8rem;
+            font-weight: 800;
             text-transform: uppercase;
-            margin: 3px 0;
+            margin: 5px 0;
+            color: #1a3a1a;
+            letter-spacing: 1px;
         }
         .cert-header .samiti-name {
-            font-size: 0.75rem;
-            font-weight: 500;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #4a5a3a;
         }
         .cert-header .address-line {
-            font-size: 0.65rem;
-            margin-top: 3px;
-            margin-bottom: 6px;
+            font-size: 0.8rem;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            color: #555;
         }
         /* Double line across the page */
         .double-line {
-            border-top: 3px double #000000;
+            border-top: 3px double #2c4724;
             width: 100%;
-            margin: 5px 0 10px 0;
+            margin: 10px 0 15px 0;
         }
         
         .ref-date-row {
             display: flex;
             justify-content: space-between;
-            margin: 10px 0 12px 0;
-            font-size: 0.7rem;
+            margin: 15px 0 20px 0;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #333;
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 8px;
         }
         
         .to-whom {
             text-align: center;
-            font-weight: bold;
-            font-size: 0.8rem;
-            margin: 10px 0 8px 0;
+            font-weight: 700;
+            font-size: 1rem;
+            margin: 20px 0 15px 0;
             text-decoration: underline;
+            letter-spacing: 1px;
+            color: #2c4724;
         }
         
         .cert-body {
-            font-size: 0.75rem;
-            line-height: 1.5;
+            font-size: 0.9rem;
+            line-height: 1.6;
             text-align: justify;
-            margin: 8px 0;
+            margin: 12px 0;
         }
         
-        /* Resident Info - Left Aligned */
+        /* Resident Info - Professional Styling */
         .resident-info {
-            font-size: 0.75rem;
-            line-height: 1.6;
-            margin: 10px 0;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            margin: 15px 0;
             text-align: left;
+            background: #fefcf5;
+            padding: 12px 18px;
+            border-left: 4px solid #b8863b;
+            border-radius: 8px;
         }
         .resident-info .resident-name-line {
             margin: 5px 0;
+            font-size: 1rem;
         }
         .resident-info .resident-detail-line {
-            margin: 3px 0;
+            margin: 4px 0;
         }
         .resident-info .label {
-            font-weight: 600;
+            font-weight: 700;
             display: inline-block;
-            min-width: 85px;
+            min-width: 100px;
+            color: #4e3e2c;
+        }
+        .resident-name-highlight {
+            font-weight: 800;
+            color: #1f4f2d;
+            font-size: 1.05rem;
         }
         
         /* Variation Table in Certificate */
         .cert-variation-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 12px 0;
-            font-size: 0.7rem;
+            margin: 18px 0;
+            font-size: 0.8rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
         .cert-variation-table th, .cert-variation-table td {
-            border: 1px solid #000;
-            padding: 6px 8px;
+            border: 1px solid #8b7a5a;
+            padding: 8px 10px;
             text-align: center;
         }
         .cert-variation-table th {
-            background: #f0f0f0;
-            font-weight: bold;
+            background: #e8dfc8;
+            font-weight: 700;
+            font-size: 0.82rem;
+            color: #2c4123;
         }
-        .cert-variation-table th:nth-child(3) {
-            width: 80px;
+        .cert-variation-table td {
+            font-size: 0.78rem;
         }
-        .cert-variation-table td:nth-child(3) {
-            width: 80px;
+        
+        .italic-statement {
+            margin-top: 15px;
+            font-style: italic;
+            font-size: 0.88rem;
+            color: #444;
+            text-align: right;
+            padding-right: 20px;
         }
         
         .signature-row {
             display: flex;
             justify-content: flex-end;
-            margin-top: 20px;
+            margin-top: 30px;
             padding-top: 15px;
         }
         .signature {
             text-align: center;
-            font-size: 0.7rem;
-            width: 220px;
+            font-size: 0.85rem;
+            width: 250px;
+            border-top: 1px dashed #b8863b;
+            padding-top: 15px;
+        }
+        .signature div {
+            margin: 3px 0;
+        }
+        .signature .stamp-text {
+            font-family: 'Book Antiqua', serif;
+            font-weight: 700;
+            color: #7c2e1a;
         }
         
         .print-actions { display: flex; gap: 10px; justify-content: flex-end; margin-bottom: 12px; }
-        .btn-print { background: #E6B17E; color: #1e2f3e; border: none; padding: 6px 18px; border-radius: 35px; cursor: pointer; font-weight: bold; font-size: 0.75rem; }
+        .btn-print { background: #E6B17E; color: #1e2f3e; border: none; padding: 8px 22px; border-radius: 35px; cursor: pointer; font-weight: bold; font-size: 0.8rem; }
         
         .certificate-wrapper.hidden-cert { display: none; }
         .certificate-wrapper.visible-cert { display: block; }
@@ -364,7 +405,7 @@
                 background: white !important;
                 color: black !important;
                 border: none !important;
-                padding: 0.2in !important;
+                padding: 0.25in !important;
                 margin: 0 !important;
                 width: 100%;
             }
@@ -377,6 +418,10 @@
             }
             .double-line {
                 border-top: 3px double black !important;
+            }
+            .resident-info {
+                background: none;
+                border-left: 2px solid #333;
             }
         }
     </style>
@@ -448,7 +493,7 @@
     </div>
 
     <div class="certificate-panel">
-        <div style="width:100%; max-width:800px; margin:0 auto;">
+        <div style="width:100%; max-width:850px; margin:0 auto;">
             <div class="certificate-wrapper hidden-cert" id="certificateWrapper">
                 <div class="certificate" id="certificate">
                     <div class="cert-header">
@@ -469,43 +514,43 @@
                     </div>
                     
                     <div class="cert-body">
-                        <p>This is to certify that the person mentioned below is/was a permanent resident of <strong>Sultannagar Gram Panchayat</strong> under Harishchandrapur-II Dev. Block Malda.</p>
+                        <p>This is to certify that the person mentioned below is/was a permanent resident of <strong>Sultannagar Gram Panchayat</strong> under Harishchandrapur-II Development Block, District Malda.</p>
                     </div>
                     
-                    <!-- Resident Information - Left Aligned with "Name:" label -->
+                    <!-- Resident Information - Professional Layout with "Name:" label -->
                     <div class="resident-info" id="residentInfo">
-                        <div class="resident-name-line"><span class="label">Name :</span> <strong id="residentNameDisplay">Sarban Saha</strong></div>
-                        <div class="resident-detail-line"><span class="label" id="relationLabel">S/O-</span> <span id="fatherNameDisplay">Ramji Saha</span></div>
+                        <div class="resident-name-line"><span class="label">Name :</span> <span class="resident-name-highlight" id="residentNameDisplay">Sarban Saha</span></div>
+                        <div class="resident-detail-line"><span class="label" id="relationLabel">S/O :</span> <span id="fatherNameDisplay">Ramji Saha</span></div>
                         <div class="resident-detail-line"><span class="label">Village :</span> <span id="villageDisplay">Barduary</span></div>
-                        <div class="resident-detail-line"><span class="label">P.O :</span> <span id="poDisplay">Barduary</span></div>
-                        <div class="resident-detail-line"><span class="label">P.S :</span> <span id="psDisplay">Harishchandrapur</span></div>
+                        <div class="resident-detail-line"><span class="label">Post Office :</span> <span id="poDisplay">Barduary</span></div>
+                        <div class="resident-detail-line"><span class="label">Police Station :</span> <span id="psDisplay">Harishchandrapur</span></div>
                         <div class="resident-detail-line"><span class="label">District :</span> <span id="districtDisplay">Malda</span></div>
-                        <div class="resident-detail-line"><span class="label">PIN :</span> <span id="pinDisplay">732125</span></div>
+                        <div class="resident-detail-line"><span class="label">PIN Code :</span> <span id="pinDisplay">732125</span></div>
                     </div>
                     
                     <div class="cert-body">
-                        <p>It is to mention that the above person's name has been written differently in the following documents but all the names as stated below belongs to the same & identical person.</p>
+                        <p>It is to mention that the above person's name has been written differently in the following documents but all the names as stated below belong to the same and identical person.</p>
                     </div>
                     
                     <table class="cert-variation-table" id="variationTable">
                         <thead>
-                            <tr><th>Name Vs Doc</th><th>Name</th><th>Relation</th><th>Husband/Father</th><th>Doc Type</th><th>Doc Details</th></tr>
+                            <tr><th>Sl. No.</th><th>Document Ref.</th><th>Name</th><th>Relation</th><th>Father/Husband Name</th><th>Document Type</th><th>Document Details</th></tr>
                         </thead>
                         <tbody id="variationTableBody">
-                            <tr><td colspan="6" style="text-align:center;">Loading...</td></tr>
+                            <tr><td colspan="7" style="text-align:center;">Loading...</td></tr>
                         </tbody>
                     </table>
                     
-                    <div class="cert-body">
-                        <p style="margin-top: 12px; font-style: italic;">The above information is treated to be correct.</p>
+                    <div class="italic-statement">
+                        The above information is treated to be correct.
                     </div>
                     
                     <div class="signature-row">
                         <div class="signature">
                             <div>_________________</div>
-                            <div>(Prodhan)</div>
-                            <div>Sultannagar Gram Panchayat</div>
-                            <div>Barduary, HC Pur, Malda</div>
+                            <div><strong>(Prodhan)</strong></div>
+                            <div class="stamp-text">Sultannagar Gram Panchayat</div>
+                            <div>Barduary, Harishchandrapur, Malda</div>
                             <div><i class="fas fa-stamp"></i> Authorised Seal</div>
                         </div>
                     </div>
@@ -525,7 +570,7 @@
     
     // Default documents
     let docEntries = [
-        { docLabel: "DOC1", name: "Sarban Saha", relation: "S/O", husbandFather: "Ramji Saha", docType: "AADHAR", docDetails: "256430183988" },
+        { docLabel: "DOC1", name: "Sarban Saha", relation: "S/O", husbandFather: "Ramji Saha", docType: "AADHAR", docDetails: "2564 3018 3988" },
         { docLabel: "DOC2", name: "Sarban Saha", relation: "S/O", husbandFather: "Ramji Saha", docType: "EPIC", docDetails: "DMM2521789" },
         { docLabel: "DOC3", name: "Sarban Saha", relation: "S/O", husbandFather: "Ramji", docType: "LAND DETAILS", docDetails: "JL No-129, Khatian No-642, Mouja-Dakshin Ramnagar" },
         { docLabel: "DOC4", name: "Josnara Khatun", relation: "W/O", husbandFather: "Tajibur Rahaman", docType: "OTHER", docDetails: "5065029006013" }
@@ -590,7 +635,7 @@
                         <td style="text-align:center;"><button class="remove-doc-btn" data-idx="${idx}"><i class="fas fa-trash-alt"></i></button></td>
                       </tr>`;
         });
-        html += `</tbody></table>`;
+        html += `</tbody>}</table>`;
         container.innerHTML = html;
 
         // Attach event listeners
@@ -640,7 +685,7 @@
 
     function resetDefaultDocs() {
         docEntries = [
-            { docLabel: "DOC1", name: "Sarban Saha", relation: "S/O", husbandFather: "Ramji Saha", docType: "AADHAR", docDetails: "256430183988" },
+            { docLabel: "DOC1", name: "Sarban Saha", relation: "S/O", husbandFather: "Ramji Saha", docType: "AADHAR", docDetails: "2564 3018 3988" },
             { docLabel: "DOC2", name: "Sarban Saha", relation: "S/O", husbandFather: "Ramji Saha", docType: "EPIC", docDetails: "DMM2521789" },
             { docLabel: "DOC3", name: "Sarban Saha", relation: "S/O", husbandFather: "Ramji", docType: "LAND DETAILS", docDetails: "JL No-129, Khatian No-642, Mouja-Dakshin Ramnagar" },
             { docLabel: "DOC4", name: "Josnara Khatun", relation: "W/O", husbandFather: "Tajibur Rahaman", docType: "OTHER", docDetails: "5065029006013" }
@@ -676,20 +721,21 @@
         document.getElementById('pinDisplay').innerText = pin;
         document.getElementById('certDate').innerText = getTodayDate();
         
-        // Generate variation table
+        // Generate variation table with Sl. No.
         const tbody = document.getElementById('variationTableBody');
         tbody.innerHTML = '';
         if (docEntries.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No document records found</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No document records found</td></tr>';
         } else {
-            docEntries.forEach((doc) => {
+            docEntries.forEach((doc, idx) => {
                 const row = tbody.insertRow();
-                row.insertCell(0).innerText = doc.docLabel || "—";
-                row.insertCell(1).innerText = doc.name || "—";
-                row.insertCell(2).innerText = doc.relation || "—";
-                row.insertCell(3).innerText = doc.husbandFather || "—";
-                row.insertCell(4).innerText = doc.docType || "—";
-                row.insertCell(5).innerText = doc.docDetails || "—";
+                row.insertCell(0).innerText = idx + 1;
+                row.insertCell(1).innerText = doc.docLabel || "—";
+                row.insertCell(2).innerText = doc.name || "—";
+                row.insertCell(3).innerText = doc.relation || "—";
+                row.insertCell(4).innerText = doc.husbandFather || "—";
+                row.insertCell(5).innerText = doc.docType || "—";
+                row.insertCell(6).innerText = doc.docDetails || "—";
             });
         }
         
