@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Legal Heir Certificate | Sultannagar Gram Panchayat</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            background: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2070&auto=format') center/cover no-repeat fixed;
+            position: relative;
+            color: #1e2f3e;
+            line-height: 1.5;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 0;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1.8rem 1.5rem;
+        }
+
+        .welcome-hero {
+            background: rgba(11, 43, 64, 0.75);
+            backdrop-filter: blur(12px);
+            border-radius: 28px;
+            padding: 1.2rem 2rem;
+            margin-bottom: 2rem;
+            color: white;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .welcome-hero h1 {
+            font-size: 1.7rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .welcome-hero h1 i { color: #E6B17E; font-size: 1.8rem; }
+        
+        @media (max-width: 768px) {
+            .welcome-hero { padding: 1rem; }
+            .welcome-hero h1 { font-size: 1.2rem; }
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(12px);
+            border-radius: 28px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255,255,255,0.25);
+        }
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 4px solid #E6B17E;
+            padding-left: 15px;
+        }
+        .section-title i { color: #E6B17E; }
+        
+        /* Form Styles */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .input-group label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #FFE6C7;
+        }
+        .input-group input, .input-group select {
+            padding: 8px 12px;
+            border-radius: 12px;
+            border: none;
+            background: rgba(255,255,255,0.9);
+            font-size: 0.8rem;
+        }
+        .btn-primary {
+            background: #E6B17E;
+            color: #1e2f3e;
+            border: none;
+            padding: 8px 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            border-radius: 35px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .btn-secondary {
+            background: rgba(100, 100, 100, 0.8);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            border-radius: 35px;
+            cursor: pointer;
+        }
+        .btn-add {
+            background: rgba(46, 125, 50, 0.9);
+            color: white;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 35px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .btn-remove {
+            background: #c0392b;
+            color: white;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.65rem;
+        }
+        
+        /* Heirs Table Styles */
+        .heirs-section {
+            margin-top: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 15px;
+        }
+        .heirs-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .heirs-header h3 {
+            color: #FFE6C7;
+            font-size: 0.9rem;
+        }
+        .heirs-table-container {
+            overflow-x: auto;
+        }
+        .heirs-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255,255,255,0.95);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .heirs-table th, .heirs-table td {
+            border: 1px solid #ccc;
+            padding: 8px 10px;
+            text-align: left;
+            font-size: 0.75rem;
+        }
+        .heirs-table th {
+            background: #e8d5b5;
+            font-weight: bold;
+        }
+        .heirs-table th:nth-child(3) {
+            width: 100px;
+        }
+        .heirs-table td:nth-child(3) {
+            width: 100px;
+        }
+        .heirs-table input, .heirs-table select {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.7rem;
+        }
+        
+        /* CERTIFICATE STYLES - A4 Portrait */
+        .certificate-panel { margin-top: 1.5rem; }
+        .certificate-wrapper {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .certificate {
+            background: #ffffff;
+            color: #000000;
+            font-family: 'Times New Roman', 'Georgia', serif;
+            padding: 1rem 1.2rem;
+        }
+        
+        /* Official Certificate Header */
+        .cert-header {
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        .cert-header .office-title {
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        .cert-header .panchayat-name {
+            font-size: 1.4rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin: 3px 0;
+        }
+        .cert-header .samiti-name {
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .cert-header .address-line {
+            font-size: 0.65rem;
+            margin-top: 3px;
+            margin-bottom: 6px;
+        }
+        /* Double line across the page */
+        .double-line {
+            border-top: 3px double #000000;
+            width: 100%;
+            margin: 5px 0 10px 0;
+        }
+        
+        .ref-date-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0 12px 0;
+            font-size: 0.7rem;
+        }
+        
+        .to-whom {
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.8rem;
+            margin: 10px 0 8px 0;
+            text-decoration: underline;
+        }
+        
+        .cert-body {
+            font-size: 0.75rem;
+            line-height: 1.5;
+            text-align: justify;
+            margin: 8px 0;
+        }
+        
+        /* Deceased Info - Left Aligned, No Table */
+        .deceased-info {
+            font-size: 0.75rem;
+            line-height: 1.6;
+            margin: 10px 0;
+            text-align: left;
+        }
+        .deceased-info .deceased-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .deceased-info .deceased-detail-line {
+            margin: 3px 0;
+        }
+        .deceased-info .label {
+            font-weight: 600;
+            display: inline-block;
+            min-width: 85px;
+        }
+        
+        /* Heirs Table in Certificate */
+        .cert-heirs-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            font-size: 0.7rem;
+        }
+        .cert-heirs-table th, .cert-heirs-table td {
+            border: 1px solid #000;
+            padding: 6px 8px;
+            text-align: center;
+        }
+        .cert-heirs-table th {
+            background: #f0f0f0;
+            font-weight: bold;
+        }
+        .cert-heirs-table th:nth-child(3) {
+            width: 90px;
+        }
+        .cert-heirs-table td:nth-child(3) {
+            width: 90px;
+        }
+        
+        /* Verification Statement */
+        .verification-statement {
+            font-size: 0.72rem;
+            line-height: 1.5;
+            margin: 15px 0 10px 0;
+            text-align: justify;
+        }
+        .verification-statement .underlined-name {
+            text-decoration: underline;
+            font-weight: 600;
+        }
+        
+        .signature-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 15px;
+        }
+        .signature {
+            text-align: center;
+            font-size: 0.7rem;
+        }
+        
+        .print-actions { display: flex; gap: 10px; justify-content: flex-end; margin-bottom: 12px; }
+        .btn-print { background: #E6B17E; color: #1e2f3e; border: none; padding: 6px 18px; border-radius: 35px; cursor: pointer; font-weight: bold; font-size: 0.75rem; }
+        
+        .certificate-wrapper.hidden-cert { display: none; }
+        .certificate-wrapper.visible-cert { display: block; }
+        
+        .footer {
+            text-align: center;
+            padding: 0.8rem;
+            font-size: 0.65rem;
+            color: rgba(255,255,255,0.8);
+            border-top: 1px solid rgba(255,255,255,0.2);
+            margin-top: 1.5rem;
+            backdrop-filter: blur(8px);
+            background: rgba(0,0,0,0.3);
+            border-radius: 35px;
+        }
+        
+        /* A4 Portrait Print Styles */
+        @media print {
+            body { 
+                background: white; 
+                padding: 0; 
+                margin: 0; 
+            }
+            body::before { 
+                display: none; 
+            }
+            .container { 
+                padding: 0; 
+                margin: 0; 
+                max-width: 100%; 
+            }
+            .welcome-hero, .glass-card, .print-actions, .footer, .heirs-section, 
+            .btn-primary, .btn-secondary, .btn-add { 
+                display: none !important; 
+            }
+            .certificate-panel { 
+                background: white; 
+                padding: 0; 
+                margin: 0; 
+            }
+            .certificate-wrapper { 
+                box-shadow: none; 
+                background: white; 
+                border-radius: 0; 
+                max-width: 100%;
+            }
+            .certificate {
+                background: white !important;
+                color: black !important;
+                border: none !important;
+                padding: 0.2in !important;
+                margin: 0 !important;
+                width: 100%;
+            }
+            @page {
+                size: A4 portrait;
+                margin: 0.2in;
+            }
+            .cert-heirs-table th, .cert-heirs-table td {
+                border: 1px solid black !important;
+            }
+            .double-line {
+                border-top: 3px double black !important;
+            }
+            .signature {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+            .verification-statement {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+  
+    <div class="welcome-hero">
+        <h1><i class="fas fa-file-certificate"></i> Legal Heir Certificate | Sultannagar Gram Panchayat</h1>
+    </div>
+
+    <div class="glass-card">
+        <div class="section-title"><i class="fas fa-pen-alt"></i> Enter Deceased & Legal Heirs Details</div>
+        
+        <div class="form-grid">
+            <div class="input-group">
+                <label><i class="fas fa-user"></i> Full Name of Deceased</label>
+                <input type="text" id="deceasedName" value="Late Shri Ram Chandra Mondal" placeholder="Enter full name">
+            </div>
+            <div class="input-group">
+                <label><i class="fas fa-venus-mars"></i> S/O / W/O / D/O</label>
+                <select id="deceasedRelation">
+                    <option value="S/O">S/O</option>
+                    <option value="W/O">W/O</option>
+                    <option value="D/O">D/O</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label><i class="fas fa-user"></i> Father/Husband Name</label>
+                <input type="text" id="deceasedFatherName" value="Late Shri Gopal Mondal" placeholder="Father/Husband name">
+            </div>
+            <div class="input-group">
+                <label><i class="fas fa-map-marker-alt"></i> Village</label>
+                <input type="text" id="village" value="Sahapur" placeholder="Village">
+            </div>
+            <div class="input-group">
+                <label><i class="fas fa-envelope"></i> Post Office</label>
+                <input type="text" id="postOffice" value="Barduary" placeholder="Post Office">
+            </div>
+            <div class="input-group">
+                <label><i class="fas fa-calendar-alt"></i> Date of Death</label>
+                <input type="text" id="deathDate" value="15/01/2025" placeholder="DD/MM/YYYY">
+            </div>
+            <div class="input-group">
+                <label><i class="fas fa-shield-alt"></i> Police Station</label>
+                <input type="text" id="policeStation" value="Harishchandrapur" placeholder="Police Station">
+            </div>
+            <div class="input-group">
+                <label><i class="fas fa-map"></i> District</label>
+                <input type="text" id="district" value="Malda" placeholder="District">
+            </div>
+        </div>
+        
+        <!-- Legal Heirs Table Input -->
+        <div class="heirs-section">
+            <div class="heirs-header">
+                <h3><i class="fas fa-users"></i> Legal Heirs Details (Max 10)</h3>
+                <button class="btn-add" id="addHeirBtn"><i class="fas fa-plus"></i> Add Heir</button>
+            </div>
+            <div class="heirs-table-container">
+                <table class="heirs-table" id="heirsInputTable">
+                    <thead>
+                        <tr><th>Sl. No.</th><th>Name of Legal Heir</th><th style="width:100px">Relation</th><th>Age</th><th>Remarks</th><th style="width:50px">Action</th></tr>
+                    </thead>
+                    <tbody id="heirsInputBody">
+                        <tr>
+                            <td>1</td>
+                            <td><input type="text" class="heir-name" value="Bishwanath Mondal" placeholder="Name"></td>
+                            <td><select class="heir-relation" style="width:100px"><option value="Son">Son</option><option value="Daughter">Daughter</option><option value="Wife">Wife</option><option value="Other">Other</option></select></td>
+                            <td><input type="text" class="heir-age" value="58" placeholder="Age"></td>
+                            <td><input type="text" class="heir-remark" placeholder="Remarks"></td>
+                            <td><button class="btn-remove remove-heir"><i class="fas fa-trash"></i></button></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><input type="text" class="heir-name" value="Lakshmi Mondal" placeholder="Name"></td>
+                            <td><select class="heir-relation" style="width:100px"><option value="Son">Son</option><option value="Daughter">Daughter</option><option value="Wife" selected>Wife</option><option value="Other">Other</option></select></td>
+                            <td><input type="text" class="heir-age" value="55" placeholder="Age"></td>
+                            <td><input type="text" class="heir-remark" placeholder="Remarks"></td>
+                            <td><button class="btn-remove remove-heir"><i class="fas fa-trash"></i></button></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><input type="text" class="heir-name" value="Gobinda Mondal" placeholder="Name"></td>
+                            <td><select class="heir-relation" style="width:100px"><option value="Son" selected>Son</option><option value="Daughter">Daughter</option><option value="Wife">Wife</option><option value="Other">Other</option></select></td>
+                            <td><input type="text" class="heir-age" value="52" placeholder="Age"></td>
+                            <td><input type="text" class="heir-remark" placeholder="Remarks"></td>
+                            <td><button class="btn-remove remove-heir"><i class="fas fa-trash"></i></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="heirWarning" style="color:#ffcc00; font-size:0.65rem; margin-top:8px; display:none;">⚠️ Maximum 10 legal heirs reached</div>
+        </div>
+        
+        <div style="display: flex; gap: 10px; margin-top: 15px; justify-content: flex-end;">
+            <button id="resetExampleBtn" class="btn-secondary"><i class="fas fa-undo"></i> Reset Example</button>
+            <button id="generateCertBtn" class="btn-primary"><i class="fas fa-file-alt"></i> Generate Certificate</button>
+        </div>
+    </div>
+
+    <div class="certificate-panel">
+        <div style="width:100%; max-width:800px; margin:0 auto;">
+            <div class="print-actions">
+                <button class="btn-print" id="printBtn"><i class="fas fa-print"></i> Print Certificate (A4 Portrait)</button>
+            </div>
+            <div class="certificate-wrapper hidden-cert" id="certificateWrapper">
+                <div class="certificate" id="certificate">
+                    <div class="cert-header">
+                        <div class="office-title">OFFICE OF THE</div>
+                        <div class="panchayat-name">SULTANNAGAR GRAM PANCHAYAT</div>
+                        <div class="samiti-name">HARISHCHANDRAPUR - II PANCHAYAT SAMITI</div>
+                        <div class="address-line">P.O.- Barduary, Dist.- Malda (W.B.) - 732123</div>
+                        <div class="double-line"></div>
+                    </div>
+                    
+                    <div class="ref-date-row">
+                        <div><strong>Ref No.:</strong> ______________</div>
+                        <div><strong>Date:</strong> <span id="certDate"></span></div>
+                    </div>
+                    
+                    <div class="to-whom">
+                        TO WHOM IT MAY CONCERN
+                    </div>
+                    
+                    <div class="cert-body">
+                        <p>This is to Certify that,</p>
+                    </div>
+                    
+                    <!-- Deceased Information - Left Aligned, No Table -->
+                    <div class="deceased-info" id="deceasedInfo">
+                        <div class="deceased-name"><strong id="deceasedNameDisplay">Late Shri Ram Chandra Mondal</strong></div>
+                        <div class="deceased-detail-line"><span class="label">S/O-</span> <span id="fatherNameDisplay">Late Shri Gopal Mondal</span></div>
+                        <div class="deceased-detail-line"><span class="label">Village-</span> <span id="villageDisplay">Sahapur</span></div>
+                        <div class="deceased-detail-line"><span class="label">P.O-</span> <span id="postDisplay">Barduary</span></div>
+                        <div class="deceased-detail-line"><span class="label">P.S.-</span> <span id="psDisplay">Harishchandrapur</span></div>
+                        <div class="deceased-detail-line"><span class="label">Dist-</span> <span id="districtDisplay">Malda</span></div>
+                        <div class="deceased-detail-line">was a permanent inhabitant under Sultannagar Gram Panchayat.</div>
+                    </div>
+                    
+                    <div class="cert-body">
+                        <p>He/She expired on <strong id="deathDateDisplay">15/01/2025</strong> intestate leaving behind him/her legal heirs which are noted as below :-</p>
+                    </div>
+                    
+                    <table class="cert-heirs-table" id="certHeirsTable">
+                        <thead>
+                            <tr><th>Sl. No.</th><th>Name of legal heirs</th><th style="width:90px">Relation</th><th>Age</th><th>Remarks</th></tr>
+                        </thead>
+                        <tbody id="certHeirsBody">
+                            <tr><td colspan="5" style="text-align:center;">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                    
+                    <!-- Verification Statement with dynamic count and underlined name -->
+                    <div class="verification-statement" id="verificationStatement">
+                        The above mentioned <span id="heirCountText">3</span>  legal heirs of <span class="underlined-name" id="underlinedDeceasedName">Lt. Ram Chandra Mondal</span> are true to the best of my Knowledge, Belief and informations.
+                    </div>
+                    
+                    <div class="signature-row">
+                        <div class="signature">
+                            <div>_________________</div>
+                            <div>Signature of Applicant</div>
+                        </div>
+                        <div class="signature">
+                            <div>_________________</div>
+                            <div>Seal & Signature</div>
+                            <div>Prodhan</div>
+                            <div>Sultannagar Gram Panchayat</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>© 2025 Sultannagar Gram Panchayat, Harishchandrapur-2, Malda | Legal Heir Certificate System</p>
+    </div>
+</div>
+
+<script>
+    let heirs = [
+        { name: "Bishwanath Mondal", relation: "Son", age: "58", remark: "" },
+        { name: "Lakshmi Mondal", relation: "Wife", age: "55", remark: "" },
+        { name: "Gobinda Mondal", relation: "Son", age: "52", remark: "" }
+    ];
+    
+    const MAX_HEIRS = 20;
+    
+    function updateHeirsTableInput() {
+        const tbody = document.getElementById('heirsInputBody');
+        tbody.innerHTML = '';
+        heirs.forEach((heir, idx) => {
+            const row = tbody.insertRow();
+            row.insertCell(0).innerText = idx + 1;
+            
+            const cell1 = row.insertCell(1);
+            const nameInput = document.createElement('input');
+            nameInput.type = 'text';
+            nameInput.value = heir.name;
+            nameInput.className = 'heir-name';
+            nameInput.style.width = '100%';
+            nameInput.addEventListener('change', (e) => { heirs[idx].name = e.target.value; });
+            cell1.appendChild(nameInput);
+            
+            const cell2 = row.insertCell(2);
+            const relSelect = document.createElement('select');
+            relSelect.className = 'heir-relation';
+            relSelect.style.width = '100px';
+            const options = ['Son', 'Daughter', 'Wife', 'Other'];
+            options.forEach(opt => {
+                const option = document.createElement('option');
+                option.value = opt;
+                option.text = opt;
+                if (heir.relation === opt) option.selected = true;
+                relSelect.appendChild(option);
+            });
+            relSelect.addEventListener('change', (e) => { heirs[idx].relation = e.target.value; });
+            cell2.appendChild(relSelect);
+            
+            const cell3 = row.insertCell(3);
+            const ageInput = document.createElement('input');
+            ageInput.type = 'text';
+            ageInput.value = heir.age;
+            ageInput.className = 'heir-age';
+            ageInput.style.width = '100%';
+            ageInput.addEventListener('change', (e) => { heirs[idx].age = e.target.value; });
+            cell3.appendChild(ageInput);
+            
+            const cell4 = row.insertCell(4);
+            const remarkInput = document.createElement('input');
+            remarkInput.type = 'text';
+            remarkInput.value = heir.remark || '';
+            remarkInput.className = 'heir-remark';
+            remarkInput.style.width = '100%';
+            remarkInput.addEventListener('change', (e) => { heirs[idx].remark = e.target.value; });
+            cell4.appendChild(remarkInput);
+            
+            const cell5 = row.insertCell(5);
+            const removeBtn = document.createElement('button');
+            removeBtn.innerHTML = '<i class="fas fa-trash"></i>';
+            removeBtn.className = 'btn-remove';
+            removeBtn.onclick = () => { removeHeir(idx); };
+            cell5.appendChild(removeBtn);
+        });
+        document.getElementById('heirWarning').style.display = heirs.length >= MAX_HEIRS ? 'block' : 'none';
+        document.getElementById('addHeirBtn').disabled = heirs.length >= MAX_HEIRS;
+    }
+    
+    function addHeir() {
+        if (heirs.length < MAX_HEIRS) {
+            heirs.push({ name: "New Heir", relation: "Other", age: "", remark: "" });
+            updateHeirsTableInput();
+        }
+    }
+    
+    function removeHeir(index) {
+        heirs.splice(index, 1);
+        updateHeirsTableInput();
+    }
+    
+    function resetExample() {
+        heirs = [
+            { name: "Bishwanath Mondal", relation: "Son", age: "58", remark: "" },
+            { name: "Lakshmi Mondal", relation: "Wife", age: "55", remark: "" },
+            { name: "Gobinda Mondal", relation: "Son", age: "52", remark: "" }
+        ];
+        document.getElementById('deceasedName').value = "Late Shri Ram Chandra Mondal";
+        document.getElementById('deceasedRelation').value = "S/O";
+        document.getElementById('deceasedFatherName').value = "Late Shri Gopal Mondal";
+        document.getElementById('village').value = "Sahapur";
+        document.getElementById('postOffice').value = "Barduary";
+        document.getElementById('deathDate').value = "15/01/2025";
+        document.getElementById('policeStation').value = "Harishchandrapur";
+        document.getElementById('district').value = "Malda";
+        updateHeirsTableInput();
+    }
+    
+    function getTodayDate() {
+        const d = new Date();
+        return `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()}`;
+    }
+    
+    // Helper to get name with "Lt." prefix for verification statement
+    function getLtName(fullName) {
+        let name = fullName.replace(/^Late\s+Shri\s+/i, '');
+        name = name.replace(/^Late\s+/i, '');
+        name = name.replace(/^Shri\s+/i, '');
+        return `Lt. ${name.trim()}`;
+    }
+    
+    function generateCertificate() {
+        const deceasedName = document.getElementById('deceasedName').value || "_________";
+        const fatherName = document.getElementById('deceasedFatherName').value || "_________";
+        const village = document.getElementById('village').value || "_________";
+        const postOffice = document.getElementById('postOffice').value || "_________";
+        const deathDate = document.getElementById('deathDate').value || "_________";
+        const policeStation = document.getElementById('policeStation').value || "Chanchal";
+        const district = document.getElementById('district').value || "Malda";
+        
+        document.getElementById('deceasedNameDisplay').innerText = deceasedName;
+        document.getElementById('fatherNameDisplay').innerText = fatherName;
+        document.getElementById('villageDisplay').innerText = village;
+        document.getElementById('postDisplay').innerText = postOffice;
+        document.getElementById('psDisplay').innerText = policeStation;
+        document.getElementById('districtDisplay').innerText = district;
+        document.getElementById('deathDateDisplay').innerText = deathDate;
+        document.getElementById('certDate').innerText = getTodayDate();
+        
+        // Set underlined deceased name in verification statement
+        const ltName = getLtName(deceasedName);
+        document.getElementById('underlinedDeceasedName').innerText = ltName;
+        
+        // Set heir count text
+        const heirCount = heirs.length;
+        const heirCountText = heirCount === 1 ? `${heirCount} no` : `${heirCount} nos`;
+        document.getElementById('heirCountText').innerHTML = heirCountText;
+        
+        const tbody = document.getElementById('certHeirsBody');
+        tbody.innerHTML = '';
+        if (heirs.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No legal heirs listed</td></tr>';
+        } else {
+            heirs.forEach((heir, idx) => {
+                const row = tbody.insertRow();
+                row.insertCell(0).innerText = idx + 1;
+                row.insertCell(1).innerText = heir.name || "—";
+                row.insertCell(2).innerText = heir.relation || "—";
+                row.insertCell(3).innerText = heir.age || "—";
+                row.insertCell(4).innerText = heir.remark || "—";
+            });
+        }
+        
+        document.getElementById('certificateWrapper').classList.remove('hidden-cert');
+        document.getElementById('certificateWrapper').classList.add('visible-cert');
+    }
+    
+    function printCertificate() {
+        window.print();
+    }
+    
+    // Event Listeners
+    document.getElementById('addHeirBtn').onclick = addHeir;
+    document.getElementById('resetExampleBtn').onclick = resetExample;
+    document.getElementById('generateCertBtn').onclick = generateCertificate;
+    document.getElementById('printBtn').onclick = printCertificate;
+    
+    // Initialize
+    updateHeirsTableInput();
+    document.getElementById('certificateWrapper').classList.add('hidden-cert');
+</script>
+</body>
+</html>
