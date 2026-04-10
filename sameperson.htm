@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Gram Panchayat - Residency Certificate | Sultannagar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Noto+Serif:opsz,wght@6..36,400;6..36,500;6..36,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            background: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2070&auto=format') center/cover no-repeat fixed;
+            position: relative;
+            color: #1e2f3e;
+            line-height: 1.5;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 0;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1.8rem 1.5rem;
+        }
+
+        .welcome-hero {
+            background: rgba(11, 43, 64, 0.75);
+            backdrop-filter: blur(12px);
+            border-radius: 28px;
+            padding: 1.2rem 2rem;
+            margin-bottom: 2rem;
+            color: white;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .welcome-hero h1 {
+            font-size: 1.7rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .welcome-hero h1 i { color: #E6B17E; font-size: 1.8rem; }
+        
+        @media (max-width: 768px) {
+            .welcome-hero { padding: 1rem; }
+            .welcome-hero h1 { font-size: 1.2rem; }
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(12px);
+            border-radius: 28px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255,255,255,0.25);
+        }
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 4px solid #E6B17E;
+            padding-left: 15px;
+        }
+        .section-title i { color: #E6B17E; }
+        
+        /* Form Styles */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .input-group label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #FFE6C7;
+        }
+        .input-group input, .input-group select {
+            padding: 8px 12px;
+            border-radius: 12px;
+            border: none;
+            background: rgba(255,255,255,0.9);
+            font-size: 0.8rem;
+        }
+        .btn-primary {
+            background: #E6B17E;
+            color: #1e2f3e;
+            border: none;
+            padding: 8px 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            border-radius: 35px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .btn-secondary {
+            background: rgba(100, 100, 100, 0.8);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            border-radius: 35px;
+            cursor: pointer;
+        }
+        .btn-add {
+            background: rgba(46, 125, 50, 0.9);
+            color: white;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 35px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .btn-remove {
+            background: #c0392b;
+            color: white;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.65rem;
+        }
+        
+        /* CERTIFICATE STYLES - A4 Portrait */
+        .certificate-panel { margin-top: 1.5rem; }
+        .certificate-wrapper {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .certificate {
+            background: #ffffff;
+            color: #000000;
+            font-family: 'Times New Roman', 'Georgia', serif;
+            padding: 1rem 1.2rem;
+        }
+        
+        /* Official Certificate Header */
+        .cert-header {
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        .cert-header .office-title {
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        .cert-header .panchayat-name {
+            font-size: 1.4rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin: 3px 0;
+        }
+        .cert-header .samiti-name {
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .cert-header .address-line {
+            font-size: 0.65rem;
+            margin-top: 3px;
+            margin-bottom: 6px;
+        }
+        /* Double line across the page */
+        .double-line {
+            border-top: 3px double #000000;
+            width: 100%;
+            margin: 5px 0 10px 0;
+        }
+        
+        .ref-date-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0 12px 0;
+            font-size: 0.7rem;
+        }
+        
+        .to-whom {
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.8rem;
+            margin: 10px 0 8px 0;
+            text-decoration: underline;
+        }
+        
+        .cert-body {
+            font-size: 0.75rem;
+            line-height: 1.5;
+            text-align: justify;
+            margin: 8px 0;
+        }
+        
+        /* Resident Info - Left Aligned */
+        .resident-info {
+            font-size: 0.75rem;
+            line-height: 1.6;
+            margin: 10px 0;
+            text-align: left;
+        }
+        .resident-info .resident-name-line {
+            margin: 5px 0;
+        }
+        .resident-info .resident-detail-line {
+            margin: 3px 0;
+        }
+        .resident-info .label {
+            font-weight: 600;
+            display: inline-block;
+            min-width: 85px;
+        }
+        
+        /* Variation Table in Certificate */
+        .cert-variation-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            font-size: 0.7rem;
+        }
+        .cert-variation-table th, .cert-variation-table td {
+            border: 1px solid #000;
+            padding: 6px 8px;
+            text-align: center;
+        }
+        .cert-variation-table th {
+            background: #f0f0f0;
+            font-weight: bold;
+        }
+        .cert-variation-table th:nth-child(3) {
+            width: 80px;
+        }
+        .cert-variation-table td:nth-child(3) {
+            width: 80px;
+        }
+        
+        .signature-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+            padding-top: 15px;
+        }
+        .signature {
+            text-align: center;
+            font-size: 0.7rem;
+            width: 220px;
+        }
+        
+        .print-actions { display: flex; gap: 10px; justify-content: flex-end; margin-bottom: 12px; }
+        .btn-print { background: #E6B17E; color: #1e2f3e; border: none; padding: 6px 18px; border-radius: 35px; cursor: pointer; font-weight: bold; font-size: 0.75rem; }
+        
+        .certificate-wrapper.hidden-cert { display: none; }
+        .certificate-wrapper.visible-cert { display: block; }
+        
+        .footer {
+            text-align: center;
+            padding: 0.8rem;
+            font-size: 0.65rem;
+            color: rgba(255,255,255,0.8);
+            border-top: 1px solid rgba(255,255,255,0.2);
+            margin-top: 1.5rem;
+            backdrop-filter: blur(8px);
+            background: rgba(0,0,0,0.3);
+            border-radius: 35px;
+        }
+        
+        /* Document Editor Table Styles */
+        .doc-editor-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255,255,255,0.95);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .doc-editor-table th {
+            background: #e8d5b5;
+            padding: 10px 6px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            color: #2c4123;
+            border: 1px solid #d6ccb0;
+        }
+        .doc-editor-table td {
+            padding: 8px 4px;
+            border: 1px solid #e0d7bd;
+        }
+        .doc-editor-table input, .doc-editor-table select {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            background: #fefef7;
+        }
+        .remove-doc-btn {
+            background: transparent;
+            border: none;
+            color: #aa3e2c;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        /* A4 Portrait Print Styles */
+        @media print {
+            body { 
+                background: white; 
+                padding: 0; 
+                margin: 0; 
+            }
+            body::before { 
+                display: none; 
+            }
+            .container { 
+                padding: 0; 
+                margin: 0; 
+                max-width: 100%; 
+            }
+            .welcome-hero, .glass-card, .print-actions, .footer, 
+            .btn-primary, .btn-secondary, .btn-add, .btn-remove, .doc-editor-table { 
+                display: none !important; 
+            }
+            .certificate-panel { 
+                background: white; 
+                padding: 0; 
+                margin: 0; 
+            }
+            .certificate-wrapper { 
+                box-shadow: none; 
+                background: white; 
+                border-radius: 0; 
+                max-width: 100%;
+            }
+            .certificate {
+                background: white !important;
+                color: black !important;
+                border: none !important;
+                padding: 0.2in !important;
+                margin: 0 !important;
+                width: 100%;
+            }
+            @page {
+                size: A4 portrait;
+                margin: 0.2in;
+            }
+            .cert-variation-table th, .cert-variation-table td {
+                border: 1px solid black !important;
+            }
+            .double-line {
+                border-top: 3px double black !important;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+  
+    <div class="welcome-hero">
+        <h1><i class="fas fa-file-certificate"></i> Residency Certificate | Sultannagar Gram Panchayat</h1>
+    </div>
+
+    <div class="glass-card">
+        <div class="section-title"><i class="fas fa-pen-alt"></i> Enter Resident & Name Variation Details</div>
+        
+        <div class="form-grid">
+            <div class="input-group">
+                <label><i class="fas fa-user"></i> Full Name</label>
+                <input type="text" id="fullName" value="Sarban Saha" placeholder="Enter full name">
+            </div>
+            <div class="input-group">
+                <label><i class="fas fa-venus-mars"></i> S/O - D/O - W/O - C/O</label>
+                <select id="relationType">
+                    <option value="S/O">S/O (Son of)</option>
+                    <option value="D/O">D/O (Daughter of)</option>
+                    <option value="W/O">W/O (Wife of)</option>
+                    <option value="C/O">C/O (Care of)</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label><i class="fas fa-father"></i> Father/Husband Name</label>
+                <input type="text" id="fatherName" value="Ramji Saha" placeholder="Father/Husband Name">
+            </div>
+            <div class="input-group">
+                <label><i class="fas fa-map-marker-alt"></i> Village</label>
+                <input type="text" id="village" value="Barduary">
+            </div>
+            <div class="input-group">
+                <label><i class="fas fa-mail-bulk"></i> Post Office</label>
+                <input type="text" id="po" value="Barduary">
+            </div>
+            <div class="input-group">
+                <label><i class="fas fa-police"></i> Police Station</label>
+                <input type="text" id="ps" value="Harishchandrapur">
+            </div>
+            <div class="input-group">
+                <label><i class="fas fa-globe"></i> District</label>
+                <input type="text" id="district" value="Malda">
+            </div>
+            <div class="input-group">
+                <label><i class="fas fa-code"></i> PIN Code</label>
+                <input type="text" id="pin" value="732125">
+            </div>
+        </div>
+        
+        <!-- Name Variation Records Table Input -->
+        <div style="margin-top: 1.5rem;">
+            <label style="font-weight: 700; font-size: 0.85rem; display: block; margin-bottom: 10px; color: #FFE6C7;"><i class="fas fa-table-list"></i> Name Variation Records (DOC1 - DOC4 style)</label>
+            <div id="docsTableContainer"></div>
+            <div style="display: flex; gap: 12px; margin-top: 12px;">
+                <button type="button" id="addDocRow" class="btn-add"><i class="fas fa-plus"></i> Add Document</button>
+                <button type="button" id="resetDefaultDocs" class="btn-secondary" style="padding: 6px 16px;"><i class="fas fa-undo-alt"></i> Reset to Original</button>
+            </div>
+        </div>
+        
+        <div style="display: flex; gap: 10px; margin-top: 15px; justify-content: flex-end;">
+            <button id="updateCertBtn" class="btn-primary"><i class="fas fa-sync-alt"></i> Update Certificate</button>
+            <button id="printCertBtn" class="btn-print"><i class="fas fa-print"></i> Print / Save as PDF</button>
+        </div>
+    </div>
+
+    <div class="certificate-panel">
+        <div style="width:100%; max-width:800px; margin:0 auto;">
+            <div class="certificate-wrapper hidden-cert" id="certificateWrapper">
+                <div class="certificate" id="certificate">
+                    <div class="cert-header">
+                        <div class="office-title">OFFICE OF THE</div>
+                        <div class="panchayat-name">SULTANNAGAR GRAM PANCHAYAT</div>
+                        <div class="samiti-name">HARISHCHANDRAPUR - II PANCHAYAT SAMITI</div>
+                        <div class="address-line">P.O.- Barduary, Dist.- Malda (W.B.) - 732125</div>
+                        <div class="double-line"></div>
+                    </div>
+                    
+                    <div class="ref-date-row">
+                        <div><strong>Ref No.:</strong> ______________</div>
+                        <div><strong>Date:</strong> <span id="certDate"></span></div>
+                    </div>
+                    
+                    <div class="to-whom">
+                        TO WHOM IT MAY CONCERN
+                    </div>
+                    
+                    <div class="cert-body">
+                        <p>This is to certify that the person mentioned below is/was a permanent resident of <strong>Sultannagar Gram Panchayat</strong> under Harishchandrapur-II Dev. Block Malda.</p>
+                    </div>
+                    
+                    <!-- Resident Information - Left Aligned with "Name:" label -->
+                    <div class="resident-info" id="residentInfo">
+                        <div class="resident-name-line"><span class="label">Name :</span> <strong id="residentNameDisplay">Sarban Saha</strong></div>
+                        <div class="resident-detail-line"><span class="label" id="relationLabel">S/O-</span> <span id="fatherNameDisplay">Ramji Saha</span></div>
+                        <div class="resident-detail-line"><span class="label">Village :</span> <span id="villageDisplay">Barduary</span></div>
+                        <div class="resident-detail-line"><span class="label">P.O :</span> <span id="poDisplay">Barduary</span></div>
+                        <div class="resident-detail-line"><span class="label">P.S :</span> <span id="psDisplay">Harishchandrapur</span></div>
+                        <div class="resident-detail-line"><span class="label">District :</span> <span id="districtDisplay">Malda</span></div>
+                        <div class="resident-detail-line"><span class="label">PIN :</span> <span id="pinDisplay">732125</span></div>
+                    </div>
+                    
+                    <div class="cert-body">
+                        <p>It is to mention that the above person's name has been written differently in the following documents but all the names as stated below belongs to the same & identical person.</p>
+                    </div>
+                    
+                    <table class="cert-variation-table" id="variationTable">
+                        <thead>
+                            <tr><th>Name Vs Doc</th><th>Name</th><th>Relation</th><th>Husband/Father</th><th>Doc Type</th><th>Doc Details</th></tr>
+                        </thead>
+                        <tbody id="variationTableBody">
+                            <tr><td colspan="6" style="text-align:center;">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="cert-body">
+                        <p style="margin-top: 12px; font-style: italic;">The above information is treated to be correct.</p>
+                    </div>
+                    
+                    <div class="signature-row">
+                        <div class="signature">
+                            <div>_________________</div>
+                            <div>(Prodhan)</div>
+                            <div>Sultannagar Gram Panchayat</div>
+                            <div>Barduary, HC Pur, Malda</div>
+                            <div><i class="fas fa-stamp"></i> Authorised Seal</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>© 2025 Sultannagar Gram Panchayat, Harishchandrapur-2, Malda | Residency Certificate System</p>
+    </div>
+</div>
+
+<script>
+    // Doc Type options for dropdown
+    const docTypeOptions = ['EPIC', 'AADHAR', 'ADMIT', 'RATION CARD', 'LAND DETAILS', 'OTHER'];
+    
+    // Default documents
+    let docEntries = [
+        { docLabel: "DOC1", name: "Sarban Saha", relation: "S/O", husbandFather: "Ramji Saha", docType: "AADHAR", docDetails: "256430183988" },
+        { docLabel: "DOC2", name: "Sarban Saha", relation: "S/O", husbandFather: "Ramji Saha", docType: "EPIC", docDetails: "DMM2521789" },
+        { docLabel: "DOC3", name: "Sarban Saha", relation: "S/O", husbandFather: "Ramji", docType: "LAND DETAILS", docDetails: "JL No-129, Khatian No-642, Mouja-Dakshin Ramnagar" },
+        { docLabel: "DOC4", name: "Josnara Khatun", relation: "W/O", husbandFather: "Tajibur Rahaman", docType: "OTHER", docDetails: "5065029006013" }
+    ];
+
+    // Relation options for dropdown
+    const relationOptions = ['S/O', 'D/O', 'W/O', 'C/O'];
+
+    function escapeHtml(str) { 
+        if(!str) return ''; 
+        return str.replace(/[&<>]/g, function(m){
+            if(m==='&') return '&amp;'; 
+            if(m==='<') return '&lt;'; 
+            if(m==='>') return '&gt;'; 
+            return m;
+        }); 
+    }
+
+    // Render dynamic editor table with dropdowns
+    function renderDocEditor() {
+        const container = document.getElementById('docsTableContainer');
+        if (!container) return;
+        
+        let html = `<table class="doc-editor-table">
+                        <thead>
+                            <tr>
+                                <th style="width:70px">Doc Ref</th>
+                                <th style="width:120px">Name</th>
+                                <th style="width:80px">Relation</th>
+                                <th style="width:130px">Husband/Father</th>
+                                <th style="width:110px">Doc Type</th>
+                                <th>Doc Details</th>
+                                <th style="width:40px"></th>
+                              </tr>
+                        </thead>
+                        <tbody id="docEditorTbody">`;
+        
+        docEntries.forEach((doc, idx) => {
+            // Build relation dropdown
+            let relationSelect = `<select class="docRelationSelect" data-idx="${idx}" style="width:100%; padding:6px 8px; border-radius:10px; border:1px solid #ddd;">`;
+            relationOptions.forEach(opt => {
+                const selected = (doc.relation === opt) ? 'selected' : '';
+                relationSelect += `<option value="${opt}" ${selected}>${opt}</option>`;
+            });
+            relationSelect += `</select>`;
+            
+            // Build doc type dropdown
+            let docTypeSelect = `<select class="docTypeSelect" data-idx="${idx}" style="width:100%; padding:6px 8px; border-radius:10px; border:1px solid #ddd;">`;
+            docTypeOptions.forEach(opt => {
+                const selected = (doc.docType === opt) ? 'selected' : '';
+                docTypeSelect += `<option value="${opt}" ${selected}>${opt}</option>`;
+            });
+            docTypeSelect += `</select>`;
+            
+            html += `<tr>
+                        <td><input type="text" class="docLabelInput" data-idx="${idx}" value="${escapeHtml(doc.docLabel)}" style="width:70px;"></td>
+                        <td><input type="text" class="docNameInput" data-idx="${idx}" value="${escapeHtml(doc.name)}" style="width:100%;"></td>
+                        <td>${relationSelect}</td>
+                        <td><input type="text" class="docFatherInput" data-idx="${idx}" value="${escapeHtml(doc.husbandFather)}" style="width:100%;"></td>
+                        <td>${docTypeSelect}</td>
+                        <td><input type="text" class="docDetailsInput" data-idx="${idx}" value="${escapeHtml(doc.docDetails)}" style="width:100%;"></td>
+                        <td style="text-align:center;"><button class="remove-doc-btn" data-idx="${idx}"><i class="fas fa-trash-alt"></i></button></td>
+                      </tr>`;
+        });
+        html += `</tbody></table>`;
+        container.innerHTML = html;
+
+        // Attach event listeners
+        document.querySelectorAll('.docLabelInput').forEach(inp => {
+            inp.addEventListener('change', (e) => { let i = parseInt(inp.dataset.idx); if (!isNaN(i)) docEntries[i].docLabel = inp.value; updateCertificate(); });
+        });
+        document.querySelectorAll('.docNameInput').forEach(inp => {
+            inp.addEventListener('change', (e) => { let i = parseInt(inp.dataset.idx); if (!isNaN(i)) docEntries[i].name = inp.value; updateCertificate(); });
+        });
+        document.querySelectorAll('.docRelationSelect').forEach(sel => {
+            sel.addEventListener('change', (e) => { let i = parseInt(sel.dataset.idx); if (!isNaN(i)) docEntries[i].relation = sel.value; updateCertificate(); });
+        });
+        document.querySelectorAll('.docFatherInput').forEach(inp => {
+            inp.addEventListener('change', (e) => { let i = parseInt(inp.dataset.idx); if (!isNaN(i)) docEntries[i].husbandFather = inp.value; updateCertificate(); });
+        });
+        document.querySelectorAll('.docTypeSelect').forEach(sel => {
+            sel.addEventListener('change', (e) => { let i = parseInt(sel.dataset.idx); if (!isNaN(i)) docEntries[i].docType = sel.value; updateCertificate(); });
+        });
+        document.querySelectorAll('.docDetailsInput').forEach(inp => {
+            inp.addEventListener('change', (e) => { let i = parseInt(inp.dataset.idx); if (!isNaN(i)) docEntries[i].docDetails = inp.value; updateCertificate(); });
+        });
+        document.querySelectorAll('.remove-doc-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                let idx = parseInt(btn.dataset.idx);
+                if (!isNaN(idx)) {
+                    docEntries.splice(idx, 1);
+                    renderDocEditor();
+                    updateCertificate();
+                }
+            });
+        });
+    }
+
+    function addNewDocRow() {
+        const newDoc = { 
+            docLabel: `DOC${docEntries.length+1}`, 
+            name: "Enter Name", 
+            relation: "S/O", 
+            husbandFather: "Father Name", 
+            docType: "OTHER", 
+            docDetails: "Details" 
+        };
+        docEntries.push(newDoc);
+        renderDocEditor();
+        updateCertificate();
+    }
+
+    function resetDefaultDocs() {
+        docEntries = [
+            { docLabel: "DOC1", name: "Sarban Saha", relation: "S/O", husbandFather: "Ramji Saha", docType: "AADHAR", docDetails: "256430183988" },
+            { docLabel: "DOC2", name: "Sarban Saha", relation: "S/O", husbandFather: "Ramji Saha", docType: "EPIC", docDetails: "DMM2521789" },
+            { docLabel: "DOC3", name: "Sarban Saha", relation: "S/O", husbandFather: "Ramji", docType: "LAND DETAILS", docDetails: "JL No-129, Khatian No-642, Mouja-Dakshin Ramnagar" },
+            { docLabel: "DOC4", name: "Josnara Khatun", relation: "W/O", husbandFather: "Tajibur Rahaman", docType: "OTHER", docDetails: "5065029006013" }
+        ];
+        renderDocEditor();
+        updateCertificate();
+    }
+
+    function getTodayDate() {
+        const d = new Date();
+        return `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()}`;
+    }
+
+    function updateCertificate() {
+        // Get personal details
+        const fullName = document.getElementById('fullName').value.trim() || "Sarban Saha";
+        const relationType = document.getElementById('relationType').value;
+        const fatherName = document.getElementById('fatherName').value.trim() || "Ramji Saha";
+        const village = document.getElementById('village').value.trim() || "Barduary";
+        const po = document.getElementById('po').value.trim() || "Barduary";
+        const ps = document.getElementById('ps').value.trim() || "Harishchandrapur";
+        const district = document.getElementById('district').value.trim() || "Malda";
+        const pin = document.getElementById('pin').value.trim() || "732125";
+        
+        // Update resident info
+        document.getElementById('residentNameDisplay').innerText = fullName;
+        document.getElementById('relationLabel').innerText = relationType + " :";
+        document.getElementById('fatherNameDisplay').innerText = fatherName;
+        document.getElementById('villageDisplay').innerText = village;
+        document.getElementById('poDisplay').innerText = po;
+        document.getElementById('psDisplay').innerText = ps;
+        document.getElementById('districtDisplay').innerText = district;
+        document.getElementById('pinDisplay').innerText = pin;
+        document.getElementById('certDate').innerText = getTodayDate();
+        
+        // Generate variation table
+        const tbody = document.getElementById('variationTableBody');
+        tbody.innerHTML = '';
+        if (docEntries.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No document records found</td></tr>';
+        } else {
+            docEntries.forEach((doc) => {
+                const row = tbody.insertRow();
+                row.insertCell(0).innerText = doc.docLabel || "—";
+                row.insertCell(1).innerText = doc.name || "—";
+                row.insertCell(2).innerText = doc.relation || "—";
+                row.insertCell(3).innerText = doc.husbandFather || "—";
+                row.insertCell(4).innerText = doc.docType || "—";
+                row.insertCell(5).innerText = doc.docDetails || "—";
+            });
+        }
+        
+        document.getElementById('certificateWrapper').classList.remove('hidden-cert');
+        document.getElementById('certificateWrapper').classList.add('visible-cert');
+    }
+
+    function printCertificate() {
+        window.print();
+    }
+    
+    // Bind personal inputs
+    function bindPersonalInputs() {
+        const fields = ['fullName', 'relationType', 'fatherName', 'village', 'po', 'ps', 'district', 'pin'];
+        fields.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.addEventListener('input', () => updateCertificate());
+        });
+        document.getElementById('relationType').addEventListener('change', () => updateCertificate());
+    }
+    
+    // Event Listeners
+    document.getElementById('addDocRow').onclick = addNewDocRow;
+    document.getElementById('resetDefaultDocs').onclick = resetDefaultDocs;
+    document.getElementById('updateCertBtn').onclick = updateCertificate;
+    document.getElementById('printCertBtn').onclick = printCertificate;
+    
+    // Initialize
+    renderDocEditor();
+    bindPersonalInputs();
+    updateCertificate();
+    document.getElementById('certificateWrapper').classList.add('hidden-cert');
+</script>
+</body>
+</html>
