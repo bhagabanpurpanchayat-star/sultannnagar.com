@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Sultanagar GP - Land Conversion NOC | Official Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #5a626e;
+            font-family: 'Courier New', 'Times New Roman', 'Georgia', monospace, serif;
+            padding: 2rem 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            max-width: 1100px;
+            width: 100%;
+            background: transparent;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* ---------- FORM PANEL WITH THREE SECTIONS (B&W STYLE) ---------- */
+        .form-panel {
+            background: #fff;
+            border: 2px solid #000;
+            padding: 1.5rem 2rem;
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.15);
+        }
+
+        .form-panel h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-bottom: 2px solid black;
+            display: inline-block;
+            margin-bottom: 1.2rem;
+            text-transform: uppercase;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        }
+
+        .form-section {
+            margin-top: 1.2rem;
+            margin-bottom: 1.8rem;
+            border-left: 4px solid #222;
+            padding-left: 1rem;
+        }
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            background: #eaeaea;
+            display: inline-block;
+            padding: 0.2rem 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid black;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            gap: 1rem 1.8rem;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+        .input-group label {
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #000;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 0.5px;
+        }
+        .input-group input, .input-group select {
+            padding: 0.5rem 0.8rem;
+            border: 1px solid #111;
+            background: white;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            border-radius: 0px;
+        }
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1rem;
+            border-top: 1px solid #aaa;
+            padding-top: 1.2rem;
+        }
+        .btn {
+            padding: 0.6rem 1.8rem;
+            border: 1px solid black;
+            background: #eaeaea;
+            font-weight: bold;
+            font-family: monospace;
+            cursor: pointer;
+            transition: 0.1s linear;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+        .btn-primary {
+            background: #111;
+            color: white;
+            border: 1px solid black;
+        }
+        .btn-primary:hover:not(:disabled) {
+            background: #333;
+        }
+        .btn-primary:disabled {
+            background: #aaa;
+            border-color: #666;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        .btn-green {
+            background: #2c5e2e;
+            color: white;
+            border: 1px solid #1a3b1a;
+        }
+        .btn-green:hover:not(:disabled) {
+            background: #1e4620;
+        }
+        .btn-secondary:hover {
+            background: #ccc;
+        }
+
+        /* validation indicator */
+        .validation-note {
+            font-size: 0.7rem;
+            margin-top: 10px;
+            color: #444;
+            font-family: monospace;
+            border-top: 1px dashed #888;
+            padding-top: 8px;
+        }
+
+        /* ---------- CERTIFICATE DISPLAY (EXACT B&W, NO EXTRA HORIZONTAL LINES) ---------- */
+        .certificate-wrapper {
+            background: #fff;
+            border: 2px solid #000;
+            padding: 0.2rem;
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.1);
+        }
+        .certificate {
+            background: white;
+            padding: 1.6rem 2rem 2rem 2rem;
+            font-family: 'Times New Roman', 'Courier New', 'Georgia', serif;
+            color: black;
+        }
+        .office-header {
+            text-align: center;
+            border-bottom: 2px solid black;
+            margin-bottom: 1rem;
+            padding-bottom: 0.6rem;
+        }
+        .office-header h1 {
+            font-size: 1.7rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-family: 'Times New Roman', serif;
+            line-height: 1.3;
+        }
+        .office-header .sub {
+            font-size: 0.9rem;
+            font-weight: 600;
+            font-family: monospace;
+        }
+        .address-block {
+            text-align: center;
+            font-size: 0.8rem;
+            font-family: monospace;
+            margin-top: 0.25rem;
+        }
+        /* removed border-bottom after letter-ref — no horizontal line after date */
+        .letter-ref {
+            display: flex;
+            justify-content: space-between;
+            margin: 0.8rem 0 0.8rem 0;
+            font-weight: 600;
+            font-size: 0.9rem;
+            font-family: monospace;
+            /* no border-bottom line */
+        }
+        /* title-doc without extra line above */
+        .title-doc {
+            text-align: center;
+            margin: 0.8rem 0 1rem 0;
+        }
+        .title-doc h2 {
+            font-size: 1.6rem;
+            text-decoration: underline;
+            text-underline-offset: 6px;
+            font-weight: bold;
+        }
+        .certificate p {
+            margin: 0.6rem 0;
+            line-height: 1.4;
+            font-size: 0.95rem;
+            text-align: justify;
+        }
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.8rem 0;
+            font-size: 0.9rem;
+            font-family: 'Courier New', monospace;
+        }
+        .info-table td, .info-table th {
+            border: 1px solid black;
+            padding: 8px 12px;
+            vertical-align: top;
+        }
+        .info-table td:first-child {
+            font-weight: 700;
+            background-color: #f5f5f5;
+            width: 34%;
+        }
+        /* signature block: removed extra line above? but we keep border-top as per original but remove after statement? 
+           Requirement: remove horizontal line after "The above information is true..." before sign. 
+           So signature block will have NO border-top. Then also remove line after sign? there's no after sign line originally but we adjust */
+        .signature {
+            margin-top: 1.8rem;
+            display: flex;
+            justify-content: flex-end;
+            text-align: right;
+            /* no border-top line */
+            padding-top: 0.5rem;
+        }
+        .stamp-area {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        /* footer note minimal */
+        .footer-note {
+            font-size: 0.7rem;
+            text-align: center;
+            margin-top: 1rem;
+            border-top: 1px dashed black;
+            padding-top: 0.5rem;
+        }
+        .print-btn {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .badge-watermark {
+            text-align: center;
+            font-size: 0.7rem;
+            margin-top: 0.6rem;
+            color: #2c2c2c;
+            font-family: monospace;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+                margin: 0;
+            }
+            .form-panel, .print-btn button, .btn-group, .no-print {
+                display: none !important;
+            }
+            .certificate-wrapper {
+                border: 2px solid black;
+                box-shadow: none;
+                margin: 0;
+                padding: 0;
+            }
+            .certificate {
+                padding: 0.8in;
+            }
+            .info-table td:first-child {
+                background-color: #eee !important;
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <!-- INPUT FORM: SPLIT INTO THREE SECTIONS (Basic, Existing Land, Proposed Land) -->
+    <div class="form-panel no-print">
+        <h2>⛯ LAND CONVERSION NOC · DATA ENTRY</h2>
+        
+        <!-- SECTION 1: BASIC DETAILS -->
+        <div class="form-section">
+            <div class="section-title">📄 BASIC DETAILS</div>
+            <div class="form-grid">
+                <div class="input-group">
+                    <label>Full Name *</label>
+                    <input type="text" id="name" value="Sadek Ali">
+                </div>
+                <div class="input-group">
+                    <label>W/o- / S/o- (Relative) *</label>
+                    <input type="text" id="relative" value="Late Estab Ali">
+                </div>
+                <div class="input-group">
+                    <label>Village *</label>
+                    <input type="text" id="village" value="Nanarahi">
+                </div>
+                <div class="input-group">
+                    <label>P.O. *</label>
+                    <input type="text" id="po" value="Sultanagar">
+                </div>
+                <div class="input-group">
+                    <label>P.S. (Police Station) *</label>
+                    <input type="text" id="ps" value="Harishchandrapur">
+                </div>
+                <div class="input-group">
+                    <label>District *</label>
+                    <input type="text" id="district" value="Malda">
+                </div>
+                <div class="input-group">
+                    <label>State *</label>
+                    <input type="text" id="state" value="West Bengal">
+                </div>
+                <div class="input-group">
+                    <label>PIN Code *</label>
+                    <input type="text" id="pin" value="732125">
+                </div>
+                <div class="input-group">
+                    <label>AADHAR Number *</label>
+                    <input type="text" id="aadhar" value="469748408090">
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: EXISTING LAND DETAILS -->
+        <div class="form-section">
+            <div class="section-title">🗺️ EXISTING LAND DETAILS</div>
+            <div class="form-grid">
+                <div class="input-group">
+                    <label>Mouja / Dation *</label>
+                    <input type="text" id="mouza" value="Dation-139">
+                </div>
+                <div class="input-group">
+                    <label>Plot No. *</label>
+                    <input type="text" id="plot" value="1746">
+                </div>
+                <div class="input-group">
+                    <label>Khaitan No. *</label>
+                    <input type="text" id="khaitan" value="7405">
+                </div>
+                <div class="input-group">
+                    <label>Area (Hectare/Acre) *</label>
+                    <input type="text" id="area" value="0.0062">
+                </div>
+                <div class="input-group">
+                    <label>Existing Land Use Type *</label>
+                    <select id="existingType">
+                        <option value="Danga" selected>Danga (Wasteland / Fallow)</option>
+                        <option value="Agricultural Land">Agricultural Land</option>
+                        <option value="Paddy Field">Paddy Field</option>
+                        <option value="Orchard">Orchard</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: PROPOSED LAND DETAILS (NO extra remark field) -->
+        <div class="form-section">
+            <div class="section-title">🏡 PROPOSED LAND DETAILS</div>
+            <div class="form-grid">
+                <div class="input-group">
+                    <label>Proposed Land Type *</label>
+                    <select id="proposedType">
+                        <option value="Bastu" selected>Bastu (Residential / Homestead)</option>
+                        <option value="Commercial">Commercial</option>
+                        <option value="Mixed Use">Mixed Use</option>
+                        <option value="Institutional">Institutional</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Purpose / Self Interest Statement *</label>
+                    <input type="text" id="purposeText" value="for his/her self interest">
+                </div>
+            </div>
+        </div>
+        
+        <div class="btn-group">
+            <button class="btn btn-secondary" id="resetBtn">⟳ RESET TO DEFAULT</button>
+            <button class="btn btn-green" id="generateLetterBtn" disabled>✅ GENERATE LETTER</button>
+        </div>
+        <div class="validation-note" id="validationMsg">* All fields marked with * are required. Fill all details to enable Generate Letter.</div>
+    </div>
+
+    <!-- CERTIFICATE DISPLAY (EXACT LAYOUT, LINES REMOVED, MEMO NO BLANK INITIALLY) -->
+    <div class="certificate-wrapper" id="certificateWrapper">
+        <div class="certificate" id="certificateContent">
+            <div style="text-align:center; padding: 2rem; color: #444;">📜 Please fill all details and click 'GENERATE LETTER' to issue NOC</div>
+        </div>
+        <div class="print-btn no-print">
+            <button class="btn btn-primary" id="printBtn" disabled>🖨️ PRINT CERTIFICATE</button>
+        </div>
+        <div class="badge-watermark no-print">Sultanagar Gram Panchayat – Official Land Conversion NOC | Black & White</div>
+    </div>
+</div>
+
+<script>
+    // DOM Elements - Basic
+    const nameInput = document.getElementById('name');
+    const relativeInput = document.getElementById('relative');
+    const villageInput = document.getElementById('village');
+    const poInput = document.getElementById('po');
+    const psInput = document.getElementById('ps');
+    const districtInput = document.getElementById('district');
+    const stateInput = document.getElementById('state');
+    const pinInput = document.getElementById('pin');
+    const aadharInput = document.getElementById('aadhar');
+    
+    // Existing Land
+    const mouzaInput = document.getElementById('mouza');
+    const plotInput = document.getElementById('plot');
+    const khaitanInput = document.getElementById('khaitan');
+    const areaInput = document.getElementById('area');
+    const existingTypeSelect = document.getElementById('existingType');
+    
+    // Proposed Land
+    const proposedTypeSelect = document.getElementById('proposedType');
+    const purposeText = document.getElementById('purposeText');
+    
+    const generateBtn = document.getElementById('generateLetterBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const printBtn = document.getElementById('printBtn');
+    const certContainer = document.getElementById('certificateContent');
+    const validationMsgSpan = document.getElementById('validationMsg');
+    
+    // Helper: current date in DD/MM/YYYY
+    function getCurrentDate() {
+        const today = new Date();
+        const dd = String(today.getDate()).padStart(2, '0');
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const yyyy = today.getFullYear();
+        return `${dd}/${mm}/${yyyy}`;
+    }
+    
+    // Memo No: leave blank initially, appears only after generate. It will be static but empty before generation.
+    // On generate we set "Memo No: ________" (Blank) as per requirement: "Memo No- (keep it Blank)"
+    // Also the line: "Letter no-12" should be replaced with "Memo No- " (empty)
+    function getMemoNoDisplay() {
+        return "Memo No. _________________";  // blank as requested, underscores indicate blank space
+    }
+    
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+    
+    // check if all required fields are non-empty
+    function isFormComplete() {
+        const fields = [
+            nameInput.value.trim(), relativeInput.value.trim(), villageInput.value.trim(),
+            poInput.value.trim(), psInput.value.trim(), districtInput.value.trim(),
+            stateInput.value.trim(), pinInput.value.trim(), aadharInput.value.trim(),
+            mouzaInput.value.trim(), plotInput.value.trim(), khaitanInput.value.trim(),
+            areaInput.value.trim(), purposeText.value.trim()
+        ];
+        for(let f of fields) {
+            if(f === "") return false;
+        }
+        // also ensure existingType and proposedType are selected (always have value)
+        return true;
+    }
+    
+    function updateGenerateButtonState() {
+        const complete = isFormComplete();
+        generateBtn.disabled = !complete;
+        printBtn.disabled = !complete;
+        if(complete) {
+            validationMsgSpan.innerHTML = "✓ All fields filled. You can now generate the certificate.";
+            validationMsgSpan.style.color = "#1e4620";
+        } else {
+            validationMsgSpan.innerHTML = "* All fields marked with * are required. Fill all details to enable Generate Letter.";
+            validationMsgSpan.style.color = "#444";
+        }
+    }
+    
+    // attach event listeners to all inputs to track completeness
+    const allInputs = [nameInput, relativeInput, villageInput, poInput, psInput, districtInput, stateInput, pinInput, aadharInput, mouzaInput, plotInput, khaitanInput, areaInput, purposeText];
+    allInputs.forEach(inp => {
+        inp.addEventListener('input', updateGenerateButtonState);
+        inp.addEventListener('change', updateGenerateButtonState);
+    });
+    // also for select dropdowns, they always have values, but we include for consistency
+    existingTypeSelect.addEventListener('change', updateGenerateButtonState);
+    proposedTypeSelect.addEventListener('change', updateGenerateButtonState);
+    
+    // Main render function: generates certificate without any extra horizontal lines as per spec:
+    // 1. No horizontal line after date and before Land Conversion NOC (removed border-bottom from .letter-ref)
+    // 2. No horizontal line after "The above information is true..." before signature (removed border-top from .signature)
+    // 3. Also after signature there is no extra line, only footer note has its own top border (fine)
+    // 4. Memo No appears as blank (Memo No. _________ ) instead of Letter no-12
+    // 5. No additional remark field anywhere.
+    function renderCertificate() {
+        if(!isFormComplete()) {
+            // if form not complete, show placeholder but not full certificate (or show warning)
+            certContainer.innerHTML = `<div style="text-align:center; padding: 2rem; color: #b91c1c;">⚠️ Incomplete details. Please fill all fields in the form above to generate the official NOC.</div>`;
+            return;
+        }
+        
+        // fetch values safely
+        let name = nameInput.value.trim();
+        let relative = relativeInput.value.trim();
+        let village = villageInput.value.trim();
+        let po = poInput.value.trim();
+        let ps = psInput.value.trim();
+        let district = districtInput.value.trim();
+        let state = stateInput.value.trim();
+        let pin = pinInput.value.trim();
+        let aadhar = aadharInput.value.trim();
+        let mouza = mouzaInput.value.trim();
+        let plotNo = plotInput.value.trim();
+        let khaitan = khaitanInput.value.trim();
+        let area = areaInput.value.trim();
+        let existingType = existingTypeSelect.value;
+        let proposedType = proposedTypeSelect.value;
+        let purpose = purposeText.value.trim();
+        if(purpose === "") purpose = "for his/her self interest";
+        
+        const currentDate = getCurrentDate();
+        const memoLine = getMemoNoDisplay();   // blank memo as required
+        
+        let relationPrefix = "W/o-";
+        if(relative.toLowerCase().includes('late')) relationPrefix = "W/o-";
+        else if(relative.toLowerCase().includes('s/o')) relationPrefix = "S/o-";
+        else relationPrefix = "W/o-";
+        
+        // Build exact certificate with NO extra horizontal rule after date, NO border-top before signature.
+        const certHtml = `
+            <div class="office-header">
+                <h1>OFFICE OF THE<br>SULTANNAGAR GRAM PANCHAYAT</h1>
+                <div class="sub">VILL+P.O-BARDUARY, HARISHCHANDRAPUR</div>
+                <div class="address-block">MALDA  •  WEST BENGAL<br>Email: nregs.sn@gmail.com  &  mgnregs.sn@gmail.com</div>
+            </div>
+            
+            <div class="letter-ref">
+                <span>${escapeHtml(memoLine)}</span>
+                <span>Date: ${escapeHtml(currentDate)}</span>
+            </div>
+            
+            <div class="title-doc">
+                <h2>Land Conversion NOC</h2>
+            </div>
+            
+            <p>This is to certify that the below mentioned person is a permanent resident of Sultanagar Gram Panchayat under Harishchandrapur-II Dev Block, Malda, West Bengal whose address is stated as below ......</p>
+            
+            <table class="info-table">
+                <tr><td>Name</td><td>${escapeHtml(name)}</td></tr>
+                <tr><td>${relationPrefix}</td><td>${escapeHtml(relative)}</td></tr>
+                <tr><td>Vill</td><td>${escapeHtml(village)}</td></tr>
+                <tr><td>P.O.</td><td>${escapeHtml(po)}</td></tr>
+                <tr><td>P.S.</td><td>${escapeHtml(ps)}</td></tr>
+                <tr><td>Dist</td><td>${escapeHtml(district)}</td></tr>
+                <tr><td>State</td><td>${escapeHtml(state)}</td></tr>
+                <tr><td>Pin</td><td>${escapeHtml(pin)}</td></tr>
+                <tr><td>AADHAR</td><td>${escapeHtml(aadhar)}</td></tr>
+            </table>
+            
+            <p><strong>The mentioned person possesses a land as per the below mentioned details.</strong></p>
+            
+            <table class="info-table">
+                <tr><td>MOUJA</td><td>${escapeHtml(mouza)}</td></tr>
+                <tr><td>Plot No</td><td>${escapeHtml(plotNo)}</td></tr>
+                <tr><td>Khaitan</td><td>${escapeHtml(khaitan)}</td></tr>
+                <tr><td>Area</td><td>${escapeHtml(area)} (Hectare/Acre approx)</td></tr>
+            </table>
+            
+            <p>Now the person wishes to convert the land ${escapeHtml(purpose)} which will not cause any kind of lawful situations as it appears in my local enquiry.</p>
+            
+            <table class="info-table">
+                <tr><td>Existing Land Type</td><td>${escapeHtml(existingType)}</td></tr>
+                <tr><td>Proposed Land Type</td><td>${escapeHtml(proposedType)}</td></tr>
+            </table>
+            
+            <p>The above information is true to my knowledge and information.</p>
+            
+            <!-- signature block: no border-top line (removed horizontal rule) -->
+            <div class="signature">
+                <div class="stamp-area">
+                    <strong>Prodhan</strong><br>
+                    Sultanagar Gram Panchayat<br>
+                    (Authorised Signature & Official Stamp)
+                </div>
+            </div>
+            <div class="footer-note">
+                ** This No Objection Certificate is issued for land conversion purpose only. **
+            </div>
+        `;
+        
+        certContainer.innerHTML = certHtml;
+    }
+    
+    // Reset to exact original data as per image (without any extra remarks)
+    function resetToOriginal() {
+        nameInput.value = "Sadek Ali";
+        relativeInput.value = "Late Estab Ali";
+        villageInput.value = "Nanarahi";
+        poInput.value = "Sultanagar";
+        psInput.value = "Harishchandrapur";
+        districtInput.value = "Malda";
+        stateInput.value = "West Bengal";
+        pinInput.value = "732125";
+        aadharInput.value = "469748408090";
+        mouzaInput.value = "Dation-139";
+        plotInput.value = "1746";
+        khaitanInput.value = "7405";
+        areaInput.value = "0.0062";
+        existingTypeSelect.value = "Danga";
+        proposedTypeSelect.value = "Bastu";
+        purposeText.value = "for his/her self interest";
+        
+        // update button state after reset
+        updateGenerateButtonState();
+        // after reset, if form complete, we can also generate but we wait for generate click. But clear certificate preview placeholder.
+        if(isFormComplete()) {
+            renderCertificate();
+        } else {
+            certContainer.innerHTML = `<div style="text-align:center; padding: 2rem; color: #444;">📜 Please fill all details and click 'GENERATE LETTER' to issue NOC</div>`;
+        }
+    }
+    
+    // Generate letter action (only when all fields filled)
+    function handleGenerate() {
+        if(!isFormComplete()) {
+            alert("Please fill all mandatory fields before generating the certificate.");
+            return;
+        }
+        renderCertificate();
+        // optionally show success note
+        validationMsgSpan.innerHTML = "✓ Certificate generated successfully. You can now print.";
+        validationMsgSpan.style.color = "#1e4620";
+    }
+    
+    // Event listeners
+    generateBtn.addEventListener('click', handleGenerate);
+    resetBtn.addEventListener('click', () => {
+        resetToOriginal();
+        if(isFormComplete()) renderCertificate();
+        else {
+            certContainer.innerHTML = `<div style="text-align:center; padding: 2rem; color: #444;">📜 Fill all details and press GENERATE LETTER</div>`;
+        }
+    });
+    printBtn.addEventListener('click', () => {
+        if(isFormComplete()) {
+            window.print();
+        } else {
+            alert("Please generate the certificate first by filling all fields.");
+        }
+    });
+    
+    // initial load: set defaults, update button state, but certificate will show placeholder till user clicks generate.
+    // However to respect requirement: "initially letter will not appear ,it will only when generate letter is clicked" 
+    // so we do NOT auto-render certificate. Show placeholder.
+    function init() {
+        resetToOriginal();   // fills fields with default data but does not render full certificate (calls updateGenerateButtonState)
+        // but resetToOriginal currently calls renderCertificate if complete. We need to avoid that to respect "initially letter will not appear"
+        // Override: after reset, we clear certificate preview manually to show placeholder.
+        // So modify resetToOriginal behavior slightly: we won't call renderCertificate inside reset, but we set fields.
+        // Let's re-declare initializer:
+        nameInput.value = "Sadek Ali";
+        relativeInput.value = "Late Estab Ali";
+        villageInput.value = "Nanarahi";
+        poInput.value = "Sultanagar";
+        psInput.value = "Harishchandrapur";
+        districtInput.value = "Malda";
+        stateInput.value = "West Bengal";
+        pinInput.value = "732125";
+        aadharInput.value = "469748408090";
+        mouzaInput.value = "Dation-139";
+        plotInput.value = "1746";
+        khaitanInput.value = "7405";
+        areaInput.value = "0.0062";
+        existingTypeSelect.value = "Danga";
+        proposedTypeSelect.value = "Bastu";
+        purposeText.value = "for his/her self interest";
+        updateGenerateButtonState();
+        // set placeholder empty certificate (no letter until generate)
+        certContainer.innerHTML = `<div style="text-align:center; padding: 2rem; color: #444;">📜 Please fill all details and click 'GENERATE LETTER' to issue NOC</div>`;
+    }
+    
+    // override reset button to also keep placeholder
+    resetBtn.onclick = () => {
+        nameInput.value = "Sadek Ali";
+        relativeInput.value = "Late Estab Ali";
+        villageInput.value = "Nanarahi";
+        poInput.value = "Sultanagar";
+        psInput.value = "Harishchandrapur";
+        districtInput.value = "Malda";
+        stateInput.value = "West Bengal";
+        pinInput.value = "732125";
+        aadharInput.value = "469748408090";
+        mouzaInput.value = "Dation-139";
+        plotInput.value = "1746";
+        khaitanInput.value = "7405";
+        areaInput.value = "0.0062";
+        existingTypeSelect.value = "Danga";
+        proposedTypeSelect.value = "Bastu";
+        purposeText.value = "for his/her self interest";
+        updateGenerateButtonState();
+        certContainer.innerHTML = `<div style="text-align:center; padding: 2rem; color: #444;">📜 Fill all details and click 'GENERATE LETTER' to issue NOC</div>`;
+        validationMsgSpan.innerHTML = "* All fields marked with * are required. Fill all details to enable Generate Letter.";
+        validationMsgSpan.style.color = "#444";
+    };
+    
+    generateBtn.onclick = () => {
+        if(isFormComplete()) {
+            renderCertificate();
+        } else {
+            alert("Please fill all mandatory fields before generating.");
+        }
+    };
+    
+    init();
+</script>
+</body>
+</html>
