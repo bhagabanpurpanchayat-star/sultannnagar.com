@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Genealogy Certificate | Sultannagar Gram Panchayat</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            background: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2070&auto=format') center/cover no-repeat fixed;
+            position: relative;
+            color: #1e2f3e;
+            line-height: 1.5;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.55);
+            z-index: 0;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.8rem 1.5rem;
+        }
+
+        .welcome-hero {
+            background: rgba(11, 43, 64, 0.8);
+            backdrop-filter: blur(12px);
+            border-radius: 28px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            color: white;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .welcome-hero h1 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .welcome-hero h1 i { color: #E6B17E; font-size: 2rem; }
+        
+        /* Progress Steps */
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(0,0,0,0.35);
+            border-radius: 50px;
+            padding: 6px 15px;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(8px);
+        }
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            color: rgba(255,255,255,0.6);
+        }
+        .step-indicator.active {
+            color: #E6B17E;
+        }
+        .step-indicator.completed {
+            color: #4CAF50;
+        }
+        .step-indicator .step-num {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+        }
+        .step-indicator.active .step-num {
+            background: #E6B17E;
+            color: #1e2f3e;
+        }
+        .step-indicator.completed .step-num {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .welcome-hero { padding: 1.2rem; }
+            .welcome-hero h1 { font-size: 1.3rem; }
+            .progress-steps { flex-wrap: wrap; gap: 8px; justify-content: center; }
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(12px);
+            border-radius: 28px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255,255,255,0.25);
+        }
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 4px solid #E6B17E;
+            padding-left: 15px;
+        }
+        .section-title i { color: #E6B17E; }
+        
+        .step-container { transition: all 0.3s ease; }
+        .step-hidden { display: none; }
+        
+        .generation-input {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(8px);
+            border-radius: 20px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .gen-header {
+            font-weight: bold;
+            font-size: 0.95rem;
+            margin-bottom: 0.8rem;
+            color: #FFE6C7;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .members-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 8px;
+            max-height: 320px;
+            overflow-y: auto;
+        }
+        .member-input-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 14px;
+            padding: 8px 12px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 6px;
+            min-width: 280px;
+        }
+        .member-input-card input {
+            padding: 6px 10px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            width: 120px;
+        }
+        .member-input-card .age-input { width: 65px; }
+        .member-input-card .guardian-display {
+            background: #e8e0c8;
+            padding: 5px 8px;
+            border-radius: 10px;
+            font-size: 0.65rem;
+            font-weight: bold;
+            min-width: 110px;
+            text-align: center;
+        }
+        .btn-remove {
+            background: #c0392b;
+            color: white;
+            border: none;
+            padding: 3px 8px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.65rem;
+        }
+        .btn-add {
+            background: rgba(46, 125, 50, 0.9);
+            color: white;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 35px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            margin-top: 6px;
+            font-weight: 600;
+        }
+        .btn-primary {
+            background: #E6B17E;
+            color: #1e2f3e;
+            border: none;
+            padding: 8px 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            border-radius: 35px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .btn-secondary {
+            background: rgba(100, 100, 100, 0.8);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            border-radius: 35px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .dropdown-select {
+            margin: 12px 0;
+            padding: 10px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 14px;
+            border-left: 3px solid #E6B17E;
+        }
+        .dropdown-select label {
+            font-weight: bold;
+            margin-right: 10px;
+            color: #FFE6C7;
+            font-size: 0.8rem;
+        }
+        .dropdown-select select {
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            border-radius: 25px;
+            border: none;
+        }
+        .optional-note {
+            font-size: 0.65rem;
+            color: #FFE6C7;
+            font-style: italic;
+            margin-top: 6px;
+        }
+        
+        /* CERTIFICATE STYLES */
+        .certificate-panel { margin-top: 1.5rem; }
+        .certificate-wrapper {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .certificate {
+            background: #ffffff;
+            color: #000000;
+            font-family: 'Times New Roman', 'Georgia', serif;
+            padding: 0.6rem 1rem;
+            position: relative;
+        }
+        
+        .certificate-header { 
+            text-align: center; 
+            margin-bottom: 0.3rem;
+        }
+        .office-title { font-size: 0.7rem; letter-spacing: 1px; color: #000000; font-weight: 600; }
+        .panchayat-name { font-size: 1.6rem; font-weight: bold; text-transform: uppercase; margin: 2px 0; color: #000000; }
+        .address-line { font-size: 0.65rem; margin-bottom: 6px; color: #000000; }
+        .double-line {
+            border-top: 3px double #000000;
+            width: 100%;
+            margin: 5px 0 8px 0;
+        }
+        .cert-title { font-size: 1.1rem; font-weight: bold; margin: 5px 0 2px; color: #000000; }
+        .cert-subtitle { font-size: 0.6rem; font-style: italic; margin-bottom: 8px; color: #000000; }
+        
+        .date-line {
+            text-align: right;
+            font-size: 0.6rem;
+            margin-bottom: 8px;
+            color: #000000;
+        }
+        .tree-container { margin: 5px 0; }
+        .gen-row { margin: 8px 0; text-align: center; }
+        .gen-label {
+            font-size: 0.6rem;
+            color: #000000;
+            margin-bottom: 5px;
+            font-weight: bold;
+            background: #f0f0f0;
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 20px;
+        }
+        .members-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 12px;
+            margin: 5px 0;
+        }
+        .member-card {
+            border: 1px solid #000000;
+            background: #ffffff;
+            text-align: left;
+            padding: 6px 8px;
+            flex: 0 0 auto;
+            min-width: 150px;
+            max-width: 180px;
+            border-radius: 6px;
+        }
+        .member-name { font-weight: bold; font-size: 0.7rem; color: #000000; margin-bottom: 4px; border-bottom: 0.5px solid #ccc; padding-bottom: 2px; }
+        .member-detail-line { font-size: 0.55rem; color: #000000; margin: 2px 0; line-height: 1.3; }
+        .member-detail-line strong { font-weight: 600; min-width: 52px; display: inline-block; }
+        .arrow-container { text-align: center; margin: 2px 0; padding: 2px 0; }
+        .arrow-symbol { 
+            font-size: 1.2rem; 
+            font-weight: bold; 
+            color: #b45f2b; 
+            display: inline-block;
+            letter-spacing: 2px;
+        }
+        .has-children { background: #fef7e0; border: 1.5px solid #b45f2b; }
+        .member-wrapper { display: flex; flex-direction: column; align-items: center; flex: 0 0 auto; }
+        
+        /* Footer area with address box at bottom left and signature at bottom right */
+        .certificate-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .root-address-box {
+            border: 1.5px dotted #333;
+            padding: 5px 10px;
+            background: #fef9e6;
+            font-size: 0.58rem;
+            line-height: 1.4;
+            min-width: 240px;
+            max-width: 280px;
+            border-radius: 6px;
+            font-family: 'Segoe UI', 'Times New Roman', serif;
+            text-align: left;
+        }
+        .root-address-box .addr-title {
+            font-weight: bold;
+            font-size: 0.6rem;
+            text-align: center;
+            border-bottom: 1px dotted #666;
+            margin-bottom: 4px;
+            padding-bottom: 2px;
+            color: #2c3e2f;
+        }
+        .root-address-box .addr-row {
+            display: flex;
+            margin: 2px 0;
+        }
+        .root-address-box .addr-label {
+            font-weight: 600;
+            min-width: 65px;
+            color: #1f3b21;
+        }
+        .root-address-box .addr-value {
+            color: #1a2a1f;
+        }
+        .signature-area {
+            text-align: right;
+            font-size: 0.7rem;
+            color: #000000;
+        }
+        .footer-note { 
+            font-size: 0.5rem; 
+            text-align: center; 
+            margin-top: 10px; 
+            padding-top: 5px;
+            border-top: 0.5px solid #ccc;
+            color: #000000; 
+        }
+        
+        .print-actions { display: flex; gap: 10px; justify-content: flex-end; margin-bottom: 12px; }
+        .btn-print { background: #E6B17E; color: #1e2f3e; border: none; padding: 6px 18px; border-radius: 35px; cursor: pointer; font-weight: bold; font-size: 0.75rem; }
+        .max-warning { color: #ffcc00; font-size: 0.65rem; margin-top: 4px; display: none; }
+        .step-buttons { display: flex; gap: 10px; margin-top: 12px; margin-bottom: 6px; }
+        
+        .certificate-wrapper.hidden-cert { display: none; }
+        .certificate-wrapper.visible-cert { display: block; }
+        
+        .footer {
+            text-align: center;
+            padding: 0.8rem;
+            font-size: 0.65rem;
+            color: rgba(255,255,255,0.8);
+            border-top: 1px solid rgba(255,255,255,0.2);
+            margin-top: 1.5rem;
+            backdrop-filter: blur(8px);
+            background: rgba(0,0,0,0.3);
+            border-radius: 35px;
+        }
+
+        /* Address Input Group */
+        .address-input-group {
+            background: rgba(255,255,255,0.12);
+            border-radius: 18px;
+            padding: 0.7rem 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .address-input-group .addr-title {
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #FFE6C7;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .addr-fields {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+        .addr-fields input, .addr-fields select {
+            padding: 5px 10px;
+            border-radius: 25px;
+            border: none;
+            background: rgba(255,255,255,0.9);
+            font-size: 0.7rem;
+            width: auto;
+            flex: 1;
+            min-width: 110px;
+        }
+        
+        @media print {
+            body { background: white; padding: 0; margin: 0; }
+            body::before { display: none; }
+            .container { padding: 0; margin: 0; max-width: 100%; }
+            .welcome-hero, .glass-card, .print-actions, .footer, .step-buttons, 
+            .btn-primary, .btn-secondary, .btn-add, .dropdown-select, .optional-note, .address-input-group, .progress-steps { display: none !important; }
+            .certificate-panel { background: white; padding: 0; margin: 0; }
+            .certificate-wrapper { box-shadow: none; background: white; border-radius: 0; }
+            .certificate {
+                background: white !important;
+                color: black !important;
+                border: none !important;
+                padding: 0.1in !important;
+                margin: 0 !important;
+            }
+            @page {
+                size: A4 landscape;
+                margin: 0.15in;
+            }
+            .member-card { border: 1px solid black !important; background: white !important; }
+            .root-address-box {
+                border: 1.5px dotted black !important;
+                background: #fef9e6 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .arrow-symbol { color: #000 !important; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+  
+    <div class="welcome-hero">
+        <h1><i class="fas fa-tree"></i> Genealogy Certificate | Sultannagar Gram Panchayat</h1>
+        <p style="margin-top:6px; font-size:0.75rem;">Vill+P.O - Barduary, Harishchandrapur, Malda</p>
+    </div>
+
+    <!-- Progress Steps -->
+    <div class="progress-steps" id="progressSteps">
+        <div class="step-indicator" id="step1Progress"><span class="step-num">1</span> Root Ancestor</div>
+        <div class="step-indicator" id="step2Progress"><span class="step-num">2</span> Generation 2</div>
+        <div class="step-indicator" id="step3Progress"><span class="step-num">3</span> Generation 3</div>
+        <div class="step-indicator" id="step4Progress"><span class="step-num">4</span> Generation 4</div>
+    </div>
+
+    <div class="glass-card">
+        <div class="section-title"><i class="fas fa-pen-alt"></i> Enter Family Details</div>
+        
+        <!-- Root Ancestor Address Input with default Barduary, Harishchandrapur, Malda -->
+        <div class="address-input-group">
+            <div class="addr-title"><i class="fas fa-home"></i> Root Ancestor's Address (Village, Post, PS, District)</div>
+            <div class="addr-fields">
+                <select id="rootVillageSelect">
+                    <option value="Barduary">Barduary</option>
+                    <option value="Harishchandrapur">Harishchandrapur</option>
+                    <option value="Sultannagar">Sultannagar</option>
+                    <option value="Other">Other (type)</option>
+                </select>
+                <input type="text" id="rootVillageOther" placeholder="Other Village" style="display:none; width:120px;">
+                <select id="rootPostSelect">
+                    <option value="Barduary">Barduary</option>
+                    <option value="Harishchandrapur">Harishchandrapur</option>
+                    <option value="Other">Other (type)</option>
+                </select>
+                <input type="text" id="rootPostOther" placeholder="Other Post" style="display:none; width:120px;">
+                <input type="text" id="rootPs" placeholder="Police Station" value="Harishchandrapur" style="width:130px;">
+                <input type="text" id="rootDistrict" placeholder="District" value="Malda" style="width:100px;">
+            </div>
+        </div>
+
+        <div id="step1-container" class="step-container">
+            <div class="generation-input">
+                <div class="gen-header"><i class="fas fa-star"></i> Step 1: Root Ancestor (Generation 1)</div>
+                <div class="members-container">
+                    <div class="member-input-card" style="min-width:340px;">
+                        <input type="text" id="gen1-name" placeholder="Full Name" value="Ram Chandra Mondal" style="width:150px;">
+                        <input type="text" id="gen1-guardian" placeholder="Guardian's Name" value="Late Shri Gopal Mondal" style="width:150px;">
+                        <input type="text" id="gen1-age" placeholder="Age" value="82" class="age-input">
+                    </div>
+                </div>
+                <button id="nextToGen2" class="btn-primary">Next → Add Generation 2</button>
+            </div>
+        </div>
+
+        <div id="step2-container" class="step-container step-hidden">
+            <div class="generation-input">
+                <div class="gen-header"><i class="fas fa-users"></i> Step 2: Generation 2 <span id="gen2-count"></span>
+                    <button id="backToGen1" class="btn-secondary" style="padding:4px 12px;">← Back</button>
+                </div>
+                <div class="optional-note">💡 Guardian = <strong id="gen2-guardian-preview">Root Ancestor</strong></div>
+                <div class="members-container" id="gen2-input-container"></div>
+                <button class="btn-add" id="addGen2Btn">+ Add Child</button>
+                <div id="gen2-warning" class="max-warning">⚠️ Maximum 10 members</div>
+                <div class="step-buttons">
+                    <button id="skipToGen3" class="btn-secondary">Skip → Gen 3</button>
+                    <button id="nextToGen3" class="btn-primary">Next → Gen 3</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="step3-container" class="step-container step-hidden">
+            <div class="generation-input">
+                <div class="gen-header"><i class="fas fa-child"></i> Step 3: Generation 3 <span id="gen3-count"></span>
+                    <button id="backToGen2" class="btn-secondary" style="padding:4px 12px;">← Back</button>
+                </div>
+                <div class="dropdown-select">
+                    <label>Select Parent from Gen 2:</label>
+                    <select id="select-gen2-parent"></select>
+                </div>
+                <div class="members-container" id="gen3-input-container"></div>
+                <button class="btn-add" id="addGen3Btn">+ Add Member</button>
+                <div id="gen3-warning" class="max-warning">⚠️ Maximum 10 members</div>
+                <div class="step-buttons">
+                    <button id="skipToGen4" class="btn-secondary">Skip → Gen 4</button>
+                    <button id="nextToGen4" class="btn-primary">Next → Gen 4</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="step4-container" class="step-container step-hidden">
+            <div class="generation-input">
+                <div class="gen-header"><i class="fas fa-seedling"></i> Step 4: Generation 4 <span id="gen4-count"></span>
+                    <button id="backToGen3" class="btn-secondary" style="padding:4px 12px;">← Back</button>
+                </div>
+                <div class="dropdown-select">
+                    <label>Select Parent from Gen 3:</label>
+                    <select id="select-gen3-parent"></select>
+                </div>
+                <div class="members-container" id="gen4-input-container"></div>
+                <button class="btn-add" id="addGen4Btn">+ Add Member</button>
+                <div id="gen4-warning" class="max-warning">⚠️ Maximum 10 members</div>
+                <div class="step-buttons">
+                    <button id="finishAndGenerate" class="btn-primary">✨ Generate Certificate</button>
+                    <button id="resetAllBtn" class="btn-secondary">⟳ Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="certificate-panel">
+        <div style="width:100%; max-width:1000px; margin:0 auto;">
+            <div class="print-actions">
+                <button class="btn-print" id="printBtn"><i class="fas fa-print"></i> Print (A4 Landscape)</button>
+            </div>
+            <div class="certificate-wrapper hidden-cert" id="certificateWrapper">
+                <div class="certificate" id="certificate">
+                    <div class="certificate-header">
+                        <div class="office-title">OFFICE OF THE</div>
+                        <div class="panchayat-name">SULTANNAGAR GRAM PANCHAYAT</div>
+                        <div class="address-line">Vill+P.O - Barduary, Harishchandrapur, Malda (West Bengal) - 732125</div>
+                        <div class="double-line"></div>
+                        <div class="cert-title">FAMILY GENEALOGY CERTIFICATE</div>
+                        <div class="cert-subtitle">(Four Generations Lineage with Guardian & Age Details)</div>
+                    </div>
+                    
+                    <div id="treeDisplay"></div>
+                    
+                    <!-- Footer with Address Box at Bottom Left and Signature at Bottom Right -->
+                    <div class="certificate-footer">
+                        <div id="rootAddressBox" class="root-address-box"></div>
+                        <div class="signature-area">
+                            <div style="font-weight:bold;">(Signature)</div>
+                            <div>Prodhan</div>
+                            <div>Sultannagar Gram Panchayat</div>
+                            <div style="font-size:0.55rem;">[Official Seal]</div>
+                        </div>
+                    </div>
+                    <div class="footer-note">Computer generated certificate verifying ancestral lineage as per provided information.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>© 2025 Sultannagar Gram Panchayat, Harishchandrapur-II, Malda | Genealogy Certificate System</p>
+    </div>
+</div>
+
+<script>
+    const MAX_MEMBERS = 10;
+    let gen1 = { name: "Ram Chandra Mondal", guardian: "Late Shri Gopal Mondal", age: "82" };
+    let gen2 = [];
+    let gen3 = [];
+    let gen4 = [];
+    let selectedGen2Parent = 0;
+    let selectedGen3Parent = 0;
+    
+    let rootVillage = "Barduary", rootPost = "Barduary", rootPs = "Harishchandrapur", rootDistrict = "Malda";
+    
+    function updateProgress(step) {
+        [1,2,3,4].forEach(s => {
+            const el = document.getElementById(`step${s}Progress`);
+            if(s < step) { el.classList.add('completed'); el.classList.remove('active'); }
+            else if(s === step) { el.classList.add('active'); el.classList.remove('completed'); }
+            else { el.classList.remove('active', 'completed'); }
+        });
+    }
+    
+    function getGen2Guardian() { return gen1.name; }
+    function getGen3Guardian() { if (gen2.length && selectedGen2Parent < gen2.length) return gen2[selectedGen2Parent].name; return ""; }
+    function getGen4Guardian() { if (gen3.length && selectedGen3Parent < gen3.length) return gen3[selectedGen3Parent].name; return ""; }
+    
+    function showStep(step) {
+        document.getElementById('step1-container').classList.add('step-hidden');
+        document.getElementById('step2-container').classList.add('step-hidden');
+        document.getElementById('step3-container').classList.add('step-hidden');
+        document.getElementById('step4-container').classList.add('step-hidden');
+        if(step === 1) document.getElementById('step1-container').classList.remove('step-hidden');
+        if(step === 2) { document.getElementById('step2-container').classList.remove('step-hidden'); updateGen2GuardianPreview(); }
+        if(step === 3) { document.getElementById('step3-container').classList.remove('step-hidden'); updateGen3DropdownAndGuardian(); }
+        if(step === 4) { document.getElementById('step4-container').classList.remove('step-hidden'); updateGen4DropdownAndGuardian(); }
+        updateProgress(step);
+    }
+    
+    function updateGen2GuardianPreview() { document.getElementById('gen2-guardian-preview').innerText = getGen2Guardian() || "Root Ancestor"; }
+    function updateGen3DropdownAndGuardian() {
+        const select = document.getElementById('select-gen2-parent');
+        select.innerHTML = '';
+        if(gen2.length === 0) select.innerHTML = '<option disabled>No members - Add first</option>';
+        else gen2.forEach((m, idx) => select.innerHTML += `<option value="${idx}" ${selectedGen2Parent === idx ? 'selected' : ''}>${escapeHtml(m.name)}</option>`);
+        document.querySelectorAll('.gen3-guardian-display').forEach(span => span.innerText = getGen3Guardian() || "Select Parent");
+    }
+    function updateGen4DropdownAndGuardian() {
+        const select = document.getElementById('select-gen3-parent');
+        select.innerHTML = '';
+        if(gen3.length === 0) select.innerHTML = '<option disabled>No members - Add first</option>';
+        else gen3.forEach((m, idx) => select.innerHTML += `<option value="${idx}" ${selectedGen3Parent === idx ? 'selected' : ''}>${escapeHtml(m.name)}</option>`);
+        document.querySelectorAll('.gen4-guardian-display').forEach(span => span.innerText = getGen4Guardian() || "Select Parent");
+    }
+    
+    function getTodayDate() { const d=new Date(); return `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()}`; }
+    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); }
+    
+    function loadExampleData() {
+        gen1 = { name: "Ram Chandra Mondal", guardian: "Late Shri Gopal Mondal", age: "82" };
+        gen2 = [{ name: "Bishwanath Mondal", age: "58" }, { name: "Lakshmi Mondal", age: "55" }, { name: "Gobinda Mondal", age: "52" }];
+        gen3 = [{ name: "Gouranga Mondal", age: "30" }, { name: "Mamata Mondal", age: "28" }];
+        gen4 = [{ name: "Sourav Mondal", age: "8" }, { name: "Priyanka Mondal", age: "6" }];
+        selectedGen2Parent = 0; selectedGen3Parent = 0;
+        document.getElementById('rootVillageSelect').value = "Barduary";
+        document.getElementById('rootVillageOther').style.display = "none";
+        document.getElementById('rootPostSelect').value = "Barduary";
+        document.getElementById('rootPostOther').style.display = "none";
+        document.getElementById('rootPs').value = "Harishchandrapur";
+        document.getElementById('rootDistrict').value = "Malda";
+        renderAllInputs();
+        showStep(4);
+        generateCertificateContent();
+        showCertificate();
+    }
+    
+    function renderAllInputs() {
+        document.getElementById('gen1-name').value = gen1.name;
+        document.getElementById('gen1-guardian').value = gen1.guardian;
+        document.getElementById('gen1-age').value = gen1.age;
+        
+        const g2c = document.getElementById('gen2-input-container');
+        g2c.innerHTML = '';
+        gen2.forEach((m, idx) => {
+            g2c.innerHTML += `<div class="member-input-card"><input type="text" value="${escapeHtml(m.name)}" data-gen2-idx="${idx}" class="gen2-name" style="width:130px;"><div class="guardian-display">Guardian: ${escapeHtml(getGen2Guardian())}</div><input type="text" value="${escapeHtml(m.age)}" data-gen2-age-idx="${idx}" class="gen2-age age-input"><button class="btn-remove" onclick="removeGen2(${idx})"><i class="fas fa-trash"></i></button></div>`;
+        });
+        const g3c = document.getElementById('gen3-input-container');
+        g3c.innerHTML = '';
+        gen3.forEach((m, idx) => {
+            g3c.innerHTML += `<div class="member-input-card"><input type="text" value="${escapeHtml(m.name)}" data-gen3-idx="${idx}" class="gen3-name" style="width:130px;"><div class="guardian-display gen3-guardian-display">Guardian: ${escapeHtml(getGen3Guardian())}</div><input type="text" value="${escapeHtml(m.age)}" data-gen3-age-idx="${idx}" class="gen3-age age-input"><button class="btn-remove" onclick="removeGen3(${idx})"><i class="fas fa-trash"></i></button></div>`;
+        });
+        const g4c = document.getElementById('gen4-input-container');
+        g4c.innerHTML = '';
+        gen4.forEach((m, idx) => {
+            g4c.innerHTML += `<div class="member-input-card"><input type="text" value="${escapeHtml(m.name)}" data-gen4-idx="${idx}" class="gen4-name" style="width:130px;"><div class="guardian-display gen4-guardian-display">Guardian: ${escapeHtml(getGen4Guardian())}</div><input type="text" value="${escapeHtml(m.age)}" data-gen4-age-idx="${idx}" class="gen4-age age-input"><button class="btn-remove" onclick="removeGen4(${idx})"><i class="fas fa-trash"></i></button></div>`;
+        });
+        
+        document.querySelectorAll('.gen2-name').forEach(inp => inp.onchange = (e) => { let idx=parseInt(inp.dataset.gen2Idx); if(!isNaN(idx)) gen2[idx].name=inp.value; });
+        document.querySelectorAll('.gen2-age').forEach(inp => inp.onchange = (e) => { let idx=parseInt(inp.dataset.gen2AgeIdx); if(!isNaN(idx)) gen2[idx].age=inp.value; });
+        document.querySelectorAll('.gen3-name').forEach(inp => inp.onchange = (e) => { let idx=parseInt(inp.dataset.gen3Idx); if(!isNaN(idx)) gen3[idx].name=inp.value; });
+        document.querySelectorAll('.gen3-age').forEach(inp => inp.onchange = (e) => { let idx=parseInt(inp.dataset.gen3AgeIdx); if(!isNaN(idx)) gen3[idx].age=inp.value; });
+        document.querySelectorAll('.gen4-name').forEach(inp => inp.onchange = (e) => { let idx=parseInt(inp.dataset.gen4Idx); if(!isNaN(idx)) gen4[idx].name=inp.value; });
+        document.querySelectorAll('.gen4-age').forEach(inp => inp.onchange = (e) => { let idx=parseInt(inp.dataset.gen4AgeIdx); if(!isNaN(idx)) gen4[idx].age=inp.value; });
+        
+        document.getElementById('select-gen2-parent').onchange = (e) => { selectedGen2Parent=parseInt(e.target.value); renderAllInputs(); updateGen3DropdownAndGuardian(); };
+        document.getElementById('select-gen3-parent').onchange = (e) => { selectedGen3Parent=parseInt(e.target.value); renderAllInputs(); updateGen4DropdownAndGuardian(); };
+        document.getElementById('gen1-name').onchange = (e) => { gen1.name=e.target.value; updateGen2GuardianPreview(); renderAllInputs(); };
+        document.getElementById('gen1-guardian').onchange = (e) => { gen1.guardian=e.target.value; };
+        document.getElementById('gen1-age').onchange = (e) => { gen1.age=e.target.value; };
+        
+        ['gen2-count','gen3-count','gen4-count'].forEach((id,i)=>document.getElementById(id).innerHTML = `(${[gen2,gen3,gen4][i].length}/${MAX_MEMBERS})`);
+        document.getElementById('gen2-warning').style.display = gen2.length>=MAX_MEMBERS?'block':'none';
+        document.getElementById('gen3-warning').style.display = gen3.length>=MAX_MEMBERS?'block':'none';
+        document.getElementById('gen4-warning').style.display = gen4.length>=MAX_MEMBERS?'block':'none';
+        document.getElementById('addGen2Btn').disabled = gen2.length>=MAX_MEMBERS;
+        document.getElementById('addGen3Btn').disabled = gen3.length>=MAX_MEMBERS;
+        document.getElementById('addGen4Btn').disabled = gen4.length>=MAX_MEMBERS;
+    }
+    
+    function addGen2Member() { if(gen2.length<MAX_MEMBERS) { gen2.push({name:"New Member", age:""}); renderAllInputs(); } }
+    function addGen3Member() { if(gen3.length<MAX_MEMBERS) { gen3.push({name:"New Member", age:""}); renderAllInputs(); } }
+    function addGen4Member() { if(gen4.length<MAX_MEMBERS) { gen4.push({name:"New Member", age:""}); renderAllInputs(); } }
+    function removeGen2(idx) { gen2.splice(idx,1); if(selectedGen2Parent>=gen2.length) selectedGen2Parent=Math.max(0,gen2.length-1); renderAllInputs(); }
+    function removeGen3(idx) { gen3.splice(idx,1); if(selectedGen3Parent>=gen3.length) selectedGen3Parent=Math.max(0,gen3.length-1); renderAllInputs(); }
+    function removeGen4(idx) { gen4.splice(idx,1); renderAllInputs(); }
+    
+    function updateAddress() {
+        let v = document.getElementById('rootVillageSelect').value;
+        rootVillage = v === "Other" ? (document.getElementById('rootVillageOther').value.trim() || "Barduary") : v;
+        let p = document.getElementById('rootPostSelect').value;
+        rootPost = p === "Other" ? (document.getElementById('rootPostOther').value.trim() || "Barduary") : p;
+        rootPs = document.getElementById('rootPs').value.trim() || "Harishchandrapur";
+        rootDistrict = document.getElementById('rootDistrict').value.trim() || "Malda";
+    }
+    
+    function showCertificate() { document.getElementById('certificateWrapper').classList.remove('hidden-cert'); document.getElementById('certificateWrapper').classList.add('visible-cert'); }
+    
+    function renderRootAddressBox() {
+        updateAddress();
+        document.getElementById('rootAddressBox').innerHTML = `
+            <div class="addr-title">📍 Root Ancestor's Address</div>
+            <div class="addr-row"><span class="addr-label">Name :</span><span class="addr-value">${escapeHtml(gen1.name)}</span></div>
+            <div class="addr-row"><span class="addr-label">Guardian :</span><span class="addr-value">${escapeHtml(gen1.guardian)}</span></div>
+            <div class="addr-row"><span class="addr-label">Village :</span><span class="addr-value">${escapeHtml(rootVillage)}</span></div>
+            <div class="addr-row"><span class="addr-label">Post Office :</span><span class="addr-value">${escapeHtml(rootPost)}</span></div>
+            <div class="addr-row"><span class="addr-label">Police Station :</span><span class="addr-value">${escapeHtml(rootPs)}</span></div>
+            <div class="addr-row"><span class="addr-label">District :</span><span class="addr-value">${escapeHtml(rootDistrict)}</span></div>
+        `;
+    }
+    
+    function generateCertificateContent() {
+        renderRootAddressBox();
+        let html = `<div class="tree-container"><div class="date-line">Date of Issue: ${getTodayDate()}</div>`;
+        
+        // First Generation
+        html += `<div class="gen-row"><div class="gen-label">First Generation (Root)</div><div class="members-row">`;
+        html += `<div class="member-card">
+                    <div class="member-name">${escapeHtml(gen1.name)}</div>
+                    <div class="member-detail-line"><strong>Guardian:</strong> ${escapeHtml(gen1.guardian)}</div>
+                    <div class="member-detail-line"><strong>Age:</strong> ${escapeHtml(gen1.age)}y</div>
+                </div>`;
+        html += `</div></div>`;
+        
+        // Second Generation
+        if(gen2.length > 0) {
+            html += `<div class="arrow-container"><div class="arrow-symbol">▼</div></div>`;
+            html += `<div class="gen-row"><div class="gen-label">Second Generation</div><div class="members-row">`;
+            gen2.forEach((member, idx) => {
+                const isSelected = (idx === selectedGen2Parent);
+                html += `<div class="member-wrapper">
+                            <div class="member-card ${isSelected ? 'has-children' : ''}">
+                                <div class="member-name">${escapeHtml(member.name)}</div>
+                                <div class="member-detail-line"><strong>Guardian:</strong> ${escapeHtml(getGen2Guardian())}</div>
+                                <div class="member-detail-line"><strong>Age:</strong> ${escapeHtml(member.age)}y</div>
+                            </div>
+                            ${isSelected && gen3.length > 0 ? '<div class="arrow-container"><div class="arrow-symbol">▼</div></div>' : '<div style="height:14px;"></div>'}
+                        </div>`;
+            });
+            html += `</div></div>`;
+        }
+        
+        // Third Generation
+        if(gen2.length > 0 && gen3.length > 0) {
+            html += `<div class="gen-row"><div class="gen-label">Third Generation</div><div class="members-row">`;
+            gen3.forEach((member, idx) => {
+                const isSelected = (idx === selectedGen3Parent);
+                html += `<div class="member-wrapper">
+                            <div class="member-card ${isSelected ? 'has-children' : ''}">
+                                <div class="member-name">${escapeHtml(member.name)}</div>
+                                <div class="member-detail-line"><strong>Guardian:</strong> ${escapeHtml(getGen3Guardian())}</div>
+                                <div class="member-detail-line"><strong>Age:</strong> ${escapeHtml(member.age)}y</div>
+                            </div>
+                            ${isSelected && gen4.length > 0 ? '<div class="arrow-container"><div class="arrow-symbol">▼</div></div>' : '<div style="height:14px;"></div>'}
+                        </div>`;
+            });
+            html += `</div></div>`;
+        }
+        
+        // Fourth Generation
+        if(gen3.length > 0 && gen4.length > 0) {
+            html += `<div class="gen-row"><div class="gen-label">Fourth Generation</div><div class="members-row">`;
+            gen4.forEach(member => {
+                html += `<div class="member-card">
+                            <div class="member-name">${escapeHtml(member.name)}</div>
+                            <div class="member-detail-line"><strong>Guardian:</strong> ${escapeHtml(getGen4Guardian())}</div>
+                            <div class="member-detail-line"><strong>Age:</strong> ${escapeHtml(member.age)}y</div>
+                        </div>`;
+            });
+            html += `</div></div>`;
+        }
+        html += `</div>`;
+        document.getElementById('treeDisplay').innerHTML = html;
+    }
+    
+    function generateAndShowCertificate() { generateCertificateContent(); showCertificate(); }
+    function printCertificate() { window.print(); }
+    
+    // Event bindings
+    document.getElementById('nextToGen2').onclick = () => { showStep(2); renderAllInputs(); };
+    document.getElementById('backToGen1').onclick = () => { showStep(1); };
+    document.getElementById('nextToGen3').onclick = () => { if(gen2.length===0) alert("Add at least one member in Generation 2."); else showStep(3); renderAllInputs(); };
+    document.getElementById('skipToGen3').onclick = () => { showStep(3); renderAllInputs(); };
+    document.getElementById('backToGen2').onclick = () => { showStep(2); renderAllInputs(); };
+    document.getElementById('nextToGen4').onclick = () => { if(gen3.length===0) alert("Add at least one member in Generation 3."); else showStep(4); renderAllInputs(); };
+    document.getElementById('skipToGen4').onclick = () => { showStep(4); renderAllInputs(); };
+    document.getElementById('backToGen3').onclick = () => { showStep(3); renderAllInputs(); };
+    document.getElementById('finishAndGenerate').onclick = () => { generateAndShowCertificate(); };
+    document.getElementById('resetAllBtn').onclick = () => { loadExampleData(); };
+    document.getElementById('addGen2Btn').onclick = addGen2Member;
+    document.getElementById('addGen3Btn').onclick = addGen3Member;
+    document.getElementById('addGen4Btn').onclick = addGen4Member;
+    document.getElementById('printBtn').onclick = printCertificate;
+    
+    // Address dropdown logic
+    const vSel=document.getElementById('rootVillageSelect'), vOther=document.getElementById('rootVillageOther');
+    vSel.onchange=()=>{ vOther.style.display=vSel.value==="Other"?"inline-block":"none"; if(document.getElementById('certificateWrapper').classList.contains('visible-cert')) generateCertificateContent(); };
+    vOther.oninput=()=>{ if(document.getElementById('certificateWrapper').classList.contains('visible-cert')) generateCertificateContent(); };
+    const pSel=document.getElementById('rootPostSelect'), pOther=document.getElementById('rootPostOther');
+    pSel.onchange=()=>{ pOther.style.display=pSel.value==="Other"?"inline-block":"none"; if(document.getElementById('certificateWrapper').classList.contains('visible-cert')) generateCertificateContent(); };
+    pOther.oninput=()=>{ if(document.getElementById('certificateWrapper').classList.contains('visible-cert')) generateCertificateContent(); };
+    document.getElementById('rootPs').oninput=()=>{ if(document.getElementById('certificateWrapper').classList.contains('visible-cert')) generateCertificateContent(); };
+    document.getElementById('rootDistrict').oninput=()=>{ if(document.getElementById('certificateWrapper').classList.contains('visible-cert')) generateCertificateContent(); };
+    
+    showStep(1);
+    renderAllInputs();
+    document.getElementById('certificateWrapper').classList.add('hidden-cert');
+</script>
+</body>
+</html>
