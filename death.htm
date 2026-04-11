@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Sultannagar Gram Panchayat | Death Certificate Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #6b6f72;
+            font-family: 'Courier New', 'Times New Roman', 'Georgia', monospace, serif;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            max-width: 1100px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        /* Editor Panel - Black & White Style (TOP) */
+        .editor-panel {
+            background: white;
+            border: 2px solid #000;
+            padding: 24px 28px;
+            box-shadow: 6px 6px 0 rgba(0,0,0,0.15);
+        }
+
+        .editor-panel h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-bottom: 2px solid black;
+            display: inline-block;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 18px 24px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .input-group label {
+            font-weight: 700;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #000;
+            font-family: 'Courier New', monospace;
+        }
+
+        .input-group input, .input-group textarea, .input-group select {
+            padding: 8px 12px;
+            border: 1.5px solid #111;
+            font-size: 0.85rem;
+            font-family: 'Courier New', monospace;
+            background: white;
+            border-radius: 0px;
+        }
+
+        .input-group input:focus, .input-group textarea:focus, .input-group select:focus {
+            outline: none;
+            border-color: #b45309;
+            box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 32px;
+            justify-content: flex-end;
+            border-top: 1px solid #aaa;
+            padding-top: 20px;
+        }
+
+        .btn {
+            padding: 8px 22px;
+            border: 1px solid black;
+            font-weight: bold;
+            font-family: monospace;
+            cursor: pointer;
+            transition: 0.1s linear;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            background: #eaeaea;
+            color: black;
+        }
+
+        .btn-primary {
+            background: #111;
+            color: white;
+            border: 1px solid black;
+        }
+
+        .btn-primary:hover {
+            background: #333;
+        }
+
+        .btn-primary:disabled {
+            background: #aaa;
+            cursor: not-allowed;
+        }
+
+        .btn-outline {
+            background: white;
+            border: 1px solid black;
+        }
+
+        .btn-outline:hover {
+            background: #ddd;
+        }
+
+        .validation-note {
+            font-size: 0.7rem;
+            margin-top: 16px;
+            color: #444;
+            font-family: monospace;
+            border-top: 1px dashed #888;
+            padding-top: 10px;
+        }
+
+        /* Certificate Panel - Black & White Official (BOTTOM) */
+        .certificate-panel {
+            background: #fff;
+            border: 2px solid #000;
+            padding: 24px;
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .certificate-panel.show {
+            display: block;
+        }
+
+        .noc-letter {
+            background: white;
+            padding: 28px 32px;
+            font-family: 'Times New Roman', 'Courier New', 'Georgia', serif;
+            color: black;
+        }
+
+        .header-office {
+            text-align: center;
+            border-bottom: 2px solid black;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+        }
+
+        .header-office h1 {
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .header-office h3 {
+            font-size: 2.1rem;
+            font-weight: 700;
+            margin-top: 6px;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .header-office p {
+            font-size: 0.75rem;
+            font-family: monospace;
+            margin-top: 6px;
+        }
+
+        /* Memo and Date on opposite ends */
+        .ref-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 16px 0 24px 0;
+            font-weight: 600;
+            font-size: 0.9rem;
+            font-family: monospace;
+        }
+
+        .memo-no {
+            text-align: left;
+        }
+
+        .date-no {
+            text-align: right;
+        }
+
+        .subject {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 10px 0 18px 0;
+            text-decoration: underline;
+            text-underline-offset: 6px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .certify-text {
+            margin: 14px 0;
+            line-height: 1.45;
+            font-size: 0.95rem;
+            text-align: justify;
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border: 1px solid black;
+            font-size: 0.9rem;
+        }
+
+        .info-table td, .info-table th {
+            border: 1px solid black;
+            padding: 8px 12px;
+            vertical-align: top;
+        }
+
+        .info-table th {
+            background: #f0f0f0;
+            font-weight: 700;
+            width: 30%;
+        }
+
+        .sign-block {
+            margin-top: 40px;
+            display: flex;
+            justify-content: flex-end;
+            text-align: center;
+            padding-top: 0;
+        }
+
+        .signature {
+            width: 260px;
+        }
+
+        .stamp {
+            font-family: monospace;
+            font-weight: bold;
+            margin-top: 6px;
+            font-size: 0.8rem;
+        }
+
+        .footer-note {
+            font-size: 0.65rem;
+            margin-top: 24px;
+            text-align: center;
+            border-top: 1px solid black;
+            padding-top: 12px;
+            color: #2c2c2c;
+        }
+
+        .placeholder-message {
+            text-align: center;
+            padding: 60px 20px;
+            color: #555;
+            font-family: monospace;
+            font-size: 1rem;
+            border: 1px dashed #999;
+            background: #fafaf5;
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .full-width {
+                grid-column: span 1;
+            }
+            .noc-letter {
+                padding: 20px;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+                margin: 0;
+            }
+            .editor-panel, .action-buttons, .btn, .btn-primary, .btn-outline, .validation-note, .no-print {
+                display: none !important;
+            }
+            .certificate-panel {
+                border: none;
+                box-shadow: none;
+                padding: 0;
+                margin: 0;
+                display: block !important;
+            }
+            .noc-letter {
+                padding: 0.5in;
+                border: none;
+            }
+            .info-table th {
+                background-color: #eee !important;
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <!-- EDITOR PANEL (TOP) -->
+    <div class="editor-panel">
+        <h2>⛯ DEATH CERTIFICATE · SULTANNAGAR GP</h2>
+        <div class="form-grid">
+            <div class="input-group">
+                <label>Full Name *</label>
+                <input type="text" id="fullName" value="Late Bibi Jaushan">
+            </div>
+            <div class="input-group">
+                <label>Relation (W/O, S/O, D/O) *</label>
+                <select id="relationType">
+                    <option value="W/O">W/O (Wife of)</option>
+                    <option value="S/O">S/O (Son of)</option>
+                    <option value="D/O">D/O (Daughter of)</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Relative's Name *</label>
+                <input type="text" id="relativeName" value="Late Sekh Amiruddin">
+            </div>
+            <div class="input-group">
+                <label>Village *</label>
+                <input type="text" id="village" value="Sultannagar">
+            </div>
+            <div class="input-group">
+                <label>P.O *</label>
+                <input type="text" id="po" value="Sultannagar">
+            </div>
+            <div class="input-group">
+                <label>P.S *</label>
+                <input type="text" id="ps" value="Harishchndrapur">
+            </div>
+            <div class="input-group">
+                <label>District *</label>
+                <input type="text" id="district" value="Malda">
+            </div>
+            <div class="input-group">
+                <label>Pin Code *</label>
+                <input type="text" id="pin" value="732125">
+            </div>
+            <div class="input-group">
+                <label>Years Passed Away *</label>
+                <select id="yearsOption">
+                    <option value="20">20 (Twenty Years)</option>
+                    <option value="8">08 (Eight Years)</option>
+                    <option value="other">Other (Specify below)</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Custom Years (if Other selected)</label>
+                <input type="text" id="customYears" placeholder="e.g., 15 years">
+            </div>
+        </div>
+        <div class="action-buttons">
+            <button class="btn btn-outline" id="resetDefaultBtn">↺ Reset to Original</button>
+            <button class="btn btn-primary" id="generateBtn">✅ GENERATE CERTIFICATE</button>
+        </div>
+        <div class="validation-note" id="validationMsg">* Fill all required fields, then click GENERATE to create the official certificate.</div>
+    </div>
+
+    <!-- CERTIFICATE PANEL (BOTTOM) - Initially Hidden -->
+    <div class="certificate-panel" id="certificatePanel">
+        <div class="noc-letter" id="certificateContainer">
+            <!-- dynamic certificate will appear here after generate -->
+        </div>
+        <div style="display: flex; justify-content: flex-end; margin-top: 20px;" class="no-print">
+            <button class="btn btn-outline" id="printBtn">🖨️ PRINT CERTIFICATE</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // DOM elements for inputs
+    const fullName = document.getElementById('fullName');
+    const relationType = document.getElementById('relationType');
+    const relativeName = document.getElementById('relativeName');
+    const village = document.getElementById('village');
+    const po = document.getElementById('po');
+    const ps = document.getElementById('ps');
+    const district = document.getElementById('district');
+    const pin = document.getElementById('pin');
+    const yearsOption = document.getElementById('yearsOption');
+    const customYears = document.getElementById('customYears');
+
+    const generateBtn = document.getElementById('generateBtn');
+    const printBtn = document.getElementById('printBtn');
+    const resetDefaultBtn = document.getElementById('resetDefaultBtn');
+    const certificatePanel = document.getElementById('certificatePanel');
+    const container = document.getElementById('certificateContainer');
+    const validationMsg = document.getElementById('validationMsg');
+
+    // Helper: get current date DD/MM/YYYY
+    function getCurrentDate() {
+        const today = new Date();
+        const day = String(today.getDate()).padStart(2, '0');
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const year = today.getFullYear();
+        return `${day}/${month}/${year}`;
+    }
+
+    // Escape HTML for safety
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    // Get years passed away text
+    function getYearsText() {
+        const selected = yearsOption.value;
+        if (selected === 'other') {
+            const custom = customYears.value.trim();
+            return custom ? custom : 'specified period';
+        } else if (selected === '20') {
+            return '20 (Twenty Years)';
+        } else {
+            return '08 (Eight Years)';
+        }
+    }
+
+    // Check if all required fields are filled
+    function isFormComplete() {
+        const required = [
+            fullName.value.trim(), relativeName.value.trim(),
+            village.value.trim(), po.value.trim(), ps.value.trim(),
+            district.value.trim(), pin.value.trim()
+        ];
+        for(let field of required) {
+            if(field === "") return false;
+        }
+        
+        if (yearsOption.value === 'other' && customYears.value.trim() === '') {
+            return false;
+        }
+        return true;
+    }
+
+    // Update validation message
+    function updateValidationMessage() {
+        if(isFormComplete()) {
+            validationMsg.innerHTML = "✓ All required fields filled. Click GENERATE to create certificate.";
+            validationMsg.style.color = "#1e4620";
+        } else {
+            validationMsg.innerHTML = "* Please fill all required fields before generating the certificate.";
+            validationMsg.style.color = "#b91c1c";
+        }
+    }
+
+    // Render certificate for Sultannagar Gram Panchayat
+    function renderCertificate() {
+        if(!isFormComplete()) {
+            alert("Please fill all required fields before generating the certificate.");
+            return false;
+        }
+        
+        const currentDate = getCurrentDate();
+        
+        let nameVal = fullName.value.trim();
+        let relationVal = relationType.value;
+        let relativeVal = relativeName.value.trim();
+        
+        let villageVal = village.value.trim();
+        let poVal = po.value.trim();
+        let psVal = ps.value.trim();
+        let districtVal = district.value.trim();
+        let pinVal = pin.value.trim();
+        let yearsText = getYearsText();
+        
+        const certificateHTML = `
+            <div class="header-office">
+                <h1>OFFICE OF THE PRODHAN</h1>
+                <h3>SULTANNAGAR GRAM PANCHAYAT</h3>
+                <p>VILL+P.O-BARDUARY , HARISHCHANDRAPUR</p>
+                <p>MALDA</p>
+                <p>Mail Id - mgnrgs.sn@gmail.com & nregs.sn@gmail.com</p>
+            </div>
+            
+            <div class="ref-line">
+                <span class="memo-no">Memo No. -----</span>
+                <span class="date-no">Dated: ${escapeHtml(currentDate)}</span>
+            </div>
+            
+            <div class="subject">
+                TO WHOM IT MAY CONCERN
+            </div>
+            
+            <div class="certify-text">
+                This is to certify that the below mentioned person was a permanent resident under 
+                Sultannagar Gram Panchayat under Harishchndrapur-II Dev Block, Malda.
+            </div>
+            
+            <table class="info-table">
+                <tr><th>Name</th><td colspan="3">${escapeHtml(nameVal)}</td></tr>
+                <tr><th>${escapeHtml(relationVal)}</th><td colspan="3">${escapeHtml(relativeVal)}</td></tr>
+                <tr><th>Vill</th><td colspan="3">${escapeHtml(villageVal)}</td></tr>
+                <tr><th>P.O</th><td colspan="3">${escapeHtml(poVal)}</td></tr>
+                <tr><th>P.S</th><td colspan="3">${escapeHtml(psVal)}</td></tr>
+                <tr><th>Dist</th><td colspan="3">${escapeHtml(districtVal)}</td></tr>
+                <tr><th>Pin</th><td colspan="3">${escapeHtml(pinVal)}</td></tr>
+            </table>
+            
+            <div class="certify-text">
+                As per information, the person passed away approx ${escapeHtml(yearsText)} ago.
+            </div>
+            
+            <div class="certify-text">
+                This is for your kind information & persual.
+            </div>
+            
+            <div class="sign-block">
+                <div class="signature">
+                    <div style="font-weight:bold;">Prodhan</div>
+                    <div>Sultannagar Gram Panchayat</div>
+                    <div class="stamp">🔰 Official Seal 🔰</div>
+                </div>
+            </div>
+        `;
+        
+        container.innerHTML = certificateHTML;
+        return true;
+    }
+    
+    // Reset all fields to original default values
+    function resetToOriginal() {
+        fullName.value = "Late Bibi Jaushan";
+        relationType.value = "W/O";
+        relativeName.value = "Late Sekh Amiruddin";
+        village.value = "Sultannagar";
+        po.value = "Sultannagar";
+        ps.value = "Harishchndrapur";
+        district.value = "Malda";
+        pin.value = "732125";
+        yearsOption.value = "20";
+        customYears.value = "";
+        
+        updateValidationMessage();
+        certificatePanel.classList.remove('show');
+        container.innerHTML = '<div class="placeholder-message">📜 Certificate will appear here after clicking GENERATE</div>';
+    }
+    
+    // Generate button handler
+    function handleGenerate() {
+        if(!isFormComplete()) {
+            alert("Please fill all required fields before generating the certificate.");
+            return;
+        }
+        const success = renderCertificate();
+        if(success) {
+            certificatePanel.classList.add('show');
+        }
+    }
+    
+    // Print certificate
+    function printCertificate() {
+        if(!isFormComplete()) {
+            alert("Please generate the certificate first by clicking GENERATE.");
+            return;
+        }
+        if(!certificatePanel.classList.contains('show')) {
+            alert("Please generate the certificate first.");
+            return;
+        }
+        
+        const originalTitle = document.title;
+        document.title = "Death_Certificate_Sultannagar_Gram_Panchayat";
+        const printContent = container.cloneNode(true);
+        const printWindow = window.open('', '_blank', 'width=1000,height=800,scrollbars=yes');
+        if (!printWindow) {
+            alert("Please allow pop-ups to print the certificate");
+            return;
+        }
+        
+        printWindow.document.write(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <title>Sultannagar GP - Death Certificate</title>
+                <style>
+                    * {
+                        margin: 0;
+                        padding: 0;
+                        box-sizing: border-box;
+                    }
+                    body {
+                        background: white;
+                        padding: 0.6in;
+                        font-family: 'Times New Roman', 'Courier New', 'Georgia', serif;
+                        display: flex;
+                        justify-content: center;
+                    }
+                    .print-certificate {
+                        max-width: 1000px;
+                        width: 100%;
+                        background: white;
+                        border: 1px solid black;
+                        padding: 32px 36px;
+                        box-shadow: none;
+                    }
+                    .header-office {
+                        text-align: center;
+                        border-bottom: 2px solid black;
+                        margin-bottom: 18px;
+                        padding-bottom: 10px;
+                    }
+                    .header-office h1 {
+                        font-size: 1.3rem;
+                        font-weight: 800;
+                        text-transform: uppercase;
+                    }
+                    .header-office h3 {
+                        font-size: 1.2rem;
+                        font-weight: 700;
+                        margin-top: 5px;
+                    }
+                    .header-office p {
+                        font-size: 0.75rem;
+                        margin-top: 5px;
+                    }
+                    .ref-line {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin: 16px 0 24px 0;
+                        font-weight: 600;
+                        font-size: 0.9rem;
+                        font-family: monospace;
+                    }
+                    .subject {
+                        font-size: 1.2rem;
+                        font-weight: bold;
+                        text-decoration: underline;
+                        margin: 10px 0 18px;
+                        text-transform: uppercase;
+                        text-align: center;
+                    }
+                    .certify-text {
+                        margin: 14px 0;
+                        line-height: 1.45;
+                        text-align: justify;
+                        font-size: 0.95rem;
+                    }
+                    .info-table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin: 20px 0;
+                        border: 1px solid black;
+                    }
+                    .info-table td, .info-table th {
+                        border: 1px solid black;
+                        padding: 8px 12px;
+                        vertical-align: top;
+                    }
+                    .info-table th {
+                        background: #f5f5f5;
+                        font-weight: 700;
+                        width: 30%;
+                    }
+                    .sign-block {
+                        margin-top: 40px;
+                        display: flex;
+                        justify-content: flex-end;
+                        text-align: center;
+                        padding-top: 0;
+                    }
+                    .signature {
+                        width: 260px;
+                    }
+                    .stamp {
+                        font-family: monospace;
+                        font-weight: bold;
+                        margin-top: 6px;
+                    }
+                    @media print {
+                        body {
+                            padding: 0;
+                            margin: 0;
+                        }
+                        .print-certificate {
+                            border: none;
+                            padding: 0;
+                        }
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="print-certificate">
+                    ${printContent.innerHTML}
+                </div>
+                <script>
+                    window.onload = function() {
+                        window.print();
+                        setTimeout(() => window.close(), 600);
+                    };
+                <\/script>
+            </body>
+            </html>
+        `);
+        printWindow.document.close();
+        document.title = originalTitle;
+    }
+    
+    // Event listeners for custom years field
+    function bindValidationEvents() {
+        const inputs = [fullName, relativeName, village, po, ps, district, pin, customYears];
+        inputs.forEach(input => {
+            if (input) {
+                input.addEventListener('input', () => updateValidationMessage());
+                input.addEventListener('change', () => updateValidationMessage());
+            }
+        });
+        relationType.addEventListener('change', () => updateValidationMessage());
+        yearsOption.addEventListener('change', () => {
+            if (yearsOption.value === 'other') {
+                customYears.disabled = false;
+                customYears.required = true;
+            } else {
+                customYears.disabled = true;
+                customYears.required = false;
+                customYears.value = '';
+            }
+            updateValidationMessage();
+        });
+        customYears.disabled = true;
+    }
+    
+    // Initialize
+    function init() {
+        resetToOriginal();
+        bindValidationEvents();
+        generateBtn.addEventListener('click', handleGenerate);
+        printBtn.addEventListener('click', printCertificate);
+        resetDefaultBtn.addEventListener('click', resetToOriginal);
+        updateValidationMessage();
+    }
+    
+    init();
+</script>
+</body>
+</html>
